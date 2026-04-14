@@ -1,0 +1,53 @@
+<mat-card class="auth-card">
+  <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
+  <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+
+  <mat-card-content>
+    @if (serverError) {
+      <p class="server-error" role="alert">{{ serverError }}</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ pageUi.emailLabel }}</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="email" />
+        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+          <mat-error>{{ validationMessages.emailRequired }}</mat-error>
+        }
+        @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+          <mat-error>{{ validationMessages.emailInvalid }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ pageUi.passwordLabel }}</mat-label>
+        <input matInput type="password" formControlName="password" autocomplete="current-password" />
+        @if (form.controls.password.hasError('required') && form.controls.password.touched) {
+          <mat-error>{{ validationMessages.passwordRequired }}</mat-error>
+        }
+        @if (form.controls.password.hasError('minlength') && form.controls.password.touched) {
+          <mat-error>{{ validationMessages.passwordEmpty }}</mat-error>
+        }
+        @if (form.controls.password.hasError('maxlength') && form.controls.password.touched) {
+          <mat-error>{{ validationMessages.passwordMax }}</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting">
+          @if (submitting) {
+            <mat-spinner diameter="20"></mat-spinner>
+            <span class="btn-label">{{ pageUi.submitPending }}</span>
+          } @else {
+            {{ pageUi.submitIdle }}
+          }
+        </button>
+      </div>
+    </form>
+
+    <p class="footer-link">
+      {{ pageUi.registerPrompt }}
+      <a [routerLink]="pageUi.registerRoute">{{ pageUi.registerLink }}</a>
+    </p>
+  </mat-card-content>
+</mat-card>

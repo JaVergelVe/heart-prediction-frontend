@@ -1,0 +1,33 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav #drawer mode="over" class="sidenav">
+    <mat-nav-list>
+      @for (link of mainNavLinks; track link.routerLink) {
+        @if (link.routerLinkActiveOptions) {
+          <a
+            mat-list-item
+            [routerLink]="link.routerLink"
+            [routerLinkActiveOptions]="link.routerLinkActiveOptions"
+            routerLinkActive="active"
+            (click)="drawer.close()"
+          >
+            {{ link.label }}
+          </a>
+        } @else {
+          <a mat-list-item [routerLink]="link.routerLink" routerLinkActive="active" (click)="drawer.close()">
+            {{ link.label }}
+          </a>
+        }
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-header (menuClick)="onMenuClick()"></app-header>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+
+    <app-footer></app-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>
