@@ -1,0 +1,17 @@
+.shell {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 240px;
+}
+
+.main-content {
+  padding: 16px;
+  min-height: calc(100vh - 120px);
+  box-sizing: border-box;
+}
+
+a.active {
+  font-weight: 600;
+}

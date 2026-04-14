@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
+  <mat-card-content>
+    <p>{{ ui.lead }}</p>
+    <div class="actions">
+      <a mat-flat-button color="primary" [routerLink]="ui.routes.anonymousPrediction">{{ ui.primaryCta }}</a>
+      <a mat-stroked-button color="primary" [routerLink]="ui.routes.login">{{ ui.secondaryLogin }}</a>
+      <a mat-stroked-button [routerLink]="ui.routes.register">{{ ui.secondaryRegister }}</a>
+    </div>
+  </mat-card-content>
+</mat-card>

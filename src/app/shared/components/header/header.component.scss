@@ -1,0 +1,13 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
