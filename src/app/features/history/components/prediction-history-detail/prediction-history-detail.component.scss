@@ -214,66 +214,22 @@
   margin-top: 0.5rem;
 }
 
-.action-row {
+.loading-wrap {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.flow-hint {
-  margin: 0 0 0.75rem;
-  max-width: 40rem;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 0.5rem 0 1rem;
-}
-
-.empty-icon {
-  font-size: 3rem;
-  width: 3rem;
-  height: 3rem;
-  color: rgba(25, 118, 210, 0.75);
-  margin-bottom: 0.5rem;
-}
-
-.empty-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem;
-}
-
-.empty-body,
-.empty-hint {
-  max-width: 32rem;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.5;
-}
-
-.empty-body {
-  margin-bottom: 0.5rem;
-}
-
-.empty-hint {
-  margin-bottom: 1.25rem;
-}
-
-.empty-actions {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  padding: 2rem 0;
+}
+
+.server-error {
+  color: #b71c1c;
+  margin: 0 0 0.75rem;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.footer-link {
-  margin-top: 1.25rem;
-  font-size: 0.875rem;
-}
-
-.footer-link a {
-  margin-left: 0.25rem;
+  align-items: center;
 }
 
 .sr-only {

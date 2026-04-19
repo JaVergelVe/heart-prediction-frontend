@@ -1,0 +1,33 @@
+import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import {
+  COVID_POS_OPTIONS,
+  ECIGARETTE_USAGE_OPTIONS,
+  GENERAL_HEALTH_OPTIONS,
+  LAST_CHECKUP_OPTIONS,
+  PREDICTION_TRISTATE_OPTIONS,
+  SMOKER_STATUS_OPTIONS,
+  TETANUS_OPTIONS
+} from '../../../../core/constants/data/prediction-survey-options.constant';
+import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
+import { PREDICTION_FORM_SHARED_UI, PREDICTION_SURVEY_FIELDS_UI } from '../../../../core/constants/ui/prediction-ui.constant';
+
+@Component({
+  selector: 'app-prediction-survey-fields',
+  templateUrl: './prediction-survey-fields.component.html',
+  styleUrl: './prediction-survey-fields.component.scss'
+})
+export class PredictionSurveyFieldsComponent {
+  @Input({ required: true }) group!: FormGroup;
+
+  readonly fieldUi = PREDICTION_SURVEY_FIELDS_UI;
+  readonly sharedUi = PREDICTION_FORM_SHARED_UI;
+  readonly validationMessages = VALIDATION_MESSAGES;
+  readonly generalHealthOptions = GENERAL_HEALTH_OPTIONS;
+  readonly lastCheckupOptions = LAST_CHECKUP_OPTIONS;
+  readonly smokerStatusOptions = SMOKER_STATUS_OPTIONS;
+  readonly ecigaretteOptions = ECIGARETTE_USAGE_OPTIONS;
+  readonly tetanusOptions = TETANUS_OPTIONS;
+  readonly covidOptions = COVID_POS_OPTIONS;
+  readonly triStateOptions = PREDICTION_TRISTATE_OPTIONS;
+}

@@ -6,6 +6,12 @@ export interface RegisterProfileIn {
   removed_teeth: 'None of them' | '1 to 5' | '6 or more, but not all' | 'All';
 }
 
+/** Cuerpo parcial permitido en `PUT /v1/users/me/profile` (sin `sex` ni `birth_date`). */
+export type UserProfileUpdateBody = {
+  height_meters?: number;
+  removed_teeth?: RegisterProfileIn['removed_teeth'];
+};
+
 /** Contrato `RegisterMedicalIn` del API (OpenAPI). */
 export interface RegisterMedicalIn {
   had_angina: boolean;

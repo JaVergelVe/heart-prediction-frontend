@@ -9,6 +9,8 @@ export const APP_ROUTE_URLS = {
   authRegister: `/${s.auth}/${s.register}`,
   predictionsAnonymous: `/${s.predictions}/${s.anonymous}`,
   predictionsAnonymousResult: `/${s.predictions}/${s.anonymous}/${s.result}`,
+  predictionsAuthenticated: `/${s.predictions}/${s.authenticated}`,
+  predictionsAuthenticatedResult: `/${s.predictions}/${s.authenticated}/${s.result}`,
   history: `/${s.history}`,
   profile: `/${s.profile}`
 } as const;

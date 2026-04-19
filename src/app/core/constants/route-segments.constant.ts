@@ -5,6 +5,7 @@ export const ROUTE_SEGMENTS = {
   register: 'register',
   predictions: 'predictions',
   anonymous: 'anonymous',
+  authenticated: 'authenticated',
   result: 'result',
   history: 'history',
   profile: 'profile'

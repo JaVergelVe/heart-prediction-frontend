@@ -1,9 +1,168 @@
-<mat-card>
+<mat-card class="result-card">
   <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
+
+  @if (result) {
+    <mat-card-subtitle>{{ ui.cardSubtitleWithData }}</mat-card-subtitle>
+  }
+
   <mat-card-content>
-    <p>{{ ui.body }}</p>
-    <p>
-      <a mat-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.backToPrediction }}</a>
-    </p>
+    @if (result) {
+      <section class="summary" [attr.aria-labelledby]="'pred-summary-heading'">
+        <h2 class="section-heading" id="pred-summary-heading">{{ ui.sections.summary }}</h2>
+        <div class="summary-layout">
+          <div class="probability-block">
+            <span class="sr-only">{{ ui.labels.probability }}:</span>
+            <span class="probability-value" aria-hidden="true">{{ result.prediction_probability | number: '1.0-2' }}</span>
+            <span class="probability-unit" aria-hidden="true">{{ ui.units.probabilitySuffix }}</span>
+            <span class="probability-caption">{{ ui.labels.probabilityShort }}</span>
+          </div>
+          <div class="risk-block">
+            <span class="risk-label">{{ ui.labels.riskLevel }}</span>
+            <span class="risk-pill" [class]="'risk-pill--' + riskPillKind()">{{ result.risk_level }}</span>
+          </div>
+        </div>
+      </section>
+
+      <mat-divider class="section-divider" />
+
+      <section class="details-block" [attr.aria-labelledby]="'pred-details-heading'">
+        <h2 class="section-heading" id="pred-details-heading">{{ ui.sections.details }}</h2>
+        <dl class="result-grid">
+          <dt>{{ ui.labels.timestamp }}</dt>
+          <dd>{{ result.prediction_timestamp | date: 'medium' }}</dd>
+
+          <dt>{{ ui.labels.bmi }}</dt>
+          <dd>
+            @if (result.bmi != null) {
+              {{ result.bmi | number: '1.0-2' }}
+            } @else {
+              <span class="muted">{{ ui.labels.bmiUnavailable }}</span>
+            }
+          </dd>
+
+          <dt>{{ ui.labels.modelVersion }}</dt>
+          <dd>{{ modelVersionDisplay }}</dd>
+
+          @if (hasPredictedClass) {
+            <dt>{{ ui.labels.predictedClass }}</dt>
+            <dd>{{ result.predicted_class }}</dd>
+          }
+
+          <dt>{{ ui.labels.predictionId }}</dt>
+          <dd class="mono wrap-id">{{ result.prediction_id }}</dd>
+        </dl>
+      </section>
+
+      @if (shapExplanation(); as shapMain) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'pred-shap-main-heading'">
+          <h2 class="section-heading" id="pred-shap-main-heading">{{ ui.sections.shapMain }}</h2>
+          <dl class="shap-grid">
+            @if (shapMain.feature_name) {
+              <dt>{{ ui.labels.shapFeature }}</dt>
+              <dd>{{ shapMain.feature_name }}</dd>
+            }
+            @if (shapMain.impact_score != null) {
+              <dt>{{ ui.labels.shapImpact }}</dt>
+              <dd>{{ shapMain.impact_score | number: '1.0-5' }}</dd>
+            }
+            @if (shapMain.direction) {
+              <dt>{{ ui.labels.shapDirection }}</dt>
+              <dd class="mono">{{ shapMain.direction }}</dd>
+            }
+            @if (shapMain.message) {
+              <dt>{{ ui.labels.shapMessage }}</dt>
+              <dd class="shap-message">{{ shapMain.message }}</dd>
+            }
+          </dl>
+        </section>
+      }
+
+      @if (shapFactors().length) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'pred-shap-factors-heading'">
+          <h2 class="section-heading" id="pred-shap-factors-heading">{{ ui.sections.shapFactors }}</h2>
+          <div class="factor-stack" role="list">
+            @for (factor of shapFactors(); track $index; let last = $last) {
+              <div class="factor-card" role="listitem">
+                <div class="factor-head">
+                  @if (factor.rank != null) {
+                    <span class="factor-rank">#{{ factor.rank }}</span>
+                  }
+                  <span class="factor-name">{{ factor.feature_name ?? '—' }}</span>
+                </div>
+                @if (factor.contribution_score != null || factor.direction) {
+                  <div class="factor-meta">
+                    @if (factor.contribution_score != null) {
+                      <span>{{ ui.labels.shapContribution }}: {{ factor.contribution_score | number: '1.0-5' }}</span>
+                    }
+                    @if (factor.direction) {
+                      <span class="factor-dir">{{ ui.labels.shapDirection }}: {{ factor.direction }}</span>
+                    }
+                  </div>
+                }
+                @if (factor.feature_value != null) {
+                  <div class="factor-line">{{ ui.labels.shapValue }}: {{ factor.feature_value }}</div>
+                }
+                @if (factor.interpretation) {
+                  <div class="factor-interpretation">{{ factor.interpretation }}</div>
+                }
+              </div>
+              @if (!last) {
+                <mat-divider class="factor-between" />
+              }
+            }
+          </div>
+        </section>
+      }
+
+      @if (result.recommendations?.length) {
+        <mat-divider class="section-divider" />
+        <section [attr.aria-labelledby]="'pred-rec-heading'">
+          <h2 class="section-heading" id="pred-rec-heading">{{ ui.sections.recommendations }}</h2>
+          <ul class="rec-list">
+            @for (rec of result.recommendations!; track $index) {
+              <li>{{ rec }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <mat-divider class="section-divider" />
+
+      <div class="actions">
+        @if (showFlowAmbiguousNav) {
+          <p class="muted flow-hint">{{ ui.partialStateHint }}</p>
+          <div class="action-row">
+            <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.backToAnonymous }}</a>
+            <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAuthenticated">{{
+              ui.backToAuthenticated
+            }}</a>
+          </div>
+        } @else {
+          <a mat-flat-button color="primary" [routerLink]="backRoute">{{ backLabel }}</a>
+        }
+      </div>
+
+      @if (flowKind === flowKindConst.anonymous) {
+        <p class="footer-link">
+          {{ ui.loginPrompt }}
+          <a [routerLink]="ui.loginRoute">{{ ui.loginLink }}</a>
+        </p>
+      }
+    } @else {
+      <div class="empty-state" role="status">
+        <mat-icon class="empty-icon" [attr.aria-label]="ui.noDataIconAriaLabel">info</mat-icon>
+        <h3 class="empty-title">{{ ui.noDataTitle }}</h3>
+        <p class="empty-body">{{ ui.noDataBody }}</p>
+        <p class="empty-hint muted">{{ ui.noDataHint }}</p>
+        <div class="empty-actions">
+          <a mat-flat-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.fallbackNavAnonymous }}</a>
+          <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAuthenticated">{{
+            ui.fallbackNavAuthenticated
+          }}</a>
+        </div>
+      </div>
+    }
   </mat-card-content>
 </mat-card>

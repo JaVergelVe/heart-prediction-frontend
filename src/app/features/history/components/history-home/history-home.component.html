@@ -1,6 +1,72 @@
-<mat-card>
+<mat-card class="history-card">
   <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
+  <mat-card-subtitle>{{ ui.cardSubtitle }}</mat-card-subtitle>
+
   <mat-card-content>
-    <p>{{ ui.body }}</p>
+    @if (loadError) {
+      <p class="server-error" role="alert">{{ loadError }}</p>
+      <button type="button" mat-stroked-button color="primary" (click)="loadHistory()">{{ ui.retry }}</button>
+    }
+
+    @if (loading) {
+      <div class="loading-wrap" role="status" [attr.aria-label]="ui.loadingAriaLabel">
+        <mat-progress-spinner mode="indeterminate" diameter="40" />
+      </div>
+    } @else if (!loadError) {
+      @if (rows.length === 0) {
+        <p class="empty-hint" role="status">{{ messages.emptyList }}</p>
+      } @else {
+        <div class="table-wrap" tabindex="0">
+          <table mat-table [dataSource]="rows" class="history-table">
+            <ng-container [matColumnDef]="cols.date">
+              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.date }}</th>
+              <td mat-cell *matCellDef="let row">{{ row.prediction_timestamp | date: 'medium' }}</td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="cols.risk">
+              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.risk }}</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="risk-pill" [class]="'risk-pill--' + riskPillKind(row.risk_level)">{{ row.risk_level }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="cols.probability">
+              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.probability }}</th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.prediction_probability | number: '1.0-2' }}{{ ui.probabilitySuffix }}
+              </td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="cols.bmi">
+              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.bmi }}</th>
+              <td mat-cell *matCellDef="let row">
+                @if (row.bmi != null) {
+                  {{ row.bmi | number: '1.0-2' }}
+                } @else {
+                  <span class="muted">{{ ui.bmiUnavailable }}</span>
+                }
+              </td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="cols.actions">
+              <th mat-header-cell *matHeaderCellDef class="col-actions"></th>
+              <td mat-cell *matCellDef="let row" class="col-actions">
+                <a
+                  mat-stroked-button
+                  color="primary"
+                  [routerLink]="[historyBaseUrl, row.prediction_id]"
+                  [attr.aria-label]="ui.viewDetailAria"
+                >
+                  {{ ui.viewDetail }}
+                </a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      }
+    }
   </mat-card-content>
 </mat-card>
