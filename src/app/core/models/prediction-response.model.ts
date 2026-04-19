@@ -1,3 +1,5 @@
+import type { EcigaretteUsage, GeneralHealth, SmokerStatus } from './prediction-api.model';
+
 /** Explicación SHAP principal (si el API la incluye). */
 export interface ShapExplanation {
   feature_name?: string;
@@ -22,6 +24,15 @@ export interface PredictionResultData {
   user_id: string | null;
   session_id?: string | null;
   weight_kilograms: number;
+  /** Entradas del cuestionario que el detalle GET puede incluir para simulación o contexto. */
+  general_health?: GeneralHealth | null;
+  physical_health_days?: number | null;
+  mental_health_days?: number | null;
+  physical_activities?: boolean | null;
+  sleep_hours?: number | null;
+  smoker_status?: SmokerStatus | null;
+  ecigarette_usage?: EcigaretteUsage | null;
+  alcohol_drinkers?: boolean | null;
   bmi?: number;
   prediction_probability: number;
   risk_level: string;

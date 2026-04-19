@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, Subscription, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { EMPTY, Subscription, distinctUntilChanged, finalize, map, switchMap } from 'rxjs';
 import { HISTORY_ROUTE_PARAM_KEYS } from '../../../../core/constants/history-route-params.constant';
 import { HISTORY_MESSAGES } from '../../../../core/constants/messages/history-messages.constant';
-import {
-  PREDICTION_RISK_LEVEL_KEYWORDS,
-  PredictionRiskPillKind
-} from '../../../../core/constants/prediction-result-risk.constant';
+import { PredictionRiskPillKind } from '../../../../core/constants/prediction-result-risk.constant';
 import { PREDICTION_RESULT_UI } from '../../../../core/constants/ui/prediction-ui.constant';
 import { HISTORY_DETAIL_PAGE_UI } from '../../../../core/constants/ui/history-ui.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
 import { PredictionService } from '../../../../core/services/prediction.service';
+import { triggerBrowserBlobDownload } from '../../../../core/utils/browser-file-download.util';
+import { predictionRiskPillKind } from '../../../../core/utils/prediction-risk-display.util';
+import { formatAuthHttpError } from '../../../auth/utils/http-error.util';
 
 @Component({
   selector: 'app-prediction-history-detail',
@@ -31,6 +31,9 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
   loading = false;
   loadError: string | null = null;
 
+  pdfDownloading = false;
+  pdfError: string | null = null;
+
   ngOnInit(): void {
     this.sub = this.route.paramMap
       .pipe(
@@ -39,6 +42,7 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
         switchMap((id) => {
           this.loadError = null;
           this.result = null;
+          this.pdfError = null;
           if (!id) {
             this.loading = false;
             this.loadError = this.messages.loadDetailError;
@@ -52,6 +56,7 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.result = data;
           this.loading = false;
+          this.pdfError = null;
         },
         error: () => {
           this.loadError = this.messages.loadDetailError;
@@ -73,10 +78,12 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.loadError = null;
     this.result = null;
+    this.pdfError = null;
     this.predictionApi.getAuthenticatedPredictionById(id).subscribe({
       next: (data) => {
         this.result = data;
         this.loading = false;
+        this.pdfError = null;
       },
       error: () => {
         this.loadError = this.messages.loadDetailError;
@@ -99,20 +106,7 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
   }
 
   riskPillKind(): PredictionRiskPillKind {
-    const s = (this.result?.risk_level ?? '').trim().toLowerCase();
-    const low = PREDICTION_RISK_LEVEL_KEYWORDS.low as readonly string[];
-    const medium = PREDICTION_RISK_LEVEL_KEYWORDS.medium as readonly string[];
-    const high = PREDICTION_RISK_LEVEL_KEYWORDS.high as readonly string[];
-    if (low.includes(s)) {
-      return 'low';
-    }
-    if (medium.includes(s)) {
-      return 'medium';
-    }
-    if (high.includes(s)) {
-      return 'high';
-    }
-    return 'unknown';
+    return predictionRiskPillKind(this.result?.risk_level);
   }
 
   shapExplanation(): ShapExplanation | null {
@@ -129,5 +123,31 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
   shapFactors(): ShapTopFactor[] {
     const f = this.result?.shap_top_factors;
     return Array.isArray(f) ? f : [];
+  }
+
+  downloadPdf(): void {
+    const id = this.result?.prediction_id;
+    if (!id || this.loading || this.pdfDownloading) {
+      return;
+    }
+    this.pdfError = null;
+    this.pdfDownloading = true;
+    this.predictionApi
+      .downloadAuthenticatedPredictionPdf(id)
+      .pipe(finalize(() => (this.pdfDownloading = false)))
+      .subscribe({
+        next: ({ blob, filename }) => {
+          triggerBrowserBlobDownload(blob, filename);
+        },
+        error: (err: unknown) => {
+          if (err instanceof Error && err.message === 'PDF_EMPTY') {
+            this.pdfError = this.messages.pdfDownloadEmpty;
+          } else if (err instanceof Error && err.message === 'PDF_BAD_TYPE') {
+            this.pdfError = this.messages.pdfDownloadNotPdf;
+          } else {
+            this.pdfError = formatAuthHttpError(err);
+          }
+        }
+      });
   }
 }

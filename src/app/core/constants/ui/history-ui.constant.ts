@@ -44,5 +44,9 @@ export const HISTORY_DETAIL_PAGE_UI = {
   backToHistoryRoute: APP_ROUTE_URLS.history,
   retry: 'Reintentar',
   emDash: '—',
-  rankNumberPrefix: '#'
+  rankNumberPrefix: '#',
+  pdfDownload: 'Descargar informe PDF',
+  pdfDownloadAriaLabel: 'Descargar informe de predicción en formato PDF',
+  pdfDownloadPending: 'Generando PDF…',
+  pdfDownloadLoadingAriaLabel: 'Descargando informe PDF'
 } as const;

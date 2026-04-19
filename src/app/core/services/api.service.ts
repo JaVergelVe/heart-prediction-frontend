@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -17,6 +17,15 @@ export class ApiService {
 
   get<T>(path: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(this.resolveUrl(path), { params });
+  }
+
+  /** GET binario (p. ej. PDF) con cabeceras de respuesta accesibles. */
+  getBlobResponse(path: string, params?: HttpParams): Observable<HttpResponse<Blob>> {
+    return this.http.get(this.resolveUrl(path), {
+      params,
+      responseType: 'blob',
+      observe: 'response'
+    });
   }
 
   post<T>(path: string, body: unknown): Observable<T> {

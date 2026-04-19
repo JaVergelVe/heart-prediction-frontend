@@ -27,6 +27,31 @@ export class PredictionFormBuilderService {
     });
   }
 
+  /** Solo variables permitidas en POST `/v1/predictions/{id}/simulate` (detalle / what-if). */
+  createSimulationForm(): FormGroup {
+    const tri = PREDICTION_TRISTATE_FORM.unset;
+    return this.fb.group({
+      weight_kilograms: this.createWeightControl(),
+      general_health: [''],
+      physical_health_days: [
+        null as number | null,
+        [Validators.min(this.limits.healthDaysMin), Validators.max(this.limits.healthDaysMax)]
+      ],
+      mental_health_days: [
+        null as number | null,
+        [Validators.min(this.limits.healthDaysMin), Validators.max(this.limits.healthDaysMax)]
+      ],
+      physical_activities: [tri],
+      sleep_hours: [
+        null as number | null,
+        [Validators.min(this.limits.sleepHoursMin), Validators.max(this.limits.sleepHoursMax)]
+      ],
+      smoker_status: [''],
+      ecigarette_usage: [''],
+      alcohol_drinkers: [tri]
+    });
+  }
+
   createProfileGroup(): FormGroup {
     return this.fb.group({
       sex: ['' as RegisterProfileIn['sex'] | '', [Validators.required]],
