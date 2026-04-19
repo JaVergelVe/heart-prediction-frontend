@@ -14,7 +14,8 @@ import {
 } from '../../../core/models/prediction-api.model';
 import { RegisterMedicalIn, RegisterProfileIn } from '../../../core/models/register-request.model';
 
-function triStateToBool(v: PredictionTristateFormValue): boolean | null {
+/** Convierte el tri-estado del formulario ('', yes, no) al booleano o null del API. */
+export function surveyTriStateToBool(v: PredictionTristateFormValue): boolean | null {
   if (v === PREDICTION_TRISTATE_FORM.unset) {
     return null;
   }
@@ -79,7 +80,7 @@ export function surveyPartialFromForm(s: SurveyFormValue): Omit<
     out['last_checkup_time'] = ck;
   }
 
-  const pa = triStateToBool(s.physical_activities);
+  const pa = surveyTriStateToBool(s.physical_activities);
   if (pa !== null) {
     out['physical_activities'] = pa;
   }
@@ -99,27 +100,27 @@ export function surveyPartialFromForm(s: SurveyFormValue): Omit<
     out['ecigarette_usage'] = ec;
   }
 
-  const ad = triStateToBool(s.alcohol_drinkers);
+  const ad = surveyTriStateToBool(s.alcohol_drinkers);
   if (ad !== null) {
     out['alcohol_drinkers'] = ad;
   }
 
-  const cs = triStateToBool(s.chest_scan);
+  const cs = surveyTriStateToBool(s.chest_scan);
   if (cs !== null) {
     out['chest_scan'] = cs;
   }
 
-  const hv = triStateToBool(s.hiv_testing);
+  const hv = surveyTriStateToBool(s.hiv_testing);
   if (hv !== null) {
     out['hiv_testing'] = hv;
   }
 
-  const fl = triStateToBool(s.flu_vax_last_12);
+  const fl = surveyTriStateToBool(s.flu_vax_last_12);
   if (fl !== null) {
     out['flu_vax_last_12'] = fl;
   }
 
-  const pn = triStateToBool(s.pneumo_vax_ever);
+  const pn = surveyTriStateToBool(s.pneumo_vax_ever);
   if (pn !== null) {
     out['pneumo_vax_ever'] = pn;
   }
@@ -129,7 +130,7 @@ export function surveyPartialFromForm(s: SurveyFormValue): Omit<
     out['tetanus_last_10_tdap'] = tt;
   }
 
-  const hr = triStateToBool(s.high_risk_last_year);
+  const hr = surveyTriStateToBool(s.high_risk_last_year);
   if (hr !== null) {
     out['high_risk_last_year'] = hr;
   }

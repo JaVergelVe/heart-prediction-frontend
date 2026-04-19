@@ -142,6 +142,30 @@
         </section>
       }
 
+      <app-prediction-what-if-panel [predictionId]="result.prediction_id" [baselineResult]="result" />
+
+      <mat-divider class="section-divider" />
+
+      <div class="pdf-toolbar">
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          (click)="downloadPdf()"
+          [disabled]="pdfDownloading"
+          [attr.aria-label]="pageUi.pdfDownloadAriaLabel"
+        >
+          {{ pdfDownloading ? pageUi.pdfDownloadPending : pageUi.pdfDownload }}
+        </button>
+        @if (pdfDownloading) {
+          <mat-progress-spinner class="pdf-spinner" mode="indeterminate" diameter="28" [attr.aria-label]="pageUi.pdfDownloadLoadingAriaLabel" />
+        }
+      </div>
+
+      @if (pdfError) {
+        <p class="server-error pdf-error" role="alert">{{ pdfError }}</p>
+      }
+
       <mat-divider class="section-divider" />
 
       <div class="actions">
