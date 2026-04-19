@@ -1,0 +1,154 @@
+<mat-card class="prediction-card">
+  <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
+  <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+
+  <mat-card-content>
+    <p class="session-hint">{{ pageUi.sessionHint }}</p>
+
+    @if (serverError) {
+      <p class="server-error" role="alert">{{ serverError }}</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <h3 class="section-title">{{ pageUi.sections.survey }}</h3>
+      <app-prediction-survey-fields [group]="surveyForm" />
+
+      <h3 class="section-title">{{ pageUi.sections.profile }}</h3>
+      <div formGroupName="profile">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ pageUi.labels.sexApi }}</mat-label>
+          <mat-select formControlName="sex">
+            @for (opt of sexOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+          @if (profileForm.get('sex')?.hasError('required') && profileForm.get('sex')?.touched) {
+            <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ pageUi.labels.birthDate }}</mat-label>
+          <input matInput type="date" formControlName="birth_date" />
+          @if (
+            profileForm.get('birth_date')?.hasError('required') &&
+            profileForm.get('birth_date')?.touched
+          ) {
+            <mat-error>{{ validationMessages.birthDateRequired }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ pageUi.labels.heightMeters }}</mat-label>
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            [attr.min]="limits.heightMetersMin"
+            [attr.max]="limits.heightMetersMax"
+            formControlName="height_meters"
+          />
+          <mat-hint>{{ pageUi.hints.heightRange }}</mat-hint>
+          @if (
+            profileForm.get('height_meters')?.hasError('required') &&
+            profileForm.get('height_meters')?.touched
+          ) {
+            <mat-error>{{ validationMessages.heightRequired }}</mat-error>
+          }
+          @if (profileForm.get('height_meters')?.hasError('min') && profileForm.get('height_meters')?.touched) {
+            <mat-error>{{ validationMessages.heightMin }}</mat-error>
+          }
+          @if (profileForm.get('height_meters')?.hasError('max') && profileForm.get('height_meters')?.touched) {
+            <mat-error>{{ validationMessages.heightMax }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ pageUi.labels.removedTeeth }}</mat-label>
+          <mat-select formControlName="removed_teeth">
+            @for (opt of removedTeethOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+          @if (
+            profileForm.get('removed_teeth')?.hasError('required') &&
+            profileForm.get('removed_teeth')?.touched
+          ) {
+            <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <h3 class="section-title">{{ pageUi.sections.medical }}</h3>
+      <p class="section-hint">{{ pageUi.medicalSectionHint }}</p>
+
+      <div formGroupName="medical_conditions">
+        <div class="medical-grid">
+          <mat-checkbox formControlName="had_angina">{{ pageUi.medicalLabels.hadAngina }}</mat-checkbox>
+          <mat-checkbox formControlName="had_stroke">{{ pageUi.medicalLabels.hadStroke }}</mat-checkbox>
+          <mat-checkbox formControlName="had_asthma">{{ pageUi.medicalLabels.hadAsthma }}</mat-checkbox>
+          <mat-checkbox formControlName="had_copd">{{ pageUi.medicalLabels.hadCopd }}</mat-checkbox>
+          <mat-checkbox formControlName="had_skin_cancer">{{ pageUi.medicalLabels.hadSkinCancer }}</mat-checkbox>
+          <mat-checkbox formControlName="had_depressive_disorder">{{ pageUi.medicalLabels.hadDepressiveDisorder }}</mat-checkbox>
+          <mat-checkbox formControlName="had_kidney_disease">{{ pageUi.medicalLabels.hadKidneyDisease }}</mat-checkbox>
+          <mat-checkbox formControlName="had_arthritis">{{ pageUi.medicalLabels.hadArthritis }}</mat-checkbox>
+          <mat-checkbox formControlName="deaf_or_hard_of_hearing">{{ pageUi.medicalLabels.deafOrHardOfHearing }}</mat-checkbox>
+          <mat-checkbox formControlName="blind_or_vision_difficulty">{{ pageUi.medicalLabels.blindOrVisionDifficulty }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_concentrating">{{ pageUi.medicalLabels.difficultyConcentrating }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_walking">{{ pageUi.medicalLabels.difficultyWalking }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_dressing_bathing">{{ pageUi.medicalLabels.difficultyDressingBathing }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_errands">{{ pageUi.medicalLabels.difficultyErrands }}</mat-checkbox>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width diabetes-field">
+          <mat-label>{{ pageUi.labels.diabetes }}</mat-label>
+          <mat-select formControlName="had_diabetes">
+            @for (opt of diabetesOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+          @if (
+            medicalForm.get('had_diabetes')?.hasError('required') &&
+            medicalForm.get('had_diabetes')?.touched
+          ) {
+            <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <h3 class="section-title">{{ pageUi.sections.vitals }}</h3>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ pageUi.labels.weightKilograms }}</mat-label>
+        <input
+          matInput
+          type="number"
+          step="0.1"
+          [attr.min]="limits.weightKgMin"
+          [attr.max]="limits.weightKgMax"
+          formControlName="weight_kilograms"
+        />
+        <mat-hint>{{ pageUi.hints.weightRange }}</mat-hint>
+        @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
+          <mat-error>{{ validationMessages.weightRequired }}</mat-error>
+        }
+        @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
+          <mat-error>{{ validationMessages.weightMin }}</mat-error>
+        }
+        @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
+          <mat-error>{{ validationMessages.weightMax }}</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting">
+          @if (submitting) {
+            <mat-spinner diameter="20"></mat-spinner>
+            <span class="btn-label">{{ pageUi.submitPending }}</span>
+          } @else {
+            {{ pageUi.submitIdle }}
+          }
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

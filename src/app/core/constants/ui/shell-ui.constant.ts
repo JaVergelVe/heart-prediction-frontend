@@ -1,5 +1,7 @@
 import { APP_ROUTE_URLS, HOME_ROUTE_ACTIVE_OPTIONS } from '../route-urls.constant';
 
+const SHELL_NAV_LABEL_PREDICTION_AUTHENTICATED = 'Predicción con cuenta' as const;
+
 export type MainNavLink = {
   readonly label: string;
   readonly routerLink: string;
@@ -20,6 +22,7 @@ export const SHELL_FOOTER_UI = {
 export const SHELL_MAIN_NAV_LINKS: readonly MainNavLink[] = [
   { label: 'Inicio', routerLink: APP_ROUTE_URLS.home, routerLinkActiveOptions: HOME_ROUTE_ACTIVE_OPTIONS },
   { label: 'Predicción anónima', routerLink: APP_ROUTE_URLS.predictionsAnonymous },
+  { label: SHELL_NAV_LABEL_PREDICTION_AUTHENTICATED, routerLink: APP_ROUTE_URLS.predictionsAuthenticated },
   { label: 'Historial', routerLink: APP_ROUTE_URLS.history },
   { label: 'Perfil', routerLink: APP_ROUTE_URLS.profile },
   { label: 'Iniciar sesión', routerLink: APP_ROUTE_URLS.authLogin },

@@ -1,6 +1,156 @@
-<mat-card>
-  <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
+<mat-card class="profile-card">
+  <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
+  <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+
   <mat-card-content>
-    <p>{{ ui.body }}</p>
+    @if (loadError) {
+      <p class="server-error" role="alert">{{ loadError }}</p>
+      <button type="button" mat-stroked-button color="primary" (click)="loadUser()">{{ pageUi.reload }}</button>
+    }
+
+    @if (pageLoading) {
+      <div class="loading-wrap" role="status" [attr.aria-label]="pageUi.loadingAriaLabel">
+        <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+      </div>
+    } @else if (!loadError) {
+      <p class="email-line">
+        <span class="email-label">{{ pageUi.emailLabel }}</span>
+        @if (emailDisplay) {
+          <span class="email-value">{{ emailDisplay }}</span>
+        } @else {
+          <span class="email-value muted">{{ pageUi.emailUnavailable }}</span>
+        }
+      </p>
+
+      <mat-divider class="block-divider"></mat-divider>
+
+      <h3 class="section-title">{{ pageUi.sectionReadOnlyProfile }}</h3>
+      <p class="section-hint">{{ pageUi.profileNotEditableHint }}</p>
+      <dl class="readonly-grid">
+        <dt>{{ fieldUi.labels.sexApi }}</dt>
+        <dd>{{ sexReadOnlyLabel }}</dd>
+        <dt>{{ fieldUi.labels.birthDate }}</dt>
+        <dd>
+          @if (birthDateIso) {
+            {{ birthDateIso | date: 'mediumDate' }}
+          } @else {
+            <span class="muted">{{ pageUi.birthDateUnavailable }}</span>
+          }
+        </dd>
+      </dl>
+
+      <mat-divider class="block-divider"></mat-divider>
+
+      @if (profileSuccess) {
+        <p class="feedback feedback--success" role="status">{{ profileSuccess }}</p>
+      }
+      @if (profileError) {
+        <p class="feedback feedback--error" role="alert">{{ profileError }}</p>
+      }
+
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
+        <h3 class="section-title">{{ pageUi.sectionEditableProfile }}</h3>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ fieldUi.labels.heightMeters }}</mat-label>
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            [attr.min]="limits.heightMetersMin"
+            [attr.max]="limits.heightMetersMax"
+            formControlName="height_meters"
+          />
+          <mat-hint>{{ fieldUi.hints.heightRange }}</mat-hint>
+          @if (profileForm.get('height_meters')?.hasError('min') && profileForm.get('height_meters')?.touched) {
+            <mat-error>{{ validationMessages.heightMin }}</mat-error>
+          }
+          @if (profileForm.get('height_meters')?.hasError('max') && profileForm.get('height_meters')?.touched) {
+            <mat-error>{{ validationMessages.heightMax }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ fieldUi.labels.removedTeeth }}</mat-label>
+          <mat-select formControlName="removed_teeth">
+            @for (opt of removedTeethOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+          @if (profileForm.get('removed_teeth')?.hasError('required') && profileForm.get('removed_teeth')?.touched) {
+            <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="profileSaving">
+            @if (profileSaving) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              {{ pageUi.saveProfile }}
+            }
+          </button>
+          @if (profileSaving) {
+            <span class="pending-caption">{{ pageUi.saveProfilePending }}</span>
+          }
+        </div>
+      </form>
+
+      <mat-divider class="block-divider"></mat-divider>
+
+      @if (medicalSuccess) {
+        <p class="feedback feedback--success" role="status">{{ medicalSuccess }}</p>
+      }
+      @if (medicalError) {
+        <p class="feedback feedback--error" role="alert">{{ medicalError }}</p>
+      }
+
+      <form [formGroup]="medicalForm" (ngSubmit)="saveMedical()" novalidate>
+        <h3 class="section-title">{{ fieldUi.sections.medical }}</h3>
+        <p class="section-hint">{{ fieldUi.medicalSectionHint }}</p>
+
+        <div class="medical-grid">
+          <mat-checkbox formControlName="had_angina">{{ fieldUi.medicalLabels.hadAngina }}</mat-checkbox>
+          <mat-checkbox formControlName="had_stroke">{{ fieldUi.medicalLabels.hadStroke }}</mat-checkbox>
+          <mat-checkbox formControlName="had_asthma">{{ fieldUi.medicalLabels.hadAsthma }}</mat-checkbox>
+          <mat-checkbox formControlName="had_copd">{{ fieldUi.medicalLabels.hadCopd }}</mat-checkbox>
+          <mat-checkbox formControlName="had_skin_cancer">{{ fieldUi.medicalLabels.hadSkinCancer }}</mat-checkbox>
+          <mat-checkbox formControlName="had_depressive_disorder">{{ fieldUi.medicalLabels.hadDepressiveDisorder }}</mat-checkbox>
+          <mat-checkbox formControlName="had_kidney_disease">{{ fieldUi.medicalLabels.hadKidneyDisease }}</mat-checkbox>
+          <mat-checkbox formControlName="had_arthritis">{{ fieldUi.medicalLabels.hadArthritis }}</mat-checkbox>
+          <mat-checkbox formControlName="deaf_or_hard_of_hearing">{{ fieldUi.medicalLabels.deafOrHardOfHearing }}</mat-checkbox>
+          <mat-checkbox formControlName="blind_or_vision_difficulty">{{ fieldUi.medicalLabels.blindOrVisionDifficulty }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_concentrating">{{ fieldUi.medicalLabels.difficultyConcentrating }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_walking">{{ fieldUi.medicalLabels.difficultyWalking }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_dressing_bathing">{{ fieldUi.medicalLabels.difficultyDressingBathing }}</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_errands">{{ fieldUi.medicalLabels.difficultyErrands }}</mat-checkbox>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width diabetes-field">
+          <mat-label>{{ fieldUi.labels.diabetes }}</mat-label>
+          <mat-select formControlName="had_diabetes">
+            @for (opt of diabetesOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+          @if (medicalForm.get('had_diabetes')?.hasError('required') && medicalForm.get('had_diabetes')?.touched) {
+            <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="medicalSaving">
+            @if (medicalSaving) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              {{ pageUi.saveMedical }}
+            }
+          </button>
+          @if (medicalSaving) {
+            <span class="pending-caption">{{ pageUi.saveMedicalPending }}</span>
+          }
+        </div>
+      </form>
+    }
   </mat-card-content>
 </mat-card>

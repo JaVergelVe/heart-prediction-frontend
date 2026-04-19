@@ -1,0 +1,152 @@
+<mat-card class="result-card">
+  <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
+
+  @if (result) {
+    <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+  }
+
+  <mat-card-content>
+    @if (loadError) {
+      <p class="server-error" role="alert">{{ loadError }}</p>
+      <div class="error-actions">
+        <button type="button" mat-stroked-button color="primary" (click)="retry()">{{ pageUi.retry }}</button>
+        <a mat-button color="primary" [routerLink]="pageUi.backToHistoryRoute">{{ pageUi.backToHistory }}</a>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading-wrap" role="status" [attr.aria-label]="pageUi.loadingAriaLabel">
+        <mat-progress-spinner mode="indeterminate" diameter="40" />
+      </div>
+    }
+
+    @if (result && !loading) {
+      <section class="summary" [attr.aria-labelledby]="'hist-summary-heading'">
+        <h2 class="section-heading" id="hist-summary-heading">{{ resultUi.sections.summary }}</h2>
+        <div class="summary-layout">
+          <div class="probability-block">
+            <span class="sr-only">{{ resultUi.labels.probability }}:</span>
+            <span class="probability-value" aria-hidden="true">{{ result.prediction_probability | number: '1.0-2' }}</span>
+            <span class="probability-unit" aria-hidden="true">{{ resultUi.units.probabilitySuffix }}</span>
+            <span class="probability-caption">{{ resultUi.labels.probabilityShort }}</span>
+          </div>
+          <div class="risk-block">
+            <span class="risk-label">{{ resultUi.labels.riskLevel }}</span>
+            <span class="risk-pill" [class]="'risk-pill--' + riskPillKind()">{{ result.risk_level }}</span>
+          </div>
+        </div>
+      </section>
+
+      <mat-divider class="section-divider" />
+
+      <section class="details-block" [attr.aria-labelledby]="'hist-details-heading'">
+        <h2 class="section-heading" id="hist-details-heading">{{ resultUi.sections.details }}</h2>
+        <dl class="result-grid">
+          <dt>{{ resultUi.labels.timestamp }}</dt>
+          <dd>{{ result.prediction_timestamp | date: 'medium' }}</dd>
+
+          <dt>{{ resultUi.labels.bmi }}</dt>
+          <dd>
+            @if (result.bmi != null) {
+              {{ result.bmi | number: '1.0-2' }}
+            } @else {
+              <span class="muted">{{ resultUi.labels.bmiUnavailable }}</span>
+            }
+          </dd>
+
+          <dt>{{ resultUi.labels.modelVersion }}</dt>
+          <dd>{{ modelVersionDisplay }}</dd>
+
+          @if (hasPredictedClass) {
+            <dt>{{ resultUi.labels.predictedClass }}</dt>
+            <dd>{{ result.predicted_class }}</dd>
+          }
+
+          <dt>{{ resultUi.labels.predictionId }}</dt>
+          <dd class="mono wrap-id">{{ result.prediction_id }}</dd>
+        </dl>
+      </section>
+
+      @if (shapExplanation(); as shapMain) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'hist-shap-main-heading'">
+          <h2 class="section-heading" id="hist-shap-main-heading">{{ resultUi.sections.shapMain }}</h2>
+          <dl class="shap-grid">
+            @if (shapMain.feature_name) {
+              <dt>{{ resultUi.labels.shapFeature }}</dt>
+              <dd>{{ shapMain.feature_name }}</dd>
+            }
+            @if (shapMain.impact_score != null) {
+              <dt>{{ resultUi.labels.shapImpact }}</dt>
+              <dd>{{ shapMain.impact_score | number: '1.0-5' }}</dd>
+            }
+            @if (shapMain.direction) {
+              <dt>{{ resultUi.labels.shapDirection }}</dt>
+              <dd class="mono">{{ shapMain.direction }}</dd>
+            }
+            @if (shapMain.message) {
+              <dt>{{ resultUi.labels.shapMessage }}</dt>
+              <dd class="shap-message">{{ shapMain.message }}</dd>
+            }
+          </dl>
+        </section>
+      }
+
+      @if (shapFactors().length) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'hist-shap-factors-heading'">
+          <h2 class="section-heading" id="hist-shap-factors-heading">{{ resultUi.sections.shapFactors }}</h2>
+          <div class="factor-stack" role="list">
+            @for (factor of shapFactors(); track $index; let last = $last) {
+              <div class="factor-card" role="listitem">
+                <div class="factor-head">
+                  @if (factor.rank != null) {
+                    <span class="factor-rank">{{ pageUi.rankNumberPrefix }}{{ factor.rank }}</span>
+                  }
+                  <span class="factor-name">{{ factor.feature_name ?? pageUi.emDash }}</span>
+                </div>
+                @if (factor.contribution_score != null || factor.direction) {
+                  <div class="factor-meta">
+                    @if (factor.contribution_score != null) {
+                      <span>{{ resultUi.labels.shapContribution }}: {{ factor.contribution_score | number: '1.0-5' }}</span>
+                    }
+                    @if (factor.direction) {
+                      <span class="factor-dir">{{ resultUi.labels.shapDirection }}: {{ factor.direction }}</span>
+                    }
+                  </div>
+                }
+                @if (factor.feature_value != null) {
+                  <div class="factor-line">{{ resultUi.labels.shapValue }}: {{ factor.feature_value }}</div>
+                }
+                @if (factor.interpretation) {
+                  <div class="factor-interpretation">{{ factor.interpretation }}</div>
+                }
+              </div>
+              @if (!last) {
+                <mat-divider class="factor-between" />
+              }
+            }
+          </div>
+        </section>
+      }
+
+      @if (result.recommendations?.length) {
+        <mat-divider class="section-divider" />
+        <section [attr.aria-labelledby]="'hist-rec-heading'">
+          <h2 class="section-heading" id="hist-rec-heading">{{ resultUi.sections.recommendations }}</h2>
+          <ul class="rec-list">
+            @for (rec of result.recommendations!; track $index) {
+              <li>{{ rec }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <mat-divider class="section-divider" />
+
+      <div class="actions">
+        <a mat-flat-button color="primary" [routerLink]="pageUi.backToHistoryRoute">{{ pageUi.backToHistory }}</a>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

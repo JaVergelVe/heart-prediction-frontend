@@ -14,5 +14,12 @@ export const VALIDATION_MESSAGES = {
   birthDateRequired: 'La fecha es obligatoria',
   heightRequired: 'La altura es obligatoria',
   heightMin: `Mínimo ${L.heightMetersMin} m`,
-  heightMax: `Máximo ${L.heightMetersMax} m`
+  heightMax: `Máximo ${L.heightMetersMax} m`,
+  weightRequired: 'El peso es obligatorio',
+  weightMin: `Mínimo ${L.weightKgMin} kg`,
+  weightMax: `Máximo ${L.weightKgMax} kg`,
+  healthDaysMin: `Mínimo ${L.healthDaysMin} días`,
+  healthDaysMax: `Máximo ${L.healthDaysMax} días`,
+  sleepHoursMin: `Mínimo ${L.sleepHoursMin} h`,
+  sleepHoursMax: `Máximo ${L.sleepHoursMax} h`
 } as const;
