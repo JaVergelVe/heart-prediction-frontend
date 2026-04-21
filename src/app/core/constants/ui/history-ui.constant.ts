@@ -38,13 +38,11 @@ export const HISTORY_LIST_PAGE_UI = {
 /** Textos de la vista de detalle desde el historial. */
 export const HISTORY_DETAIL_PAGE_UI = {
   cardTitle: 'Detalle de predicción',
-  cardSubtitle: 'Datos devueltos por el servicio para esta predicción.',
+  cardSubtitle: 'Información guardada de esta predicción en tu cuenta.',
   loadingAriaLabel: 'Cargando detalle de la predicción',
   backToHistory: 'Volver al historial',
   backToHistoryRoute: APP_ROUTE_URLS.history,
   retry: 'Reintentar',
-  emDash: '—',
-  rankNumberPrefix: '#',
   pdfDownload: 'Descargar informe PDF',
   pdfDownloadAriaLabel: 'Descargar informe de predicción en formato PDF',
   pdfDownloadPending: 'Generando PDF…',

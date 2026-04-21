@@ -1,5 +1,87 @@
-.full-width {
+.survey-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-lg);
+}
+
+.survey-fields__intro {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--app-radius-sm);
+  border: 1px solid rgba(63, 81, 181, 0.15);
+  background: rgba(63, 81, 181, 0.04);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--app-text-secondary);
+}
+
+.survey-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.survey-subsection__title {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--app-text-secondary);
+}
+
+.survey-subsection__hint {
+  margin: 0 0 var(--app-space-sm);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-text-muted);
+}
+
+/* Una sola columna: las preguntas son largas; dos columnas rompe etiquetas flotantes / densidad. */
+.survey-subsection__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.survey-fields__divider {
+  margin: 0;
+}
+
+/* Pregunta encima del control: sin solapamiento con el valor ni el borde del outline. */
+.survey-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.survey-stack__q {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--app-text-primary);
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.survey-stack__field {
   width: 100%;
-  display: block;
-  margin-bottom: 0.5rem;
+}
+
+/* Sin `mat-label`: el outline no reserva muesca; ajustar altura mínima del control. */
+:host ::ng-deep .survey-stack__field.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background: #fff;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0.2rem;
+  }
+
+  .mat-mdc-form-field-error-wrapper .mat-mdc-form-field-error {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
 }

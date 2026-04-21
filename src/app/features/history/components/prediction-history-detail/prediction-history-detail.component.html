@@ -32,7 +32,7 @@
           </div>
           <div class="risk-block">
             <span class="risk-label">{{ resultUi.labels.riskLevel }}</span>
-            <span class="risk-pill" [class]="'risk-pill--' + riskPillKind()">{{ result.risk_level }}</span>
+            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ result.risk_level }}</span>
           </div>
         </div>
       </section>
@@ -71,24 +71,7 @@
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'hist-shap-main-heading'">
           <h2 class="section-heading" id="hist-shap-main-heading">{{ resultUi.sections.shapMain }}</h2>
-          <dl class="shap-grid">
-            @if (shapMain.feature_name) {
-              <dt>{{ resultUi.labels.shapFeature }}</dt>
-              <dd>{{ shapMain.feature_name }}</dd>
-            }
-            @if (shapMain.impact_score != null) {
-              <dt>{{ resultUi.labels.shapImpact }}</dt>
-              <dd>{{ shapMain.impact_score | number: '1.0-5' }}</dd>
-            }
-            @if (shapMain.direction) {
-              <dt>{{ resultUi.labels.shapDirection }}</dt>
-              <dd class="mono">{{ shapMain.direction }}</dd>
-            }
-            @if (shapMain.message) {
-              <dt>{{ resultUi.labels.shapMessage }}</dt>
-              <dd class="shap-message">{{ shapMain.message }}</dd>
-            }
-          </dl>
+          <app-shap-explanation-user-card [explanation]="shapMain" />
         </section>
       }
 
@@ -97,34 +80,8 @@
         <section class="shap-block" [attr.aria-labelledby]="'hist-shap-factors-heading'">
           <h2 class="section-heading" id="hist-shap-factors-heading">{{ resultUi.sections.shapFactors }}</h2>
           <div class="factor-stack" role="list">
-            @for (factor of shapFactors(); track $index; let last = $last) {
-              <div class="factor-card" role="listitem">
-                <div class="factor-head">
-                  @if (factor.rank != null) {
-                    <span class="factor-rank">{{ pageUi.rankNumberPrefix }}{{ factor.rank }}</span>
-                  }
-                  <span class="factor-name">{{ factor.feature_name ?? pageUi.emDash }}</span>
-                </div>
-                @if (factor.contribution_score != null || factor.direction) {
-                  <div class="factor-meta">
-                    @if (factor.contribution_score != null) {
-                      <span>{{ resultUi.labels.shapContribution }}: {{ factor.contribution_score | number: '1.0-5' }}</span>
-                    }
-                    @if (factor.direction) {
-                      <span class="factor-dir">{{ resultUi.labels.shapDirection }}: {{ factor.direction }}</span>
-                    }
-                  </div>
-                }
-                @if (factor.feature_value != null) {
-                  <div class="factor-line">{{ resultUi.labels.shapValue }}: {{ factor.feature_value }}</div>
-                }
-                @if (factor.interpretation) {
-                  <div class="factor-interpretation">{{ factor.interpretation }}</div>
-                }
-              </div>
-              @if (!last) {
-                <mat-divider class="factor-between" />
-              }
+            @for (factor of shapFactors(); track $index) {
+              <app-shap-factor-user-card [factor]="factor" [batchMaxAbs]="shapFactorsMaxAbs" />
             }
           </div>
         </section>

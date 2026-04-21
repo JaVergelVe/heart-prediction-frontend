@@ -7,7 +7,7 @@ import { LOGIN_PAGE_UI } from '../../../../core/constants/ui/auth-login-ui.const
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { AuthService } from '../../../../core/services/auth.service';
-import { formatAuthHttpError } from '../../utils/http-error.util';
+import { formatLoginHttpError } from '../../utils/http-error.util';
 
 @Component({
   selector: 'app-login',
@@ -52,7 +52,7 @@ export class LoginComponent {
       .subscribe({
         next: () => this.router.navigateByUrl(APP_ROUTE_URLS.predictionsAnonymous),
         error: (err) => {
-          this.serverError = formatAuthHttpError(err);
+          this.serverError = formatLoginHttpError(err);
         }
       });
   }

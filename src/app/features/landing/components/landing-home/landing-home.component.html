@@ -1,11 +1,268 @@
-<mat-card>
-  <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
-  <mat-card-content>
-    <p>{{ ui.lead }}</p>
-    <div class="actions">
-      <a mat-flat-button color="primary" [routerLink]="ui.routes.anonymousPrediction">{{ ui.primaryCta }}</a>
-      <a mat-stroked-button color="primary" [routerLink]="ui.routes.login">{{ ui.secondaryLogin }}</a>
-      <a mat-stroked-button [routerLink]="ui.routes.register">{{ ui.secondaryRegister }}</a>
+<div class="landing-page">
+  <section class="landing-hero landing-hero--elevated" aria-labelledby="landing-hero-title">
+    <div class="landing-hero__glow" aria-hidden="true"></div>
+    <div class="landing-hero__grid">
+      <div class="landing-hero__main landing-hero__entrance">
+        <p class="landing-hero__eyebrow">{{ ui.hero.eyebrow }}</p>
+        <h1 class="landing-hero__title" id="landing-hero-title">{{ ui.hero.title }}</h1>
+        <mat-chip-set class="landing-hero__chips" [attr.aria-label]="ui.hero.chipsAriaLabel">
+          @for (chip of ui.hero.chips; track chip) {
+            <mat-chip class="landing-hero__chip">{{ chip }}</mat-chip>
+          }
+        </mat-chip-set>
+        <p class="landing-hero__subtitle">{{ ui.hero.subtitle }}</p>
+        <p class="landing-hero__supporting">{{ ui.hero.supporting }}</p>
+      </div>
+      <aside class="landing-hero__panel landing-hero__entrance landing-hero__entrance--delay" aria-labelledby="landing-hero-panel-title">
+        <div class="landing-hero__panel-inner">
+          <span class="landing-hero__badge">{{ ui.hero.panelBadge }}</span>
+          <h2 class="landing-hero__panel-title" id="landing-hero-panel-title">{{ ui.hero.panelTitle }}</h2>
+          <p class="landing-hero__panel-hint">{{ ui.hero.panelHint }}</p>
+          <div class="landing-hero__panel-actions">
+            <a
+              mat-flat-button
+              color="primary"
+              class="landing-hero__cta landing-hero__cta--primary"
+              [routerLink]="ui.routes.anonymousPrediction"
+            >
+              {{ ui.hero.primaryCta }}
+            </a>
+            <a mat-stroked-button color="primary" class="landing-hero__cta" [routerLink]="ui.routes.login">{{ ui.hero.secondaryLogin }}</a>
+            <a mat-stroked-button class="landing-hero__cta" [routerLink]="ui.routes.register">{{ ui.hero.secondaryRegister }}</a>
+          </div>
+        </div>
+      </aside>
     </div>
-  </mat-card-content>
-</mat-card>
+  </section>
+
+  <div class="landing-band landing-band--paper landing-band--lift" appRevealOnScroll>
+    <section class="landing-section" aria-labelledby="landing-how-title">
+      <div class="landing-section__head">
+        <h2 class="landing-section__title" id="landing-how-title">{{ ui.howItWorks.sectionTitle }}</h2>
+        <p class="landing-section__hint">{{ ui.howItWorks.sectionHint }}</p>
+      </div>
+      <ol class="landing-how-steps" [attr.aria-label]="ui.howItWorks.sectionTitle">
+        @for (step of ui.howItWorks.steps; track step.title; let i = $index) {
+          <li class="landing-how-step">
+            <div class="landing-how-step__index" aria-hidden="true">{{ i + 1 }}</div>
+            <mat-card class="landing-how-step__card" appearance="outlined">
+              <mat-card-header>
+                <div mat-card-avatar class="landing-how-step__avatar" aria-hidden="true">
+                  <mat-icon>{{ step.icon }}</mat-icon>
+                </div>
+                <mat-card-title>{{ step.title }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p>{{ step.body }}</p>
+              </mat-card-content>
+            </mat-card>
+          </li>
+        }
+      </ol>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--tint landing-band--lift" appRevealOnScroll>
+    <section class="landing-section" aria-labelledby="landing-data-title">
+      <div class="landing-section__head">
+        <h2 class="landing-section__title landing-section__title--on-tint" id="landing-data-title">{{ ui.dataScope.sectionTitle }}</h2>
+        <p class="landing-section__hint">{{ ui.dataScope.sectionHint }}</p>
+      </div>
+      <p class="landing-data-intro">{{ ui.dataScope.intro }}</p>
+      <div class="landing-data-grid">
+        @for (cat of ui.dataScope.categories; track cat.title) {
+          <mat-card class="landing-data-card" appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>{{ cat.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <ul class="landing-data-card__list">
+                @for (b of cat.bullets; track b) {
+                  <li>{{ b }}</li>
+                }
+              </ul>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--paper landing-band--lift" appRevealOnScroll>
+    <section class="landing-section landing-section--intro" aria-labelledby="landing-intro-title">
+      <h2 class="landing-section__title" id="landing-intro-title">{{ ui.intro.sectionTitle }}</h2>
+      <div class="landing-intro-grid">
+        <div class="landing-prose">
+          <p>{{ ui.intro.paragraph1 }}</p>
+          <p>{{ ui.intro.paragraph2 }}</p>
+        </div>
+        <aside class="landing-callout" aria-labelledby="landing-callout-title">
+          <h3 class="landing-callout__title" id="landing-callout-title">{{ ui.intro.calloutTitle }}</h3>
+          <p class="landing-callout__body">{{ ui.intro.calloutBody }}</p>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--tint landing-band--lift" appRevealOnScroll>
+    <section class="landing-section" aria-labelledby="landing-benefits-title">
+      <h2 class="landing-section__title landing-section__title--on-tint" id="landing-benefits-title">{{ ui.benefits.sectionTitle }}</h2>
+      <div class="landing-benefit-grid">
+        @for (item of ui.benefits.items; track item.title) {
+          <mat-card class="landing-benefit-card landing-benefit-card--interactive" [ngClass]="'landing-benefit-card--' + item.accent" appearance="outlined">
+            <mat-card-header>
+              <div mat-card-avatar class="landing-benefit-card__avatar" aria-hidden="true">
+                <mat-icon>{{ item.icon }}</mat-icon>
+              </div>
+              <mat-card-title>{{ item.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ item.body }}</p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--contrast landing-band--lift" appRevealOnScroll>
+    <section class="landing-section landing-section--flows" aria-labelledby="landing-flows-title">
+      <div class="landing-section__head">
+        <h2 class="landing-section__title landing-section__title--light" id="landing-flows-title">{{ ui.flows.sectionTitle }}</h2>
+        <p class="landing-section__hint landing-section__hint--light">{{ ui.flows.sectionHint }}</p>
+      </div>
+      <div class="landing-flow-grid">
+        <mat-card class="landing-flow-card landing-flow-card--anon" appearance="outlined">
+          <span class="landing-flow-card__badge">{{ ui.flows.anonymousBadge }}</span>
+          <mat-card-title>{{ ui.flows.anonymousTitle }}</mat-card-title>
+          <mat-card-content>
+            <p class="landing-flow-card__lead">{{ ui.flows.anonymousLead }}</p>
+            <p class="landing-flow-card__detail">{{ ui.flows.anonymousDetail }}</p>
+          </mat-card-content>
+        </mat-card>
+        <div class="landing-flow-vs" aria-hidden="true">
+          <span class="landing-flow-vs__line"></span>
+          <span class="landing-flow-vs__label">{{ ui.flows.vsLabel }}</span>
+          <span class="landing-flow-vs__line"></span>
+        </div>
+        <mat-card class="landing-flow-card landing-flow-card--auth" appearance="outlined">
+          <span class="landing-flow-card__badge landing-flow-card__badge--accent">{{ ui.flows.authenticatedBadge }}</span>
+          <mat-card-title>{{ ui.flows.authenticatedTitle }}</mat-card-title>
+          <mat-card-content>
+            <p class="landing-flow-card__lead">{{ ui.flows.authenticatedLead }}</p>
+            <p class="landing-flow-card__detail">{{ ui.flows.authenticatedDetail }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="landing-compare-wrap">
+        <table class="landing-compare-table">
+          <caption class="sr-only">
+            {{ ui.flowCompare.caption }}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">{{ ui.flowCompare.columnAspect }}</th>
+              <th scope="col">{{ ui.flowCompare.columnAnonymous }}</th>
+              <th scope="col">{{ ui.flowCompare.columnAuthenticated }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of ui.flowCompare.rows; track row.aspect) {
+              <tr>
+                <th scope="row">{{ row.aspect }}</th>
+                <td>{{ row.anonymous }}</td>
+                <td>{{ row.authenticated }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--paper landing-band--lift" appRevealOnScroll>
+    <section class="landing-section landing-section--faq" aria-labelledby="landing-faq-title">
+      <div class="landing-section__head">
+        <h2 class="landing-section__title" id="landing-faq-title">{{ ui.faq.sectionTitle }}</h2>
+        <p class="landing-section__hint">{{ ui.faq.sectionHint }}</p>
+      </div>
+      <mat-accordion class="landing-faq" displayMode="flat" [multi]="true">
+        @for (item of ui.faq.items; track item.question) {
+          <mat-expansion-panel class="landing-faq__panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ item.question }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="landing-faq__answer">{{ item.answer }}</p>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--slate landing-band--lift" appRevealOnScroll>
+    <section class="landing-section landing-section--clinical" aria-labelledby="landing-clinical-title">
+      <h2 class="landing-section__title landing-section__title--light" id="landing-clinical-title">{{ ui.clinicalContext.sectionTitle }}</h2>
+      <p class="landing-clinical-lead">{{ ui.clinicalContext.lead }}</p>
+      <ul class="landing-bullet-list landing-bullet-list--on-dark">
+        @for (line of ui.clinicalContext.bullets; track line) {
+          <li>{{ line }}</li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <div class="landing-band landing-band--paper landing-band--lift" appRevealOnScroll>
+    <section class="landing-medical" aria-labelledby="landing-medical-title">
+      <mat-card class="landing-medical__card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar class="landing-medical__avatar" aria-hidden="true">
+            <mat-icon>health_and_safety</mat-icon>
+          </div>
+          <mat-card-title id="landing-medical-title">{{ ui.medicalDisclaimer.sectionTitle }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @for (p of ui.medicalDisclaimer.paragraphs; track p) {
+            <p class="landing-medical__p">{{ p }}</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </div>
+
+  <section class="landing-cta landing-cta--strong" appRevealOnScroll aria-labelledby="landing-cta-title">
+    <div class="landing-cta__glow" aria-hidden="true"></div>
+    <div class="landing-cta__inner">
+      <h2 class="landing-cta__title" id="landing-cta-title">{{ ui.cta.sectionTitle }}</h2>
+      <p class="landing-cta__hint">{{ ui.cta.hint }}</p>
+      <p class="landing-cta__emphasis">{{ ui.cta.emphasisLine }}</p>
+      <div class="landing-cta__actions">
+        <div class="landing-cta__primary-wrap">
+          <a
+            mat-flat-button
+            color="primary"
+            class="landing-cta__btn landing-cta__btn--primary"
+            [routerLink]="ui.routes.anonymousPrediction"
+          >
+            {{ ui.cta.anonymousButton }}
+          </a>
+          <span class="landing-cta__note">{{ ui.cta.anonymousNote }}</span>
+        </div>
+        <div class="landing-cta__secondary-wrap">
+          <a mat-stroked-button color="primary" class="landing-cta__btn landing-cta__btn--stroke" [routerLink]="ui.routes.login">
+            {{ ui.cta.loginButton }}
+          </a>
+          <span class="landing-cta__note">{{ ui.cta.loginNote }}</span>
+        </div>
+        <div class="landing-cta__secondary-wrap">
+          <a mat-stroked-button class="landing-cta__btn landing-cta__btn--stroke" [routerLink]="ui.routes.register">
+            {{ ui.cta.registerButton }}
+          </a>
+          <span class="landing-cta__note">{{ ui.cta.registerNote }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="landing-closing" appRevealOnScroll>{{ ui.closing.line }}</p>
+</div>

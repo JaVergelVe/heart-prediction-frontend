@@ -8,18 +8,26 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { RevealOnScrollDirective } from './directives/reveal-on-scroll.directive';
+import { ShapExplanationUserCardComponent } from './components/shap-explanation-user-card/shap-explanation-user-card.component';
+import { ShapFactorUserCardComponent } from './components/shap-factor-user-card/shap-factor-user-card.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     MainLayoutComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    RevealOnScrollDirective,
+    ShapFactorUserCardComponent,
+    ShapExplanationUserCardComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +38,9 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     MatListModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatDividerModule,
+    MatExpansionModule
   ],
   exports: [
     CommonModule,
@@ -39,13 +49,18 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     FooterComponent,
     MainLayoutComponent,
     LoadingSpinnerComponent,
+    RevealOnScrollDirective,
+    ShapFactorUserCardComponent,
+    ShapExplanationUserCardComponent,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatDividerModule,
+    MatExpansionModule
   ]
 })
 export class SharedModule {}

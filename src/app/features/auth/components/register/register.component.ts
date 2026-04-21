@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,7 +11,9 @@ import {
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 import { REGISTER_PAGE_UI } from '../../../../core/constants/ui/auth-register-ui.constant';
+import { BIRTH_DATE_FIELD_UI } from '../../../../core/constants/ui/birth-date-field-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
+import { birthDateNotInFutureValidator } from '../../../../core/validators/birth-date-not-in-future.validator';
 import {
   RegisterMedicalIn,
   RegisterProfileIn,
@@ -35,6 +38,11 @@ export class RegisterComponent {
   readonly removedTeethOptions = REGISTER_REMOVED_TEETH_OPTIONS;
   readonly diabetesOptions = REGISTER_DIABETES_OPTIONS;
   readonly sexOptions = REGISTER_SEX_OPTIONS;
+  readonly birthDateFieldUi = BIRTH_DATE_FIELD_UI;
+
+  get maxBirthDate(): Date {
+    return new Date();
+  }
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -44,7 +52,7 @@ export class RegisterComponent {
     ],
     profile: this.fb.group({
       sex: ['' as RegisterProfileIn['sex'] | '', [Validators.required]],
-      birth_date: ['', [Validators.required]],
+      birth_date: [null as Date | null, [Validators.required, birthDateNotInFutureValidator()]],
       height_meters: [
         null as number | null,
         [Validators.required, Validators.min(this.limits.heightMetersMin), Validators.max(this.limits.heightMetersMax)]
@@ -96,12 +104,15 @@ export class RegisterComponent {
     const v = this.form.getRawValue();
     const p = v.profile;
     const m = v.medical_conditions;
+    const birth = p.birth_date;
+    const birthIso =
+      birth instanceof Date && !Number.isNaN(birth.getTime()) ? formatDate(birth, 'yyyy-MM-dd', 'es') : '';
     return {
       email: (v.email ?? '').trim(),
       password: v.password as string,
       profile: {
         sex: p.sex as RegisterProfileIn['sex'],
-        birth_date: p.birth_date as string,
+        birth_date: birthIso as RegisterProfileIn['birth_date'],
         height_meters: Number(p.height_meters),
         removed_teeth: p.removed_teeth as RegisterProfileIn['removed_teeth']
       },

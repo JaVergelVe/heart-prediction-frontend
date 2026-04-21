@@ -22,6 +22,6 @@ export const REGISTER_SEX_OPTIONS: readonly {
   readonly value: RegisterProfileIn['sex'];
   readonly label: string;
 }[] = [
-  { value: 'Male', label: 'Male' },
-  { value: 'Female', label: 'Female' }
+  { value: 'Male', label: 'Masculino' },
+  { value: 'Female', label: 'Femenino' }
 ];

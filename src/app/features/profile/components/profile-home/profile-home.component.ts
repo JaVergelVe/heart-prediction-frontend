@@ -16,6 +16,7 @@ import { CurrentUserMe } from '../../../../core/models/user-me.model';
 import { CurrentUserService } from '../../../../core/services/current-user.service';
 import { PredictionFormBuilderService } from '../../../prediction/services/prediction-form-builder.service';
 import { formatAuthHttpError } from '../../../auth/utils/http-error.util';
+import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 
 @Component({
   selector: 'app-profile-home',
@@ -68,11 +69,14 @@ export class ProfileHomeComponent implements OnInit {
     this.currentUser.getMe().subscribe({
       next: (me) => this.applyUserToForms(me),
       error: (err: unknown) => {
+        this.pageLoading = false;
+        if (isUnauthorizedHttpError(err)) {
+          return;
+        }
         this.loadError =
           err instanceof Error && err.message === 'ME_RESPONSE_SHAPE'
             ? this.messages.loadParseError
             : formatAuthHttpError(err);
-        this.pageLoading = false;
       }
     });
   }
@@ -99,6 +103,9 @@ export class ProfileHomeComponent implements OnInit {
           this.refreshProfileBaselineFromForm();
         },
         error: (err: unknown) => {
+          if (isUnauthorizedHttpError(err)) {
+            return;
+          }
           this.profileError = formatAuthHttpError(err);
         }
       });
@@ -138,6 +145,9 @@ export class ProfileHomeComponent implements OnInit {
           this.medicalSuccess = this.messages.medicalSaveSuccess;
         },
         error: (err: unknown) => {
+          if (isUnauthorizedHttpError(err)) {
+            return;
+          }
           this.medicalError = formatAuthHttpError(err);
         }
       });

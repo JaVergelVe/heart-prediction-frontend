@@ -1,7 +1,17 @@
 <mat-toolbar color="primary" class="header-toolbar">
-  <button mat-icon-button type="button" [attr.aria-label]="headerUi.menuButtonAriaLabel" (click)="menuClick.emit()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span class="title">{{ headerUi.title }}</span>
-  <span class="spacer"></span>
+  <div class="header-toolbar__inner">
+    <div class="header-toolbar__start">
+      <button mat-icon-button type="button" class="menu-btn" [attr.aria-label]="headerUi.menuButtonAriaLabel" (click)="menuClick.emit()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="header-brand">
+        <span class="header-brand__mark" aria-hidden="true"></span>
+        <div class="header-brand__text">
+          <span class="header-brand__title">{{ headerUi.title }}</span>
+          <span class="header-brand__tagline">{{ headerUi.tagline }}</span>
+        </div>
+      </div>
+    </div>
+    <span class="spacer"></span>
+  </div>
 </mat-toolbar>

@@ -2,11 +2,11 @@ import { ANONYMOUS_PREDICTION_PAGE_UI, AUTHENTICATED_PREDICTION_PAGE_UI, PREDICT
 
 /** Textos de la sección «qué pasaría si» en el detalle de predicción. */
 export const PREDICTION_SIMULATION_UI = {
-  sectionTitle: 'Simulación «qué pasaría si»',
+  sectionTitle: '¿Qué pasaría si…?',
   sectionIntro:
-    'Ajusta solo las variables permitidas y calcula un escenario alternativo. Esta acción no guarda una nueva predicción en tu historial.',
+    'Ajusta solo los campos permitidos y calcula un escenario alternativo. No se guarda como nueva entrada en tu historial.',
   nonPersistentHint:
-    'El resultado mostrado es provisional: no sustituye la predicción guardada ni queda registrado como predicción normal.',
+    'El resultado es solo orientativo: no reemplaza la predicción guardada ni se añade al historial como una predicción nueva.',
   submitIdle: 'Calcular simulación',
   submitPending: 'Simulando…',
   resetForm: 'Restaurar valores originales',
@@ -20,9 +20,9 @@ export const PREDICTION_SIMULATION_UI = {
     probabilityDifference: 'Diferencia de probabilidad',
     changedFields: 'Campos modificados respecto al detalle cargado',
     noFieldChangesDetected: 'Ninguno (el servicio no devolvió cambios explícitos)',
-    shapSection: 'Explicación SHAP (simulación)',
-    shapFactorsSection: 'Factores SHAP (simulación)',
-    recommendationsSection: 'Recomendaciones (simulación)'
+    shapSection: 'Factor con mayor influencia (simulación)',
+    shapFactorsSection: 'Otros factores destacados (simulación)',
+    recommendationsSection: 'Recomendaciones según la simulación'
   },
   fieldLabels: {
     weightKilograms: AUTHENTICATED_PREDICTION_PAGE_UI.labels.weightKilograms,
@@ -54,7 +54,5 @@ export const PREDICTION_SIMULATION_UI = {
     healthDays: ANONYMOUS_PREDICTION_PAGE_UI.surveyHints.healthDays,
     sleepHours: ANONYMOUS_PREDICTION_PAGE_UI.surveyHints.sleepHours,
     weightRange: ANONYMOUS_PREDICTION_PAGE_UI.hints.weightRange
-  },
-  rankNumberPrefix: '#',
-  emDash: '—'
+  }
 } as const;

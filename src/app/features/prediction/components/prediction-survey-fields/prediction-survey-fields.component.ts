@@ -10,7 +10,11 @@ import {
   TETANUS_OPTIONS
 } from '../../../../core/constants/data/prediction-survey-options.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
-import { PREDICTION_FORM_SHARED_UI, PREDICTION_SURVEY_FIELDS_UI } from '../../../../core/constants/ui/prediction-ui.constant';
+import {
+  PREDICTION_FORM_LAYOUT_UI,
+  PREDICTION_FORM_SHARED_UI,
+  PREDICTION_SURVEY_FIELDS_UI
+} from '../../../../core/constants/ui/prediction-ui.constant';
 
 @Component({
   selector: 'app-prediction-survey-fields',
@@ -20,7 +24,18 @@ import { PREDICTION_FORM_SHARED_UI, PREDICTION_SURVEY_FIELDS_UI } from '../../..
 export class PredictionSurveyFieldsComponent {
   @Input({ required: true }) group!: FormGroup;
 
+  /** Identificador del control (inputs nativos y `for` del `<label>`). */
+  controlHtmlId(controlName: string): string {
+    return `pred-survey-${controlName}`;
+  }
+
+  /** Identificador de la pregunta visible (lectores de pantalla vía `aria-labelledby` en `mat-select`). */
+  fieldQuestionId(controlName: string): string {
+    return `pred-survey-${controlName}-q`;
+  }
+
   readonly fieldUi = PREDICTION_SURVEY_FIELDS_UI;
+  readonly layoutUi = PREDICTION_FORM_LAYOUT_UI;
   readonly sharedUi = PREDICTION_FORM_SHARED_UI;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly generalHealthOptions = GENERAL_HEALTH_OPTIONS;

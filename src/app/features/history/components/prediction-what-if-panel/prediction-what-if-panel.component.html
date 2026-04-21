@@ -139,11 +139,11 @@
       <dd>{{ sim.simulatedProbability | number: '1.0-2' }}{{ ui.probabilitySuffix }}</dd>
       <dt>{{ ui.labels.originalRisk }}</dt>
       <dd>
-        <span class="risk-pill" [class]="'risk-pill--' + riskPillKind(sim.originalRiskLevel)">{{ sim.originalRiskLevel }}</span>
+        <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(sim.originalRiskLevel)">{{ sim.originalRiskLevel }}</span>
       </dd>
       <dt>{{ ui.labels.simulatedRisk }}</dt>
       <dd>
-        <span class="risk-pill" [class]="'risk-pill--' + riskPillKind(sim.simulatedRiskLevel)">{{ sim.simulatedRiskLevel }}</span>
+        <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(sim.simulatedRiskLevel)">{{ sim.simulatedRiskLevel }}</span>
       </dd>
       <dt>{{ ui.labels.probabilityDifference }}</dt>
       <dd>
@@ -166,58 +166,17 @@
     @if (sim.shapExplanation; as shapMain) {
       <mat-divider class="what-if__divider" />
       <h3 class="what-if__subtitle" id="whatif-shap-heading">{{ ui.labels.shapSection }}</h3>
-      <dl class="shap-grid" aria-labelledby="whatif-shap-heading">
-        @if (shapMain.feature_name) {
-          <dt>{{ resultUi.labels.shapFeature }}</dt>
-          <dd>{{ shapMain.feature_name }}</dd>
-        }
-        @if (shapMain.impact_score != null) {
-          <dt>{{ resultUi.labels.shapImpact }}</dt>
-          <dd>{{ shapMain.impact_score | number: '1.0-5' }}</dd>
-        }
-        @if (shapMain.direction) {
-          <dt>{{ resultUi.labels.shapDirection }}</dt>
-          <dd class="mono">{{ shapMain.direction }}</dd>
-        }
-        @if (shapMain.message) {
-          <dt>{{ resultUi.labels.shapMessage }}</dt>
-          <dd class="shap-message">{{ shapMain.message }}</dd>
-        }
-      </dl>
+      <div aria-labelledby="whatif-shap-heading">
+        <app-shap-explanation-user-card [explanation]="shapMain" />
+      </div>
     }
 
     @if (sim.shapFactors.length) {
       <mat-divider class="what-if__divider" />
       <h3 class="what-if__subtitle" id="whatif-shap-factors-heading">{{ ui.labels.shapFactorsSection }}</h3>
       <div class="factor-stack" role="list" aria-labelledby="whatif-shap-factors-heading">
-        @for (factor of sim.shapFactors; track $index; let last = $last) {
-          <div class="factor-card" role="listitem">
-            <div class="factor-head">
-              @if (factor.rank != null) {
-                <span class="factor-rank">{{ ui.rankNumberPrefix }}{{ factor.rank }}</span>
-              }
-              <span class="factor-name">{{ factor.feature_name ?? ui.emDash }}</span>
-            </div>
-            @if (factor.contribution_score != null || factor.direction) {
-              <div class="factor-meta">
-                @if (factor.contribution_score != null) {
-                  <span>{{ resultUi.labels.shapContribution }}: {{ factor.contribution_score | number: '1.0-5' }}</span>
-                }
-                @if (factor.direction) {
-                  <span class="factor-dir">{{ resultUi.labels.shapDirection }}: {{ factor.direction }}</span>
-                }
-              </div>
-            }
-            @if (factor.feature_value != null) {
-              <div class="factor-line">{{ resultUi.labels.shapValue }}: {{ factor.feature_value }}</div>
-            }
-            @if (factor.interpretation) {
-              <div class="factor-interpretation">{{ factor.interpretation }}</div>
-            }
-          </div>
-          @if (!last) {
-            <mat-divider class="factor-between" />
-          }
+        @for (factor of sim.shapFactors; track $index) {
+          <app-shap-factor-user-card [factor]="factor" [batchMaxAbs]="shapFactorsMaxAbs(sim.shapFactors)" />
         }
       </div>
     }

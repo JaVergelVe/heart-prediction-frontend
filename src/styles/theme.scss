@@ -1,1 +1,5 @@
 // Estilos globales y tokens compartidos (el tema de Angular Material se carga desde angular.json).
+@use 'tokens';
+@use 'global-ui';
+@use 'prediction-forms';
+@use 'landing-page';

@@ -15,7 +15,8 @@ import {
   PredictionSimulationNormalizedState,
   PredictionSimulationViewModel
 } from '../../../../core/models/prediction-simulation.model';
-import { PredictionResultData } from '../../../../core/models/prediction-response.model';
+import { PredictionResultData, ShapTopFactor } from '../../../../core/models/prediction-response.model';
+import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 import { PredictionService } from '../../../../core/services/prediction.service';
 import { predictionRiskPillKind } from '../../../../core/utils/prediction-risk-display.util';
 import {
@@ -28,6 +29,7 @@ import {
   SimulationFormRawValue
 } from '../../../../core/utils/prediction-simulation-state.util';
 import { formatAuthHttpError } from '../../../auth/utils/http-error.util';
+import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 import { PredictionFormBuilderService } from '../../../prediction/services/prediction-form-builder.service';
 import { PredictionRiskPillKind } from '../../../../core/constants/prediction-result-risk.constant';
 
@@ -77,6 +79,10 @@ export class PredictionWhatIfPanelComponent implements OnChanges {
     return map[key] ?? key;
   }
 
+  shapFactorsMaxAbs(factors: readonly ShapTopFactor[]): number {
+    return maxAbsShapContribution(factors);
+  }
+
   resetToBaseline(): void {
     this.patchFromBaseline(this.baselineResult);
     this.simulationView = null;
@@ -120,6 +126,9 @@ export class PredictionWhatIfPanelComponent implements OnChanges {
         },
         error: (err: unknown) => {
           this.simulationView = null;
+          if (isUnauthorizedHttpError(err)) {
+            return;
+          }
           if (err instanceof Error && err.message === 'SIMULATE_RESPONSE_PARSE') {
             this.simError = this.messages.invalidResponse;
           } else {

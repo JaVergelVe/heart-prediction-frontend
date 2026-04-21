@@ -14,9 +14,11 @@
       </div>
     } @else if (!loadError) {
       @if (rows.length === 0) {
-        <p class="empty-hint" role="status">{{ messages.emptyList }}</p>
+        <div class="empty-state-panel" role="status">
+          <p class="empty-hint">{{ messages.emptyList }}</p>
+        </div>
       } @else {
-        <div class="table-wrap" tabindex="0">
+        <div class="app-table-scroll" tabindex="0">
           <table mat-table [dataSource]="rows" class="history-table">
             <ng-container [matColumnDef]="cols.date">
               <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.date }}</th>
@@ -26,7 +28,7 @@
             <ng-container [matColumnDef]="cols.risk">
               <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.risk }}</th>
               <td mat-cell *matCellDef="let row">
-                <span class="risk-pill" [class]="'risk-pill--' + riskPillKind(row.risk_level)">{{ row.risk_level }}</span>
+                <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(row.risk_level)">{{ row.risk_level }}</span>
               </td>
             </ng-container>
 

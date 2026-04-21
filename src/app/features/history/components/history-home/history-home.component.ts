@@ -12,6 +12,7 @@ import {
 } from '../../../../core/constants/prediction-result-risk.constant';
 import { PredictionResultData } from '../../../../core/models/prediction-response.model';
 import { PredictionService } from '../../../../core/services/prediction.service';
+import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 
 @Component({
   selector: 'app-history-home',
@@ -43,9 +44,12 @@ export class HistoryHomeComponent implements OnInit {
         this.rows = this.sortByTimestampDesc(items);
         this.loading = false;
       },
-      error: () => {
-        this.loadError = this.messages.loadListError;
+      error: (err: unknown) => {
         this.loading = false;
+        if (isUnauthorizedHttpError(err)) {
+          return;
+        }
+        this.loadError = this.messages.loadListError;
       }
     });
   }

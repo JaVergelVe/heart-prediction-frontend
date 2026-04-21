@@ -12,6 +12,7 @@ import {
   PredictionFlowKind
 } from '../../../../core/constants/ui/prediction-ui.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
+import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 
 @Component({
   selector: 'app-prediction-result',
@@ -95,6 +96,10 @@ export class PredictionResultComponent implements OnInit {
   shapFactors(): ShapTopFactor[] {
     const f = this.result?.shap_top_factors;
     return Array.isArray(f) ? f : [];
+  }
+
+  get shapFactorsMaxAbs(): number {
+    return maxAbsShapContribution(this.shapFactors());
   }
 
   get showFlowAmbiguousNav(): boolean {

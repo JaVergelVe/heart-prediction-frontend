@@ -1,0 +1,50 @@
+<div class="factor-card shap-user-factor">
+  <div class="factor-card__header">
+    @if (factor.rank != null) {
+      <span class="factor-rank" [attr.aria-label]="resultUi.labels.shapRank + ' ' + factor.rank">
+        <span aria-hidden="true">{{ resultUi.rankNumberPrefix }}{{ factor.rank }}</span>
+      </span>
+    }
+    <span class="factor-name">{{ view.friendlyTitle }}</span>
+  </div>
+
+  <div class="shap-user-factor__impact-row">
+    <span
+      class="shap-impact-chip"
+      [class.shap-impact-chip--increase]="view.impactKind === 'increase'"
+      [class.shap-impact-chip--decrease]="view.impactKind === 'decrease'"
+      [class.shap-impact-chip--neutral]="view.impactKind === 'neutral' || view.impactKind === 'unknown'"
+    >
+      {{ view.impactLabel }}
+    </span>
+    @if (view.intensityLabel) {
+      <span class="shap-intensity-pill">{{ view.intensityLabel }}</span>
+    }
+  </div>
+
+  <p class="shap-user-factor__explain">{{ view.primaryExplanation }}</p>
+
+  @if (view.narrativeExtra) {
+    <div class="shap-user-factor__extra">
+      <span class="shap-user-factor__extra-heading">{{ ui.moreContextHeading }}</span>
+      <p class="shap-user-factor__extra-body">{{ view.narrativeExtra }}</p>
+    </div>
+  }
+
+  @if (view.hasTechnicalPanel) {
+    <mat-expansion-panel class="shap-tech-panel" [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ ui.technicalSectionTitle }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="shap-tech-panel__body">
+        <p class="shap-tech-panel__hint">{{ ui.technicalSectionHint }}</p>
+        <dl class="shap-tech-grid">
+          @for (row of view.technicalRows; track row.label) {
+            <dt>{{ row.label }}</dt>
+            <dd class="mono-wrap">{{ row.value }}</dd>
+          }
+        </dl>
+      </div>
+    </mat-expansion-panel>
+  }
+</div>

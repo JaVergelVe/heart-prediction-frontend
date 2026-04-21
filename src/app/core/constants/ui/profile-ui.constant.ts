@@ -2,13 +2,13 @@
 export const PROFILE_PAGE_UI = {
   cardTitle: 'Mi perfil',
   cardSubtitle:
-    'Los datos se cargan desde el servidor. El sexo y la fecha de nacimiento no se pueden cambiar tras el registro. Puedes editar altura y dientes; las condiciones médicas tienen su propio guardado.',
+    'Aquí ves lo que tenemos asociado a tu cuenta. El sexo y la fecha de nacimiento no se pueden cambiar tras el registro. Puedes actualizar altura y dientes; las condiciones médicas se guardan por separado.',
   emailLabel: 'Correo de la cuenta',
-  emailUnavailable: 'No indicado por el servicio',
+  emailUnavailable: 'No disponible',
   sectionReadOnlyProfile: 'Datos del perfil (solo lectura)',
   sectionEditableProfile: 'Datos que puedes actualizar',
   profileNotEditableHint:
-    'Tras el registro, el sexo y la fecha de nacimiento no se modifican por esta pantalla. Si necesitas corregirlos, contacta con soporte o usa el flujo que defina tu institución.',
+    'Tras el registro, el sexo y la fecha de nacimiento no se pueden corregir aquí. Si necesitas un cambio, contacta con soporte o sigue el procedimiento de tu institución.',
   birthDateUnavailable: 'No indicada',
   loadingAriaLabel: 'Cargando datos del perfil',
   saveProfile: 'Guardar cambios de altura y dientes',

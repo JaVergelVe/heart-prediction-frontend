@@ -7,11 +7,13 @@ import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import {
   AUTHENTICATED_PREDICTION_PAGE_UI,
-  PREDICTION_FLOW_KIND
+  PREDICTION_FLOW_KIND,
+  PREDICTION_FORM_SHARED_UI
 } from '../../../../core/constants/ui/prediction-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { PredictionService } from '../../../../core/services/prediction.service';
 import { formatAuthHttpError } from '../../../auth/utils/http-error.util';
+import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 import { PredictionFormBuilderService } from '../../services/prediction-form-builder.service';
 import { buildAuthenticatedPredictionRequest, SurveyFormValue } from '../../utils/prediction-payload.util';
 
@@ -26,6 +28,7 @@ export class AuthenticatedPredictionPageComponent {
   private readonly forms = inject(PredictionFormBuilderService);
 
   readonly pageUi = AUTHENTICATED_PREDICTION_PAGE_UI;
+  readonly sharedUi = PREDICTION_FORM_SHARED_UI;
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
 
@@ -56,6 +59,9 @@ export class AuthenticatedPredictionPageComponent {
             }
           }),
         error: (err: unknown) => {
+          if (isUnauthorizedHttpError(err)) {
+            return;
+          }
           this.serverError = formatAuthHttpError(err);
         }
       });
