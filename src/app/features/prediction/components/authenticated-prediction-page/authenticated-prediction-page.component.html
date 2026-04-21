@@ -1,41 +1,88 @@
-<mat-card class="prediction-card">
-  <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
-  <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+<mat-card class="prediction-card prediction-card--authenticated">
+  <mat-card-header class="prediction-card-header prediction-card-header--auth">
+    <div mat-card-avatar class="prediction-card-avatar prediction-card-avatar--soft" aria-hidden="true">
+      <mat-icon>favorite</mat-icon>
+    </div>
+    <mat-card-title-group class="prediction-card-title-group prediction-card-title-group--auth">
+      <p class="prediction-eyebrow">{{ pageUi.pageEyebrow }}</p>
+      <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
+      <mat-card-subtitle class="prediction-card-lead">{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
 
-  <mat-card-content>
+  <mat-divider class="prediction-card-divider prediction-card-divider--auth" />
+
+  <mat-card-content class="prediction-card-body prediction-card-body--auth">
+    <p class="prediction-form-guide info-callout">{{ pageUi.formGuide }}</p>
+
     @if (serverError) {
-      <p class="server-error" role="alert">{{ serverError }}</p>
+      <div class="prediction-error-panel" role="alert">
+        <mat-icon class="prediction-error-panel__icon" aria-hidden="true">error_outline</mat-icon>
+        <p class="prediction-error-panel__text">{{ serverError }}</p>
+      </div>
     }
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <h3 class="section-title">{{ pageUi.sections.survey }}</h3>
-      <app-prediction-survey-fields [group]="surveyForm" />
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="prediction-form prediction-form--auth">
+      <div class="prediction-auth-panels">
+        <mat-accordion class="prediction-accordion prediction-accordion--auth" multi="true" displayMode="flat">
+          <mat-expansion-panel class="prediction-panel" [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="prediction-panel-title-text">{{ pageUi.sections.vitals }}</span>
+                <span class="form-badge form-badge--required">{{ sharedUi.badgeRequired }}</span>
+              </mat-panel-title>
+              <mat-panel-description>{{ pageUi.sectionDescriptions.vitals }}</mat-panel-description>
+            </mat-expansion-panel-header>
 
-      <h3 class="section-title">{{ pageUi.sections.vitals }}</h3>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>{{ pageUi.labels.weightKilograms }}</mat-label>
-        <input
-          matInput
-          type="number"
-          step="0.1"
-          [attr.min]="limits.weightKgMin"
-          [attr.max]="limits.weightKgMax"
-          formControlName="weight_kilograms"
-        />
-        <mat-hint>{{ pageUi.hints.weightRange }}</mat-hint>
-        @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
-          <mat-error>{{ validationMessages.weightRequired }}</mat-error>
-        }
-        @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
-          <mat-error>{{ validationMessages.weightMin }}</mat-error>
-        }
-        @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
-          <mat-error>{{ validationMessages.weightMax }}</mat-error>
-        }
-      </mat-form-field>
+            <div class="prediction-panel-body prediction-panel-body--single">
+              <mat-form-field
+                appearance="outline"
+                class="full-width"
+                floatLabel="always"
+                subscriptSizing="dynamic"
+              >
+                <mat-label>{{ pageUi.labels.weightKilograms }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  step="0.1"
+                  [attr.min]="limits.weightKgMin"
+                  [attr.max]="limits.weightKgMax"
+                  formControlName="weight_kilograms"
+                />
+                <mat-hint>{{ pageUi.hints.weightRange }}</mat-hint>
+                @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
+                  <mat-error>{{ validationMessages.weightRequired }}</mat-error>
+                }
+                @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
+                  <mat-error>{{ validationMessages.weightMin }}</mat-error>
+                }
+                @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
+                  <mat-error>{{ validationMessages.weightMax }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
 
-      <div class="actions">
-        <button mat-flat-button color="primary" type="submit" [disabled]="submitting">
+          <mat-expansion-panel class="prediction-panel prediction-panel--optional" [expanded]="false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="prediction-panel-title-text">{{ pageUi.sections.survey }}</span>
+                <span class="form-badge form-badge--optional">{{ sharedUi.badgeOptional }}</span>
+              </mat-panel-title>
+              <mat-panel-description>{{ pageUi.surveyPanelCollapsedHint }}</mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="prediction-panel-body prediction-panel-body--survey">
+              <p class="prediction-inline-hint">{{ pageUi.sectionDescriptions.survey }}</p>
+              <app-prediction-survey-fields [group]="surveyForm" />
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <div class="actions actions--form-submit prediction-submit-row prediction-submit-row--auth">
+        <button mat-flat-button color="primary" type="submit" class="form-submit-btn prediction-submit-btn" [disabled]="submitting">
           @if (submitting) {
             <mat-spinner diameter="20"></mat-spinner>
             <span class="btn-label">{{ pageUi.submitPending }}</span>

@@ -1,6 +1,9 @@
 .app-footer {
-  padding: 12px 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+  padding: var(--app-space-md) var(--app-page-padding);
+  border-top: 1px solid var(--app-border-subtle);
+  background: var(--app-bg-elevated);
+  font-size: 0.8125rem;
+  color: var(--app-text-muted);
+  text-align: center;
 }

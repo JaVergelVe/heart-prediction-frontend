@@ -1,68 +1,173 @@
-.auth-card {
-  max-width: 720px;
-  margin: 1.5rem auto;
-}
-
-mat-card-subtitle {
-  margin-bottom: 1rem;
-}
-
-.section-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 1.25rem 0 0.5rem;
-}
-
-.section-hint {
-  font-size: 0.8125rem;
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0 0 0.75rem;
-}
-
-.full-width {
+.auth-card--register {
   width: 100%;
-  display: block;
-  margin-bottom: 0.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.medical-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 0.5rem 1rem;
-  margin-bottom: 1rem;
+.register-card-header {
+  align-items: flex-start;
+  padding: var(--app-space-md) var(--app-space-md) var(--app-space-sm);
+}
+
+.register-card-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(46, 125, 50, 0.1);
+  color: rgb(46, 125, 50);
+}
+
+.register-card-avatar mat-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.register-eyebrow {
+  margin: 0 0 0.15rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--app-text-faint);
+}
+
+.register-card-body {
+  padding-top: var(--app-space-md) !important;
+}
+
+.register-error-panel {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--app-radius-sm);
+  background: rgba(179, 38, 30, 0.06);
+  border: 1px solid rgba(179, 38, 30, 0.22);
+  margin-bottom: var(--app-space-md);
+}
+
+.register-error-panel__icon {
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  color: var(--app-text-error);
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.register-error-panel__text {
+  margin: 0;
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.auth-form--register {
+  margin-top: 0;
+}
+
+.register-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-sm);
+}
+
+:host ::ng-deep .register-panel.mat-expansion-panel {
+  border-radius: var(--app-radius-md) !important;
+  border: 1px solid var(--app-border-subtle);
+  box-shadow: none !important;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+:host ::ng-deep .register-panel .mat-expansion-panel-header {
+  padding: 0.65rem 1rem;
+}
+
+:host ::ng-deep .register-panel .mat-expansion-panel-header-title,
+:host ::ng-deep .register-panel .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+:host ::ng-deep .register-panel .mat-expansion-panel-header-description {
+  flex-grow: 2;
+  justify-content: flex-start;
+  margin-right: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--app-text-muted);
+}
+
+.register-panel-body {
+  padding: 0 var(--app-space-md) var(--app-space-md);
+}
+
+.register-checkbox-caption {
+  margin: 0 0 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--app-text-secondary);
+}
+
+.register-checkbox-hint {
+  margin: 0 0 var(--app-space-sm);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--app-text-muted);
+}
+
+.medical-grid--tiles {
+  gap: 0.5rem 0.75rem;
+  margin-bottom: var(--app-space-sm);
+}
+
+.medical-grid--tiles .mat-mdc-checkbox {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--app-radius-sm);
+  border: 1px solid var(--app-border-subtle);
+  background: rgba(255, 255, 255, 0.92);
+  box-sizing: border-box;
+}
+
+.register-diabetes-divider {
+  margin: var(--app-space-sm) 0 var(--app-space-md);
 }
 
 .diabetes-field {
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
-.actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: flex-end;
+.register-submit-row {
+  border-top: none;
+  padding-top: var(--app-space-lg);
+  margin-top: var(--app-space-md);
 }
 
-.actions button mat-spinner {
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 0.5rem;
+.register-submit-btn {
+  min-height: 52px;
+  min-width: min(100%, 280px);
 }
 
-.btn-label {
-  vertical-align: middle;
-}
-
-.server-error {
-  color: var(--mat-form-field-error-text-color, #b3261e);
-  margin: 0 0 1rem;
-  font-size: 0.875rem;
+.register-footer-divider {
+  margin: var(--app-space-lg) 0 var(--app-space-md);
 }
 
 .footer-link {
-  margin-top: 1.25rem;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
   font-size: 0.875rem;
+  color: var(--app-text-secondary);
+  text-align: center;
 }
 
 .footer-link a {
   margin-left: 0.25rem;
+  font-weight: 600;
 }

@@ -12,6 +12,8 @@ export const VALIDATION_MESSAGES = {
   passwordMax: `Máximo ${L.passwordMax} caracteres`,
   selectRequired: 'Selecciona una opción',
   birthDateRequired: 'La fecha es obligatoria',
+  birthDateFuture: 'La fecha de nacimiento no puede ser posterior a hoy',
+  birthDateInvalid: 'Introduce una fecha de nacimiento válida',
   heightRequired: 'La altura es obligatoria',
   heightMin: `Mínimo ${L.heightMetersMin} m`,
   heightMax: `Máximo ${L.heightMetersMax} m`,

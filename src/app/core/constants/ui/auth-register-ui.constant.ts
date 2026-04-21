@@ -5,17 +5,25 @@ const L = VALIDATION_LIMITS;
 
 /** Textos del formulario de registro (excluye literales del API en selects/checkbox de datos). */
 export const REGISTER_PAGE_UI = {
+  pageEyebrow: 'Registro seguro',
   cardTitle: 'Crear cuenta',
-  cardSubtitle: 'Los valores de salud deben coincidir con las opciones del cuestionario del API',
+  cardSubtitle:
+    'Los datos de salud deben responder con sinceridad y coincidir con las mismas opciones que verás en el cuestionario de predicción.',
   sections: {
     account: 'Cuenta',
     profile: 'Perfil',
     medical: 'Condiciones médicas y discapacidad'
   },
+  sectionDescriptions: {
+    account: 'Correo y contraseña para acceder a tu historial y predicciones con cuenta.',
+    profile: 'Datos basales que el modelo usa junto con tu peso y el cuestionario de salud.',
+    medical: 'Antecedentes y limitaciones funcionales: marca Sí o No en cada casilla.'
+  },
+  medicalCheckboxGroupCaption: 'Condiciones y limitaciones (casillas)',
   labels: {
     email: 'Correo electrónico',
     password: 'Contraseña',
-    sexApi: 'Sexo (valor enviado al API)',
+    sexApi: 'Sexo biológico',
     birthDate: 'Fecha de nacimiento',
     heightMeters: 'Altura (metros)',
     removedTeeth: 'Dientes extraídos',
@@ -26,7 +34,7 @@ export const REGISTER_PAGE_UI = {
     heightRange: 'Entre 0,5 y 2,5'
   },
   medicalSectionHint:
-    'Marca Sí o No según corresponda. Los valores se envían como booleanos al API.',
+    'Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.',
   medicalLabels: {
     hadAngina: '¿Angina?',
     hadStroke: '¿Accidente cerebrovascular?',

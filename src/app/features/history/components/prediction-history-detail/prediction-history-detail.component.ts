@@ -7,10 +7,12 @@ import { PredictionRiskPillKind } from '../../../../core/constants/prediction-re
 import { PREDICTION_RESULT_UI } from '../../../../core/constants/ui/prediction-ui.constant';
 import { HISTORY_DETAIL_PAGE_UI } from '../../../../core/constants/ui/history-ui.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
+import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 import { PredictionService } from '../../../../core/services/prediction.service';
 import { triggerBrowserBlobDownload } from '../../../../core/utils/browser-file-download.util';
 import { predictionRiskPillKind } from '../../../../core/utils/prediction-risk-display.util';
 import { formatAuthHttpError } from '../../../auth/utils/http-error.util';
+import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 
 @Component({
   selector: 'app-prediction-history-detail',
@@ -58,10 +60,13 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.pdfError = null;
         },
-        error: () => {
-          this.loadError = this.messages.loadDetailError;
+        error: (err: unknown) => {
           this.loading = false;
           this.result = null;
+          if (isUnauthorizedHttpError(err)) {
+            return;
+          }
+          this.loadError = this.messages.loadDetailError;
         }
       });
   }
@@ -85,9 +90,12 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.pdfError = null;
       },
-      error: () => {
-        this.loadError = this.messages.loadDetailError;
+      error: (err: unknown) => {
         this.loading = false;
+        if (isUnauthorizedHttpError(err)) {
+          return;
+        }
+        this.loadError = this.messages.loadDetailError;
       }
     });
   }
@@ -125,6 +133,10 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
     return Array.isArray(f) ? f : [];
   }
 
+  get shapFactorsMaxAbs(): number {
+    return maxAbsShapContribution(this.shapFactors());
+  }
+
   downloadPdf(): void {
     const id = this.result?.prediction_id;
     if (!id || this.loading || this.pdfDownloading) {
@@ -140,6 +152,9 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
           triggerBrowserBlobDownload(blob, filename);
         },
         error: (err: unknown) => {
+          if (isUnauthorizedHttpError(err)) {
+            return;
+          }
           if (err instanceof Error && err.message === 'PDF_EMPTY') {
             this.pdfError = this.messages.pdfDownloadEmpty;
           } else if (err instanceof Error && err.message === 'PDF_BAD_TYPE') {

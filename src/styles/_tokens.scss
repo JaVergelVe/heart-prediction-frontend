@@ -1,0 +1,59 @@
+// Tokens visuales compartidos (tema Material sigue cargándose desde angular.json).
+:root {
+  --app-radius-sm: 8px;
+  --app-radius-md: 12px;
+  --app-radius-lg: 16px;
+
+  --app-space-xs: 4px;
+  --app-space-sm: 8px;
+  --app-space-md: 16px;
+  --app-space-lg: 24px;
+  --app-space-xl: 32px;
+
+  --app-content-max: 1120px;
+  --app-page-padding: clamp(var(--app-space-md), 2.5vw, var(--app-space-xl));
+
+  --app-bg-canvas: #f4f6f9;
+  --app-bg-elevated: #ffffff;
+  --app-border-subtle: rgba(15, 23, 42, 0.08);
+  --app-border-strong: rgba(15, 23, 42, 0.14);
+
+  --app-shadow-toolbar: 0 1px 0 var(--app-border-subtle), 0 6px 18px rgba(15, 23, 42, 0.08);
+
+  --app-nav-item-hover: rgba(15, 23, 42, 0.05);
+  --app-nav-item-active-bg: rgba(63, 81, 181, 0.11);
+  --app-nav-item-active-fg: rgba(25, 28, 58, 0.95);
+  --app-nav-item-active-accent: rgb(63, 81, 181);
+  --app-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 20px rgba(15, 23, 42, 0.06);
+
+  --app-text-primary: rgba(0, 0, 0, 0.87);
+  --app-text-secondary: rgba(0, 0, 0, 0.65);
+  --app-text-muted: rgba(0, 0, 0, 0.58);
+  --app-text-faint: rgba(0, 0, 0, 0.45);
+  --app-text-error: #b3261e;
+  --app-text-success: #1b5e20;
+
+  --app-risk-low-bg: rgba(46, 125, 50, 0.12);
+  --app-risk-low-fg: rgb(27, 94, 32);
+  --app-risk-low-border: rgba(46, 125, 50, 0.35);
+
+  --app-risk-medium-bg: rgba(237, 108, 2, 0.12);
+  --app-risk-medium-fg: rgb(191, 87, 0);
+  --app-risk-medium-border: rgba(237, 108, 2, 0.35);
+
+  --app-risk-high-bg: rgba(211, 47, 47, 0.1);
+  --app-risk-high-fg: rgb(183, 28, 28);
+  --app-risk-high-border: rgba(211, 47, 47, 0.35);
+
+  --app-risk-unknown-bg: rgba(15, 23, 42, 0.06);
+  --app-risk-unknown-fg: rgba(0, 0, 0, 0.72);
+  --app-risk-unknown-border: rgba(15, 23, 42, 0.12);
+
+  /* Movimiento ligero (duraciones cortas; combinar con prefers-reduced-motion en CSS). */
+  --app-motion-duration-instant: 80ms;
+  --app-motion-duration-short: 160ms;
+  --app-motion-duration-medium: 240ms;
+  --app-motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --app-motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --app-motion-ease-emphasis: cubic-bezier(0.2, 0, 0, 1);
+}

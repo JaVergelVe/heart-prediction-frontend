@@ -18,10 +18,20 @@ export const REGISTER_DIABETES_OPTIONS: readonly RegisterMedicalIn['had_diabetes
   'Yes, but only during pregnancy (female)'
 ];
 
+export const REGISTER_DIABETES_OPTION_ITEMS: readonly {
+  readonly value: RegisterMedicalIn['had_diabetes'];
+  readonly label: string;
+}[] = [
+  { value: 'No', label: 'No' },
+  { value: 'Yes', label: 'Sí' },
+  { value: 'No, pre-diabetes or borderline diabetes', label: 'No, prediabetes o diabetes limítrofe' },
+  { value: 'Yes, but only during pregnancy (female)', label: 'Sí, pero solo durante el embarazo (mujer)' }
+];
+
 export const REGISTER_SEX_OPTIONS: readonly {
   readonly value: RegisterProfileIn['sex'];
   readonly label: string;
 }[] = [
-  { value: 'Male', label: 'Male' },
-  { value: 'Female', label: 'Female' }
+  { value: 'Male', label: 'Masculino' },
+  { value: 'Female', label: 'Femenino' }
 ];

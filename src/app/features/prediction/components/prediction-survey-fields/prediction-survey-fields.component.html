@@ -1,160 +1,288 @@
 <div [formGroup]="group" class="survey-fields">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.generalHealth }}</mat-label>
-    <mat-select formControlName="general_health">
-      <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
-      @for (opt of generalHealthOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <p class="survey-fields__intro">{{ fieldUi.intro }}</p>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.physicalHealthDays }}</mat-label>
-    <input matInput type="number" formControlName="physical_health_days" />
-    <mat-hint>{{ fieldUi.hints.healthDays }}</mat-hint>
-    @if (group.get('physical_health_days')?.hasError('min') && group.get('physical_health_days')?.touched) {
-      <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
-    }
-    @if (group.get('physical_health_days')?.hasError('max') && group.get('physical_health_days')?.touched) {
-      <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
-    }
-  </mat-form-field>
+  <section class="survey-subsection" [attr.aria-label]="fieldUi.subsections.wellbeing">
+    <h3 class="survey-subsection__title">{{ fieldUi.subsections.wellbeing }}</h3>
+    <p class="survey-subsection__hint">{{ fieldUi.subsectionHints.wellbeing }}</p>
+    <div class="survey-subsection__grid">
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('general_health')">{{ fieldUi.labels.generalHealth }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('general_health')"
+            formControlName="general_health"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
+            @for (opt of generalHealthOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.mentalHealthDays }}</mat-label>
-    <input matInput type="number" formControlName="mental_health_days" />
-    <mat-hint>{{ fieldUi.hints.healthDays }}</mat-hint>
-    @if (group.get('mental_health_days')?.hasError('min') && group.get('mental_health_days')?.touched) {
-      <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
-    }
-    @if (group.get('mental_health_days')?.hasError('max') && group.get('mental_health_days')?.touched) {
-      <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
-    }
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [attr.for]="controlHtmlId('physical_health_days')">{{
+          fieldUi.labels.physicalHealthDays
+        }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            [id]="controlHtmlId('physical_health_days')"
+            formControlName="physical_health_days"
+          />
+          <mat-hint>{{ fieldUi.hints.healthDays }}</mat-hint>
+          @if (group.get('physical_health_days')?.hasError('min') && group.get('physical_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
+          }
+          @if (group.get('physical_health_days')?.hasError('max') && group.get('physical_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.lastCheckup }}</mat-label>
-    <mat-select formControlName="last_checkup_time">
-      <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
-      @for (opt of lastCheckupOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [attr.for]="controlHtmlId('mental_health_days')">{{
+          fieldUi.labels.mentalHealthDays
+        }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            [id]="controlHtmlId('mental_health_days')"
+            formControlName="mental_health_days"
+          />
+          <mat-hint>{{ fieldUi.hints.healthDays }}</mat-hint>
+          @if (group.get('mental_health_days')?.hasError('min') && group.get('mental_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
+          }
+          @if (group.get('mental_health_days')?.hasError('max') && group.get('mental_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.physicalActivities }}</mat-label>
-    <mat-select formControlName="physical_activities">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('last_checkup_time')">{{ fieldUi.labels.lastCheckup }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('last_checkup_time')"
+            formControlName="last_checkup_time"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
+            @for (opt of lastCheckupOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.sleepHours }}</mat-label>
-    <input matInput type="number" step="0.1" formControlName="sleep_hours" />
-    <mat-hint>{{ fieldUi.hints.sleepHours }}</mat-hint>
-    @if (group.get('sleep_hours')?.hasError('min') && group.get('sleep_hours')?.touched) {
-      <mat-error>{{ validationMessages.sleepHoursMin }}</mat-error>
-    }
-    @if (group.get('sleep_hours')?.hasError('max') && group.get('sleep_hours')?.touched) {
-      <mat-error>{{ validationMessages.sleepHoursMax }}</mat-error>
-    }
-  </mat-form-field>
+  <mat-divider class="survey-fields__divider" />
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.smokerStatus }}</mat-label>
-    <mat-select formControlName="smoker_status">
-      <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
-      @for (opt of smokerStatusOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <section class="survey-subsection" [attr.aria-label]="fieldUi.subsections.lifestyle">
+    <h3 class="survey-subsection__title">{{ fieldUi.subsections.lifestyle }}</h3>
+    <p class="survey-subsection__hint">{{ fieldUi.subsectionHints.lifestyle }}</p>
+    <div class="survey-subsection__grid">
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('physical_activities')">{{
+          fieldUi.labels.physicalActivities
+        }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('physical_activities')"
+            formControlName="physical_activities"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.ecigaretteUsage }}</mat-label>
-    <mat-select formControlName="ecigarette_usage">
-      <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
-      @for (opt of ecigaretteOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [attr.for]="controlHtmlId('sleep_hours')">{{ fieldUi.labels.sleepHours }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <input matInput type="number" step="0.1" [id]="controlHtmlId('sleep_hours')" formControlName="sleep_hours" />
+          <mat-hint>{{ fieldUi.hints.sleepHours }}</mat-hint>
+          @if (group.get('sleep_hours')?.hasError('min') && group.get('sleep_hours')?.touched) {
+            <mat-error>{{ validationMessages.sleepHoursMin }}</mat-error>
+          }
+          @if (group.get('sleep_hours')?.hasError('max') && group.get('sleep_hours')?.touched) {
+            <mat-error>{{ validationMessages.sleepHoursMax }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.alcoholDrinkers }}</mat-label>
-    <mat-select formControlName="alcohol_drinkers">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('smoker_status')">{{ fieldUi.labels.smokerStatus }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('smoker_status')"
+            formControlName="smoker_status"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
+            @for (opt of smokerStatusOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.chestScan }}</mat-label>
-    <mat-select formControlName="chest_scan">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('ecigarette_usage')">{{
+          fieldUi.labels.ecigaretteUsage
+        }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('ecigarette_usage')"
+            formControlName="ecigarette_usage"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
+            @for (opt of ecigaretteOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.hivTesting }}</mat-label>
-    <mat-select formControlName="hiv_testing">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('alcohol_drinkers')">{{ fieldUi.labels.alcoholDrinkers }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('alcohol_drinkers')"
+            formControlName="alcohol_drinkers"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.fluVaxLast12 }}</mat-label>
-    <mat-select formControlName="flu_vax_last_12">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <mat-divider class="survey-fields__divider" />
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.pneumoVaxEver }}</mat-label>
-    <mat-select formControlName="pneumo_vax_ever">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <section class="survey-subsection" [attr.aria-label]="fieldUi.subsections.prevention">
+    <h3 class="survey-subsection__title">{{ fieldUi.subsections.prevention }}</h3>
+    <p class="survey-subsection__hint">{{ fieldUi.subsectionHints.prevention }}</p>
+    <div class="survey-subsection__grid">
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('chest_scan')">{{ fieldUi.labels.chestScan }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('chest_scan')"
+            formControlName="chest_scan"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.tetanusLast10 }}</mat-label>
-    <mat-select formControlName="tetanus_last_10_tdap">
-      <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
-      @for (opt of tetanusOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('hiv_testing')">{{ fieldUi.labels.hivTesting }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('hiv_testing')"
+            formControlName="hiv_testing"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.highRiskLastYear }}</mat-label>
-    <mat-select formControlName="high_risk_last_year">
-      @for (opt of triStateOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('flu_vax_last_12')">{{ fieldUi.labels.fluVaxLast12 }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('flu_vax_last_12')"
+            formControlName="flu_vax_last_12"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ fieldUi.labels.covidPos }}</mat-label>
-    <mat-select formControlName="covid_pos">
-      <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
-      @for (opt of covidOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('pneumo_vax_ever')">{{ fieldUi.labels.pneumoVaxEver }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('pneumo_vax_ever')"
+            formControlName="pneumo_vax_ever"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('tetanus_last_10_tdap')">{{ fieldUi.labels.tetanusLast10 }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('tetanus_last_10_tdap')"
+            formControlName="tetanus_last_10_tdap"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
+            @for (opt of tetanusOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('high_risk_last_year')">{{
+          fieldUi.labels.highRiskLastYear
+        }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('high_risk_last_year')"
+            formControlName="high_risk_last_year"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('covid_pos')">{{ fieldUi.labels.covidPos }}</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('covid_pos')"
+            formControlName="covid_pos"
+            [panelClass]="layoutUi.matSelectPanelClass"
+          >
+            <mat-option [value]="''">{{ sharedUi.optionalBlankLabel }}</mat-option>
+            @for (opt of covidOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
 </div>
