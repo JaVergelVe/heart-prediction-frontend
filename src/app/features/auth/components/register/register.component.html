@@ -182,8 +182,8 @@
               <mat-form-field appearance="outline" class="full-width diabetes-field">
                 <mat-label>{{ pageUi.labels.diabetes }}</mat-label>
                 <mat-select formControlName="had_diabetes">
-                  @for (opt of diabetesOptions; track opt) {
-                    <mat-option [value]="opt">{{ opt }}</mat-option>
+                  @for (opt of diabetesOptions; track opt.value) {
+                    <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
                   }
                 </mat-select>
                 @if (

@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import {
-  REGISTER_DIABETES_OPTIONS,
+  REGISTER_DIABETES_OPTION_ITEMS,
   REGISTER_REMOVED_TEETH_OPTIONS,
   REGISTER_SEX_OPTIONS
 } from '../../../../core/constants/data/register-api-options.constant';
@@ -36,7 +36,7 @@ export class RegisterComponent {
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly removedTeethOptions = REGISTER_REMOVED_TEETH_OPTIONS;
-  readonly diabetesOptions = REGISTER_DIABETES_OPTIONS;
+  readonly diabetesOptions = REGISTER_DIABETES_OPTION_ITEMS;
   readonly sexOptions = REGISTER_SEX_OPTIONS;
   readonly birthDateFieldUi = BIRTH_DATE_FIELD_UI;
 
