@@ -5,9 +5,11 @@
         <mat-icon>person_add_alt</mat-icon>
       </div>
       <mat-card-title-group>
-        <p class="register-eyebrow">{{ pageUi.pageEyebrow }}</p>
-        <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
-        <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+        <p class="register-eyebrow">Cuenta personalizada</p>
+        <mat-card-title>Crear cuenta</mat-card-title>
+        <mat-card-subtitle>
+          Completa tus datos de forma precisa para obtener predicciones más confiables y una mejor lectura de tu evolución.
+        </mat-card-subtitle>
       </mat-card-title-group>
     </mat-card-header>
 
@@ -22,16 +24,19 @@
       }
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="auth-form auth-form--register">
+        <p class="register-top-hint">
+          Todos los datos del formulario se usan para personalizar la evaluación. Revisa cada sección antes de enviar.
+        </p>
         <mat-accordion class="register-accordion" multi="true" displayMode="flat">
           <mat-expansion-panel class="register-panel" [expanded]="true">
             <mat-expansion-panel-header>
-              <mat-panel-title>{{ pageUi.sections.account }}</mat-panel-title>
-              <mat-panel-description>{{ pageUi.sectionDescriptions.account }}</mat-panel-description>
+              <mat-panel-title>Cuenta</mat-panel-title>
+              <mat-panel-description>Correo y contraseña para acceder a historial, detalle y seguimiento.</mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="register-panel-body">
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ pageUi.labels.email }}</mat-label>
+                <mat-label>Correo electrónico</mat-label>
                 <input matInput type="email" formControlName="email" autocomplete="email" />
                 @if (form.controls.email.hasError('required') && form.controls.email.touched) {
                   <mat-error>{{ validationMessages.emailRequired }}</mat-error>
@@ -42,9 +47,9 @@
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ pageUi.labels.password }}</mat-label>
+                <mat-label>Contraseña</mat-label>
                 <input matInput type="password" formControlName="password" autocomplete="new-password" />
-                <mat-hint>{{ pageUi.hints.passwordMin }}</mat-hint>
+                <mat-hint>Mínimo 8 caracteres</mat-hint>
                 @if (form.controls.password.hasError('required') && form.controls.password.touched) {
                   <mat-error>{{ validationMessages.passwordRequired }}</mat-error>
                 }
@@ -60,13 +65,13 @@
 
           <mat-expansion-panel class="register-panel" [expanded]="true">
             <mat-expansion-panel-header>
-              <mat-panel-title>{{ pageUi.sections.profile }}</mat-panel-title>
-              <mat-panel-description>{{ pageUi.sectionDescriptions.profile }}</mat-panel-description>
+              <mat-panel-title>Perfil</mat-panel-title>
+              <mat-panel-description>Datos base del perfil para contextualizar las predicciones.</mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="register-panel-body" formGroupName="profile">
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ pageUi.labels.sexApi }}</mat-label>
+                <mat-label>Sexo biológico</mat-label>
                 <mat-select formControlName="sex">
                   @for (opt of sexOptions; track opt.value) {
                     <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
@@ -78,7 +83,7 @@
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ pageUi.labels.birthDate }}</mat-label>
+                <mat-label>Fecha de nacimiento</mat-label>
                 <input
                   matInput
                   [matDatepicker]="birthPicker"
@@ -90,7 +95,7 @@
                 <mat-datepicker-toggle
                   matIconSuffix
                   [for]="birthPicker"
-                  [attr.aria-label]="birthDateFieldUi.openCalendarAria"
+                  aria-label="Abrir calendario y elegir fecha de nacimiento"
                 />
                 <mat-datepicker #birthPicker startView="multi-year" />
                 @if (form.controls.profile.controls.birth_date.invalid && form.controls.profile.controls.birth_date.touched) {
@@ -109,7 +114,7 @@
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ pageUi.labels.heightMeters }}</mat-label>
+                <mat-label>Altura (metros)</mat-label>
                 <input
                   matInput
                   type="number"
@@ -118,7 +123,7 @@
                   [attr.max]="limits.heightMetersMax"
                   formControlName="height_meters"
                 />
-                <mat-hint>{{ pageUi.hints.heightRange }}</mat-hint>
+                <mat-hint>Entre 0,5 y 2,5</mat-hint>
                 @if (
                   form.controls.profile.controls.height_meters.hasError('required') &&
                   form.controls.profile.controls.height_meters.touched
@@ -134,7 +139,7 @@
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ pageUi.labels.removedTeeth }}</mat-label>
+                <mat-label>Dientes extraídos</mat-label>
                 <mat-select formControlName="removed_teeth">
                   @for (opt of removedTeethOptions; track opt) {
                     <mat-option [value]="opt">{{ opt }}</mat-option>
@@ -152,35 +157,35 @@
 
           <mat-expansion-panel class="register-panel" [expanded]="true">
             <mat-expansion-panel-header>
-              <mat-panel-title>{{ pageUi.sections.medical }}</mat-panel-title>
-              <mat-panel-description>{{ pageUi.sectionDescriptions.medical }}</mat-panel-description>
+              <mat-panel-title>Condiciones médicas y discapacidad</mat-panel-title>
+              <mat-panel-description>Antecedentes y limitaciones funcionales: marca cada casilla según tu situación.</mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="register-panel-body" formGroupName="medical_conditions">
-              <p class="register-checkbox-caption">{{ pageUi.medicalCheckboxGroupCaption }}</p>
-              <p class="register-checkbox-hint">{{ pageUi.medicalSectionHint }}</p>
+              <p class="register-checkbox-caption">Condiciones y limitaciones (casillas)</p>
+              <p class="register-checkbox-hint">Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.</p>
 
               <div class="medical-grid medical-grid--tiles">
-                <mat-checkbox formControlName="had_angina">{{ pageUi.medicalLabels.hadAngina }}</mat-checkbox>
-                <mat-checkbox formControlName="had_stroke">{{ pageUi.medicalLabels.hadStroke }}</mat-checkbox>
-                <mat-checkbox formControlName="had_asthma">{{ pageUi.medicalLabels.hadAsthma }}</mat-checkbox>
-                <mat-checkbox formControlName="had_copd">{{ pageUi.medicalLabels.hadCopd }}</mat-checkbox>
-                <mat-checkbox formControlName="had_skin_cancer">{{ pageUi.medicalLabels.hadSkinCancer }}</mat-checkbox>
-                <mat-checkbox formControlName="had_depressive_disorder">{{ pageUi.medicalLabels.hadDepressiveDisorder }}</mat-checkbox>
-                <mat-checkbox formControlName="had_kidney_disease">{{ pageUi.medicalLabels.hadKidneyDisease }}</mat-checkbox>
-                <mat-checkbox formControlName="had_arthritis">{{ pageUi.medicalLabels.hadArthritis }}</mat-checkbox>
-                <mat-checkbox formControlName="deaf_or_hard_of_hearing">{{ pageUi.medicalLabels.deafOrHardOfHearing }}</mat-checkbox>
-                <mat-checkbox formControlName="blind_or_vision_difficulty">{{ pageUi.medicalLabels.blindOrVisionDifficulty }}</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_concentrating">{{ pageUi.medicalLabels.difficultyConcentrating }}</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_walking">{{ pageUi.medicalLabels.difficultyWalking }}</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_dressing_bathing">{{ pageUi.medicalLabels.difficultyDressingBathing }}</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_errands">{{ pageUi.medicalLabels.difficultyErrands }}</mat-checkbox>
+                <mat-checkbox formControlName="had_angina">¿Angina?</mat-checkbox>
+                <mat-checkbox formControlName="had_stroke">¿Accidente cerebrovascular?</mat-checkbox>
+                <mat-checkbox formControlName="had_asthma">¿Asma?</mat-checkbox>
+                <mat-checkbox formControlName="had_copd">¿EPOC?</mat-checkbox>
+                <mat-checkbox formControlName="had_skin_cancer">¿Cáncer de piel?</mat-checkbox>
+                <mat-checkbox formControlName="had_depressive_disorder">¿Trastorno depresivo?</mat-checkbox>
+                <mat-checkbox formControlName="had_kidney_disease">¿Enfermedad renal?</mat-checkbox>
+                <mat-checkbox formControlName="had_arthritis">¿Artritis?</mat-checkbox>
+                <mat-checkbox formControlName="deaf_or_hard_of_hearing">¿Sordera o dificultad auditiva?</mat-checkbox>
+                <mat-checkbox formControlName="blind_or_vision_difficulty">¿Ceguera o dificultad visual?</mat-checkbox>
+                <mat-checkbox formControlName="difficulty_concentrating">¿Dificultad para concentrarse?</mat-checkbox>
+                <mat-checkbox formControlName="difficulty_walking">¿Dificultad para caminar?</mat-checkbox>
+                <mat-checkbox formControlName="difficulty_dressing_bathing">¿Dificultad para vestirse o bañarse?</mat-checkbox>
+                <mat-checkbox formControlName="difficulty_errands">¿Dificultad para hacer recados?</mat-checkbox>
               </div>
 
               <mat-divider class="register-diabetes-divider" />
 
               <mat-form-field appearance="outline" class="full-width diabetes-field">
-                <mat-label>{{ pageUi.labels.diabetes }}</mat-label>
+                <mat-label>Diabetes</mat-label>
                 <mat-select formControlName="had_diabetes">
                   @for (opt of diabetesOptions; track opt.value) {
                     <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
@@ -201,9 +206,9 @@
           <button mat-flat-button color="primary" type="submit" class="auth-primary-btn register-submit-btn" [disabled]="submitting">
             @if (submitting) {
               <mat-spinner diameter="20"></mat-spinner>
-              <span class="btn-label">{{ pageUi.submitPending }}</span>
+                <span class="btn-label">Registrando...</span>
             } @else {
-              {{ pageUi.submitIdle }}
+              Registrarse
             }
           </button>
         </div>
@@ -212,8 +217,8 @@
       <mat-divider class="register-footer-divider" />
 
       <p class="footer-link">
-        {{ pageUi.loginPrompt }}
-        <a [routerLink]="pageUi.loginRoute">{{ pageUi.loginLink }}</a>
+        ¿Ya tienes cuenta?
+        <a [routerLink]="'/auth/login'">Iniciar sesión</a>
       </p>
     </mat-card-content>
   </mat-card>

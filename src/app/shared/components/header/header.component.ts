@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SHELL_HEADER_UI } from '../../../core/constants/ui/shell-ui.constant';
 
 @Component({
   selector: 'app-header',
@@ -8,6 +7,4 @@ import { SHELL_HEADER_UI } from '../../../core/constants/ui/shell-ui.constant';
 })
 export class HeaderComponent {
   @Output() menuClick = new EventEmitter<void>();
-
-  readonly headerUi = SHELL_HEADER_UI;
 }

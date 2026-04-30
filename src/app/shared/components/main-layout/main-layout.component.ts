@@ -2,7 +2,7 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { APP_ROUTE_URLS } from '../../../core/constants/route-urls.constant';
-import { MainNavLink, SHELL_MAIN_LAYOUT_UI, SHELL_MAIN_NAV_LINKS } from '../../../core/constants/ui/shell-ui.constant';
+import { MainNavLink, SHELL_MAIN_NAV_LINKS } from '../../../core/constants/ui/shell-ui.constant';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -17,7 +17,6 @@ export class MainLayoutComponent {
   private readonly router = inject(Router);
 
   private readonly allNavLinks = SHELL_MAIN_NAV_LINKS;
-  readonly layoutUi = SHELL_MAIN_LAYOUT_UI;
 
   /** Enlaces del menú según el estado de sesión (constantes + reglas de visibilidad). */
   get visibleNavLinks(): readonly MainNavLink[] {

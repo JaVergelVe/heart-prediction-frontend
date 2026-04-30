@@ -1,23 +1,23 @@
 <mat-card class="result-card result-card--prediction">
-  <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
+  <mat-card-title>Resultado de predicción</mat-card-title>
 
   @if (result) {
-    <mat-card-subtitle>{{ ui.cardSubtitleWithData }}</mat-card-subtitle>
+    <mat-card-subtitle>Resumen del último cálculo de esta visita.</mat-card-subtitle>
   }
 
   <mat-card-content>
     @if (result) {
       <section class="summary" [attr.aria-labelledby]="'pred-summary-heading'">
-        <h2 class="section-heading" id="pred-summary-heading">{{ ui.sections.summary }}</h2>
+        <h2 class="section-heading" id="pred-summary-heading">Resumen</h2>
         <div class="summary-layout">
           <div class="probability-block">
-            <span class="sr-only">{{ ui.labels.probability }}:</span>
+            <span class="sr-only">Probabilidad estimada:</span>
             <span class="probability-value" aria-hidden="true">{{ result.prediction_probability | number: '1.0-2' }}</span>
-            <span class="probability-unit" aria-hidden="true">{{ ui.units.probabilitySuffix }}</span>
-            <span class="probability-caption">{{ ui.labels.probabilityShort }}</span>
+            <span class="probability-unit" aria-hidden="true">%</span>
+            <span class="probability-caption">Probabilidad</span>
           </div>
           <div class="risk-block">
-            <span class="risk-label">{{ ui.labels.riskLevel }}</span>
+            <span class="risk-label">Nivel de riesgo</span>
             <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ result.risk_level }}</span>
           </div>
         </div>
@@ -26,29 +26,29 @@
       <mat-divider class="section-divider" />
 
       <section class="details-block" [attr.aria-labelledby]="'pred-details-heading'">
-        <h2 class="section-heading" id="pred-details-heading">{{ ui.sections.details }}</h2>
+        <h2 class="section-heading" id="pred-details-heading">Detalles</h2>
         <dl class="result-grid">
-          <dt>{{ ui.labels.timestamp }}</dt>
+          <dt>Fecha y hora</dt>
           <dd>{{ result.prediction_timestamp | date: 'medium' }}</dd>
 
-          <dt>{{ ui.labels.bmi }}</dt>
+          <dt>IMC</dt>
           <dd>
             @if (result.bmi != null) {
               {{ result.bmi | number: '1.0-2' }}
             } @else {
-              <span class="muted">{{ ui.labels.bmiUnavailable }}</span>
+              <span class="muted">No incluido en este resultado</span>
             }
           </dd>
 
-          <dt>{{ ui.labels.modelVersion }}</dt>
+          <dt>Versión del modelo</dt>
           <dd>{{ modelVersionDisplay }}</dd>
 
           @if (hasPredictedClass) {
-            <dt>{{ ui.labels.predictedClass }}</dt>
+            <dt>Categoría según el modelo</dt>
             <dd>{{ result.predicted_class }}</dd>
           }
 
-          <dt>{{ ui.labels.predictionId }}</dt>
+          <dt>Referencia de la predicción</dt>
           <dd class="mono wrap-id">{{ result.prediction_id }}</dd>
         </dl>
       </section>
@@ -56,7 +56,7 @@
       @if (shapExplanation(); as shapMain) {
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'pred-shap-main-heading'">
-          <h2 class="section-heading" id="pred-shap-main-heading">{{ ui.sections.shapMain }}</h2>
+          <h2 class="section-heading" id="pred-shap-main-heading">Factor con mayor influencia</h2>
           <app-shap-explanation-user-card [explanation]="shapMain" />
         </section>
       }
@@ -64,7 +64,7 @@
       @if (shapFactors().length) {
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'pred-shap-factors-heading'">
-          <h2 class="section-heading" id="pred-shap-factors-heading">{{ ui.sections.shapFactors }}</h2>
+          <h2 class="section-heading" id="pred-shap-factors-heading">Otros factores destacados</h2>
           <div class="factor-stack" role="list">
             @for (factor of shapFactors(); track $index) {
               <app-shap-factor-user-card [factor]="factor" [batchMaxAbs]="shapFactorsMaxAbs" />
@@ -76,7 +76,7 @@
       @if (result.recommendations?.length) {
         <mat-divider class="section-divider" />
         <section [attr.aria-labelledby]="'pred-rec-heading'">
-          <h2 class="section-heading" id="pred-rec-heading">{{ ui.sections.recommendations }}</h2>
+          <h2 class="section-heading" id="pred-rec-heading">Recomendaciones</h2>
           <ul class="rec-list">
             @for (rec of result.recommendations!; track $index) {
               <li>{{ rec }}</li>
@@ -89,9 +89,9 @@
 
       <div class="actions">
         @if (showFlowAmbiguousNav) {
-          <p class="muted flow-hint">{{ ui.partialStateHint }}</p>
+          <p class="muted flow-hint">Hay un resultado guardado en el navegador, pero no sabemos si venías del modo sin cuenta o con cuenta. Elige por dónde quieres continuar.</p>
           <div class="action-row">
-            <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.backToAnonymous }}</a>
+            <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAnonymous">Volver a predicción sin cuenta</a>
             <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAuthenticated">{{
               ui.backToAuthenticated
             }}</a>
@@ -103,18 +103,18 @@
 
       @if (flowKind === flowKindConst.anonymous) {
         <p class="footer-link">
-          {{ ui.loginPrompt }}
-          <a [routerLink]="ui.loginRoute">{{ ui.loginLink }}</a>
+          ¿Quieres guardar historial en tu cuenta?
+          <a [routerLink]="ui.loginRoute">Iniciar sesión</a>
         </p>
       }
     } @else {
       <div class="empty-state" role="status">
-        <mat-icon class="empty-icon" [attr.aria-label]="ui.noDataIconAriaLabel">info</mat-icon>
-        <h3 class="empty-title">{{ ui.noDataTitle }}</h3>
-        <p class="empty-body">{{ ui.noDataBody }}</p>
-        <p class="empty-hint muted">{{ ui.noDataHint }}</p>
+        <mat-icon class="empty-icon" aria-label="Información: resultado no disponible en esta pantalla">info</mat-icon>
+        <h3 class="empty-title">No hay resultado para mostrar</h3>
+        <p class="empty-body">El resultado solo se muestra al venir del formulario justo después de un cálculo correcto. Si abriste esta página directamente o la recargaste, ya no est? disponible aquí.</p>
+        <p class="empty-hint muted">Puedes iniciar una nueva predicción sin cuenta o, si tienes cuenta, desde la predicción asociada a tu perfil.</p>
         <div class="empty-actions">
-          <a mat-flat-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.fallbackNavAnonymous }}</a>
+          <a mat-flat-button color="primary" [routerLink]="routes.predictionsAnonymous">Ir a predicción sin cuenta</a>
           <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAuthenticated">{{
             ui.fallbackNavAuthenticated
           }}</a>

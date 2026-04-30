@@ -3,7 +3,6 @@ import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
-import { LOGIN_PAGE_UI } from '../../../../core/constants/ui/auth-login-ui.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -19,7 +18,6 @@ export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly pageUi = LOGIN_PAGE_UI;
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
 

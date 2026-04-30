@@ -4,16 +4,16 @@
       <mat-icon>monitor_heart</mat-icon>
     </div>
     <mat-card-title-group>
-      <p class="prediction-eyebrow">{{ pageUi.pageEyebrow }}</p>
-      <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
-      <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+      <p class="prediction-eyebrow">Evaluación de riesgo</p>
+      <mat-card-title>Predicción sin cuenta</mat-card-title>
+      <mat-card-subtitle>Completa primero perfil y peso, y después las condiciones médicas (obligatorio). El cuestionario de hábitos es opcional: despliega el último panel si quieres añadirlo.</mat-card-subtitle>
     </mat-card-title-group>
   </mat-card-header>
 
   <mat-divider />
 
   <mat-card-content class="prediction-card-body">
-    <p class="prediction-form-guide info-callout">{{ pageUi.formGuide }}</p>
+    <p class="prediction-form-guide info-callout">Los paneles obligatorios llevan la etiqueta «Obligatorio». Puedes tener varios abiertos a la vez. Revisa cada bloque con calma antes de enviar.</p>
 
     @if (serverError) {
       <div class="prediction-error-panel" role="alert">
@@ -27,14 +27,14 @@
         <mat-expansion-panel class="prediction-panel" [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <span class="prediction-panel-title-text">{{ pageUi.sections.profileAndVitals }}</span>
-              <span class="form-badge form-badge--required">{{ sharedUi.badgeRequired }}</span>
+              <span class="prediction-panel-title-text">Perfil y signos vitales</span>
+              <span class="form-badge form-badge--required">Obligatorio</span>
             </mat-panel-title>
-            <mat-panel-description>{{ pageUi.sectionDescriptions.profileAndVitals }}</mat-panel-description>
+            <mat-panel-description>Sexo, edad, talla, dentición y peso actual: obligatorios para el modelo y para calcular el IMC.</mat-panel-description>
           </mat-expansion-panel-header>
 
           <div class="prediction-panel-body">
-            <h4 class="prediction-panel-subheading">{{ pageUi.panelSubsections.personalData }}</h4>
+            <h4 class="prediction-panel-subheading">Datos personales</h4>
             <div class="prediction-field-stack" formGroupName="profile">
               <mat-form-field
                 appearance="outline"
@@ -42,8 +42,8 @@
                 floatLabel="always"
                 subscriptSizing="dynamic"
               >
-                <mat-label>{{ pageUi.labels.sexApi }}</mat-label>
-                <mat-select formControlName="sex" [panelClass]="layoutUi.matSelectPanelClass">
+                <mat-label>Sexo biológico</mat-label>
+                <mat-select formControlName="sex" [panelClass]="'prediction-select-panel'">
                   @for (opt of sexOptions; track opt.value) {
                     <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
                   }
@@ -59,7 +59,7 @@
                 floatLabel="always"
                 subscriptSizing="dynamic"
               >
-                <mat-label>{{ pageUi.labels.birthDate }}</mat-label>
+                <mat-label>Fecha de nacimiento</mat-label>
                 <input
                   matInput
                   [matDatepicker]="anonBirthPicker"
@@ -71,7 +71,7 @@
                 <mat-datepicker-toggle
                   matIconSuffix
                   [for]="anonBirthPicker"
-                  [attr.aria-label]="birthDateFieldUi.openCalendarAria"
+                  aria-label="Abrir calendario y elegir fecha de nacimiento"
                 />
                 <mat-datepicker #anonBirthPicker startView="multi-year" />
                 @if (profileForm.get('birth_date')?.invalid && profileForm.get('birth_date')?.touched) {
@@ -95,7 +95,7 @@
                 floatLabel="always"
                 subscriptSizing="dynamic"
               >
-                <mat-label>{{ pageUi.labels.heightMeters }}</mat-label>
+                <mat-label>Altura (metros)</mat-label>
                 <input
                   matInput
                   type="number"
@@ -104,7 +104,7 @@
                   [attr.max]="limits.heightMetersMax"
                   formControlName="height_meters"
                 />
-                <mat-hint>{{ pageUi.hints.heightRange }}</mat-hint>
+                <mat-hint>Entre 0,5 y 2,5</mat-hint>
                 @if (
                   profileForm.get('height_meters')?.hasError('required') &&
                   profileForm.get('height_meters')?.touched
@@ -125,8 +125,8 @@
                 floatLabel="always"
                 subscriptSizing="dynamic"
               >
-                <mat-label>{{ pageUi.labels.removedTeeth }}</mat-label>
-                <mat-select formControlName="removed_teeth" [panelClass]="layoutUi.matSelectPanelClass">
+                <mat-label>Dientes extraídos</mat-label>
+                <mat-select formControlName="removed_teeth" [panelClass]="'prediction-select-panel'">
                   @for (opt of removedTeethOptions; track opt.value) {
                     <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
                   }
@@ -142,7 +142,7 @@
 
             <mat-divider class="prediction-inner-divider" />
 
-            <p class="prediction-inline-hint">{{ pageUi.sectionDescriptions.vitalsShort }}</p>
+            <p class="prediction-inline-hint">Indica tu peso en kilogramos con el mismo criterio que usarías en una báscula habitual.</p>
 
             <mat-form-field
               appearance="outline"
@@ -150,7 +150,7 @@
               floatLabel="always"
               subscriptSizing="dynamic"
             >
-              <mat-label>{{ pageUi.labels.weightKilograms }}</mat-label>
+              <mat-label>Peso (kg)</mat-label>
               <input
                 matInput
                 type="number"
@@ -159,7 +159,7 @@
                 [attr.max]="limits.weightKgMax"
                 formControlName="weight_kilograms"
               />
-              <mat-hint>{{ pageUi.hints.weightRange }}</mat-hint>
+              <mat-hint>Entre 20 y 350 kg</mat-hint>
               @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
                 <mat-error>{{ validationMessages.weightRequired }}</mat-error>
               }
@@ -176,31 +176,31 @@
         <mat-expansion-panel class="prediction-panel" [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <span class="prediction-panel-title-text">{{ pageUi.sections.medical }}</span>
-              <span class="form-badge form-badge--required">{{ sharedUi.badgeRequired }}</span>
+              <span class="prediction-panel-title-text">Condiciones médicas y discapacidad</span>
+              <span class="form-badge form-badge--required">Obligatorio</span>
             </mat-panel-title>
-            <mat-panel-description>{{ pageUi.sectionDescriptions.medical }}</mat-panel-description>
+            <mat-panel-description>Antecedentes y limitaciones funcionales. Todas las casillas y la diabetes son obligatorias.</mat-panel-description>
           </mat-expansion-panel-header>
 
           <div class="prediction-panel-body" formGroupName="medical_conditions">
-            <h4 class="prediction-panel-subheading">{{ pageUi.panelSubsections.medicalChecklist }}</h4>
-            <p class="prediction-inline-hint">{{ pageUi.medicalSectionHint }}</p>
+            <h4 class="prediction-panel-subheading">Antecedentes y limitaciones</h4>
+            <p class="prediction-inline-hint">Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.</p>
 
             <div class="medical-grid medical-grid--tiles medical-grid--prediction">
-              <mat-checkbox formControlName="had_angina">{{ pageUi.medicalLabels.hadAngina }}</mat-checkbox>
-              <mat-checkbox formControlName="had_stroke">{{ pageUi.medicalLabels.hadStroke }}</mat-checkbox>
-              <mat-checkbox formControlName="had_asthma">{{ pageUi.medicalLabels.hadAsthma }}</mat-checkbox>
-              <mat-checkbox formControlName="had_copd">{{ pageUi.medicalLabels.hadCopd }}</mat-checkbox>
-              <mat-checkbox formControlName="had_skin_cancer">{{ pageUi.medicalLabels.hadSkinCancer }}</mat-checkbox>
-              <mat-checkbox formControlName="had_depressive_disorder">{{ pageUi.medicalLabels.hadDepressiveDisorder }}</mat-checkbox>
-              <mat-checkbox formControlName="had_kidney_disease">{{ pageUi.medicalLabels.hadKidneyDisease }}</mat-checkbox>
-              <mat-checkbox formControlName="had_arthritis">{{ pageUi.medicalLabels.hadArthritis }}</mat-checkbox>
-              <mat-checkbox formControlName="deaf_or_hard_of_hearing">{{ pageUi.medicalLabels.deafOrHardOfHearing }}</mat-checkbox>
-              <mat-checkbox formControlName="blind_or_vision_difficulty">{{ pageUi.medicalLabels.blindOrVisionDifficulty }}</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_concentrating">{{ pageUi.medicalLabels.difficultyConcentrating }}</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_walking">{{ pageUi.medicalLabels.difficultyWalking }}</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_dressing_bathing">{{ pageUi.medicalLabels.difficultyDressingBathing }}</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_errands">{{ pageUi.medicalLabels.difficultyErrands }}</mat-checkbox>
+              <mat-checkbox formControlName="had_angina">¿Angina?</mat-checkbox>
+              <mat-checkbox formControlName="had_stroke">¿Accidente cerebrovascular?</mat-checkbox>
+              <mat-checkbox formControlName="had_asthma">¿Asma?</mat-checkbox>
+              <mat-checkbox formControlName="had_copd">¿EPOC?</mat-checkbox>
+              <mat-checkbox formControlName="had_skin_cancer">¿Cáncer de piel?</mat-checkbox>
+              <mat-checkbox formControlName="had_depressive_disorder">¿Trastorno depresivo?</mat-checkbox>
+              <mat-checkbox formControlName="had_kidney_disease">¿Enfermedad renal?</mat-checkbox>
+              <mat-checkbox formControlName="had_arthritis">¿Artritis?</mat-checkbox>
+              <mat-checkbox formControlName="deaf_or_hard_of_hearing">¿Sordera o dificultad auditiva?</mat-checkbox>
+              <mat-checkbox formControlName="blind_or_vision_difficulty">¿Ceguera o dificultad visual?</mat-checkbox>
+              <mat-checkbox formControlName="difficulty_concentrating">¿Dificultad para concentrarse?</mat-checkbox>
+              <mat-checkbox formControlName="difficulty_walking">¿Dificultad para caminar?</mat-checkbox>
+              <mat-checkbox formControlName="difficulty_dressing_bathing">¿Dificultad para vestirse o bañarse?</mat-checkbox>
+              <mat-checkbox formControlName="difficulty_errands">¿Dificultad para hacer recados?</mat-checkbox>
             </div>
 
             <mat-divider class="prediction-inner-divider" />
@@ -211,8 +211,8 @@
               floatLabel="always"
               subscriptSizing="dynamic"
             >
-              <mat-label>{{ pageUi.labels.diabetes }}</mat-label>
-              <mat-select formControlName="had_diabetes" [panelClass]="layoutUi.matSelectPanelClass">
+              <mat-label>Diabetes</mat-label>
+              <mat-select formControlName="had_diabetes" [panelClass]="'prediction-select-panel'">
                 @for (opt of diabetesOptions; track opt.value) {
                   <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
                 }
@@ -230,14 +230,14 @@
         <mat-expansion-panel class="prediction-panel prediction-panel--optional" [expanded]="false">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <span class="prediction-panel-title-text">{{ pageUi.sections.survey }}</span>
-              <span class="form-badge form-badge--optional">{{ sharedUi.badgeOptional }}</span>
+              <span class="prediction-panel-title-text">Cuestionario de salud (opcional)</span>
+              <span class="form-badge form-badge--optional">Opcional</span>
             </mat-panel-title>
-            <mat-panel-description>{{ pageUi.surveyPanelCollapsedHint }}</mat-panel-description>
+            <mat-panel-description>Opcional: despliega para añadir hábitos y prevención.</mat-panel-description>
           </mat-expansion-panel-header>
 
           <div class="prediction-panel-body prediction-panel-body--survey">
-            <p class="prediction-inline-hint">{{ pageUi.sectionDescriptions.survey }}</p>
+            <p class="prediction-inline-hint">Hábitos, vacunas y percepción de salud. Puedes omitirlo o dejar «Sin especificar» donde aplique.</p>
             <app-prediction-survey-fields [group]="surveyForm" />
           </div>
         </mat-expansion-panel>
@@ -247,9 +247,9 @@
         <button mat-flat-button color="primary" type="submit" class="form-submit-btn prediction-submit-btn" [disabled]="submitting">
           @if (submitting) {
             <mat-spinner diameter="20"></mat-spinner>
-            <span class="btn-label">{{ pageUi.submitPending }}</span>
+            <span class="btn-label">Calculando?</span>
           } @else {
-            {{ pageUi.submitIdle }}
+            Obtener predicción
           }
         </button>
       </div>

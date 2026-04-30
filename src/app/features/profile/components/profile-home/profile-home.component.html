@@ -1,40 +1,40 @@
 <mat-card class="profile-card">
-  <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
-  <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+  <mat-card-title>Mi perfil</mat-card-title>
+  <mat-card-subtitle>Aqu? ves lo que tenemos asociado a tu cuenta. El sexo y la fecha de nacimiento no se pueden cambiar tras el registro. Puedes actualizar altura y dientes; las condiciones médicas se guardan por separado.</mat-card-subtitle>
 
   <mat-card-content>
     @if (loadError) {
       <p class="server-error" role="alert">{{ loadError }}</p>
-      <button type="button" mat-stroked-button color="primary" (click)="loadUser()">{{ pageUi.reload }}</button>
+      <button type="button" mat-stroked-button color="primary" (click)="loadUser()">Recargar datos</button>
     }
 
     @if (pageLoading) {
-      <div class="loading-wrap" role="status" [attr.aria-label]="pageUi.loadingAriaLabel">
+      <div class="loading-wrap" role="status" aria-label="Cargando datos del perfil">
         <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
       </div>
     } @else if (!loadError) {
       <p class="email-line">
-        <span class="email-label">{{ pageUi.emailLabel }}</span>
+        <span class="email-label">Correo de la cuenta</span>
         @if (emailDisplay) {
           <span class="email-value">{{ emailDisplay }}</span>
         } @else {
-          <span class="email-value muted">{{ pageUi.emailUnavailable }}</span>
+          <span class="email-value muted">No disponible</span>
         }
       </p>
 
       <mat-divider class="block-divider"></mat-divider>
 
-      <h3 class="section-title">{{ pageUi.sectionReadOnlyProfile }}</h3>
-      <p class="section-hint">{{ pageUi.profileNotEditableHint }}</p>
+      <h3 class="section-title">Datos del perfil (solo lectura)</h3>
+      <p class="section-hint">Tras el registro, el sexo y la fecha de nacimiento no se pueden corregir aquí. Si necesitas un cambio, contacta con soporte o sigue el procedimiento de tu institución.</p>
       <dl class="readonly-grid">
-        <dt>{{ fieldUi.labels.sexApi }}</dt>
+        <dt>Sexo biológico</dt>
         <dd>{{ sexReadOnlyLabel }}</dd>
-        <dt>{{ fieldUi.labels.birthDate }}</dt>
+        <dt>Fecha de nacimiento</dt>
         <dd>
           @if (birthDateIso) {
             {{ birthDateIso | date: 'mediumDate' }}
           } @else {
-            <span class="muted">{{ pageUi.birthDateUnavailable }}</span>
+            <span class="muted">No indicada</span>
           }
         </dd>
       </dl>
@@ -49,10 +49,10 @@
       }
 
       <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
-        <h3 class="section-title">{{ pageUi.sectionEditableProfile }}</h3>
+        <h3 class="section-title">Datos que puedes actualizar</h3>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ fieldUi.labels.heightMeters }}</mat-label>
+          <mat-label>Altura (metros)</mat-label>
           <input
             matInput
             type="number"
@@ -61,7 +61,7 @@
             [attr.max]="limits.heightMetersMax"
             formControlName="height_meters"
           />
-          <mat-hint>{{ fieldUi.hints.heightRange }}</mat-hint>
+          <mat-hint>Entre 0,5 y 2,5</mat-hint>
           @if (profileForm.get('height_meters')?.hasError('min') && profileForm.get('height_meters')?.touched) {
             <mat-error>{{ validationMessages.heightMin }}</mat-error>
           }
@@ -71,7 +71,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ fieldUi.labels.removedTeeth }}</mat-label>
+          <mat-label>Dientes extraídos</mat-label>
           <mat-select formControlName="removed_teeth">
             @for (opt of removedTeethOptions; track opt.value) {
               <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
@@ -87,11 +87,11 @@
             @if (profileSaving) {
               <mat-spinner diameter="20"></mat-spinner>
             } @else {
-              {{ pageUi.saveProfile }}
+              Guardar cambios de altura y dientes
             }
           </button>
           @if (profileSaving) {
-            <span class="pending-caption">{{ pageUi.saveProfilePending }}</span>
+            <span class="pending-caption">Guardando perfil?</span>
           }
         </div>
       </form>
@@ -106,28 +106,28 @@
       }
 
       <form [formGroup]="medicalForm" (ngSubmit)="saveMedical()" novalidate>
-        <h3 class="section-title">{{ fieldUi.sections.medical }}</h3>
-        <p class="section-hint">{{ fieldUi.medicalSectionHint }}</p>
+        <h3 class="section-title">Condiciones médicas y discapacidad</h3>
+        <p class="section-hint">Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.</p>
 
         <div class="medical-grid">
-          <mat-checkbox formControlName="had_angina">{{ fieldUi.medicalLabels.hadAngina }}</mat-checkbox>
-          <mat-checkbox formControlName="had_stroke">{{ fieldUi.medicalLabels.hadStroke }}</mat-checkbox>
-          <mat-checkbox formControlName="had_asthma">{{ fieldUi.medicalLabels.hadAsthma }}</mat-checkbox>
-          <mat-checkbox formControlName="had_copd">{{ fieldUi.medicalLabels.hadCopd }}</mat-checkbox>
-          <mat-checkbox formControlName="had_skin_cancer">{{ fieldUi.medicalLabels.hadSkinCancer }}</mat-checkbox>
-          <mat-checkbox formControlName="had_depressive_disorder">{{ fieldUi.medicalLabels.hadDepressiveDisorder }}</mat-checkbox>
-          <mat-checkbox formControlName="had_kidney_disease">{{ fieldUi.medicalLabels.hadKidneyDisease }}</mat-checkbox>
-          <mat-checkbox formControlName="had_arthritis">{{ fieldUi.medicalLabels.hadArthritis }}</mat-checkbox>
-          <mat-checkbox formControlName="deaf_or_hard_of_hearing">{{ fieldUi.medicalLabels.deafOrHardOfHearing }}</mat-checkbox>
-          <mat-checkbox formControlName="blind_or_vision_difficulty">{{ fieldUi.medicalLabels.blindOrVisionDifficulty }}</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_concentrating">{{ fieldUi.medicalLabels.difficultyConcentrating }}</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_walking">{{ fieldUi.medicalLabels.difficultyWalking }}</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_dressing_bathing">{{ fieldUi.medicalLabels.difficultyDressingBathing }}</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_errands">{{ fieldUi.medicalLabels.difficultyErrands }}</mat-checkbox>
+          <mat-checkbox formControlName="had_angina">¿Angina?</mat-checkbox>
+          <mat-checkbox formControlName="had_stroke">¿Accidente cerebrovascular?</mat-checkbox>
+          <mat-checkbox formControlName="had_asthma">¿Asma?</mat-checkbox>
+          <mat-checkbox formControlName="had_copd">¿EPOC?</mat-checkbox>
+          <mat-checkbox formControlName="had_skin_cancer">¿Cáncer de piel?</mat-checkbox>
+          <mat-checkbox formControlName="had_depressive_disorder">¿Trastorno depresivo?</mat-checkbox>
+          <mat-checkbox formControlName="had_kidney_disease">¿Enfermedad renal?</mat-checkbox>
+          <mat-checkbox formControlName="had_arthritis">¿Artritis?</mat-checkbox>
+          <mat-checkbox formControlName="deaf_or_hard_of_hearing">¿Sordera o dificultad auditiva?</mat-checkbox>
+          <mat-checkbox formControlName="blind_or_vision_difficulty">¿Ceguera o dificultad visual?</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_concentrating">¿Dificultad para concentrarse?</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_walking">¿Dificultad para caminar?</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_dressing_bathing">¿Dificultad para vestirse o bañarse?</mat-checkbox>
+          <mat-checkbox formControlName="difficulty_errands">¿Dificultad para hacer recados?</mat-checkbox>
         </div>
 
         <mat-form-field appearance="outline" class="full-width diabetes-field">
-          <mat-label>{{ fieldUi.labels.diabetes }}</mat-label>
+          <mat-label>Diabetes</mat-label>
           <mat-select formControlName="had_diabetes">
             @for (opt of diabetesOptions; track opt.value) {
               <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
@@ -143,11 +143,11 @@
             @if (medicalSaving) {
               <mat-spinner diameter="20"></mat-spinner>
             } @else {
-              {{ pageUi.saveMedical }}
+              Guardar condiciones médicas
             }
           </button>
           @if (medicalSaving) {
-            <span class="pending-caption">{{ pageUi.saveMedicalPending }}</span>
+            <span class="pending-caption">Guardando condiciones médicas?</span>
           }
         </div>
       </form>

@@ -10,7 +10,6 @@ import {
 import { PREDICTION_SIMULATION_MESSAGES } from '../../../../core/constants/messages/prediction-simulation-messages.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { PREDICTION_SIMULATION_UI } from '../../../../core/constants/ui/prediction-simulation-ui.constant';
-import { PREDICTION_RESULT_UI } from '../../../../core/constants/ui/prediction-ui.constant';
 import {
   PredictionSimulationNormalizedState,
   PredictionSimulationViewModel
@@ -46,7 +45,6 @@ export class PredictionWhatIfPanelComponent implements OnChanges {
   @Input({ required: true }) baselineResult!: PredictionResultData;
 
   readonly ui = PREDICTION_SIMULATION_UI;
-  readonly resultUi = PREDICTION_RESULT_UI;
   readonly messages = PREDICTION_SIMULATION_MESSAGES;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly generalHealthOptions = GENERAL_HEALTH_OPTIONS;

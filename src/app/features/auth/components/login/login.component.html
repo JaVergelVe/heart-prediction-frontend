@@ -1,72 +1,87 @@
 <div class="auth-page auth-page--centered-tall">
-  <mat-card class="auth-card auth-card--login">
-    <mat-card-header class="login-card-header">
-      <div mat-card-avatar class="login-card-avatar" aria-hidden="true">
-        <mat-icon>health_and_safety</mat-icon>
-      </div>
-      <mat-card-title-group>
-        <p class="login-eyebrow">{{ pageUi.pageEyebrow }}</p>
-        <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
-        <mat-card-subtitle>{{ pageUi.cardSubtitle }}</mat-card-subtitle>
-      </mat-card-title-group>
-    </mat-card-header>
-
-    <mat-divider />
-
-    <mat-card-content class="login-card-body">
-      @if (serverError) {
-        <div class="login-error-panel" role="alert" [attr.aria-label]="pageUi.errorRegionLabel">
-          <mat-icon class="login-error-panel__icon" aria-hidden="true">error_outline</mat-icon>
-          <p class="login-error-panel__text">{{ serverError }}</p>
-        </div>
-      }
-
-      <p class="login-credentials-hint">{{ pageUi.credentialsHint }}</p>
-
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="auth-form login-form-fields">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ pageUi.emailLabel }}</mat-label>
-          <input matInput type="email" formControlName="email" autocomplete="email" />
-          @if (form.controls.email.hasError('required') && form.controls.email.touched) {
-            <mat-error>{{ validationMessages.emailRequired }}</mat-error>
-          }
-          @if (form.controls.email.hasError('email') && form.controls.email.touched) {
-            <mat-error>{{ validationMessages.emailInvalid }}</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ pageUi.passwordLabel }}</mat-label>
-          <input matInput type="password" formControlName="password" autocomplete="current-password" />
-          @if (form.controls.password.hasError('required') && form.controls.password.touched) {
-            <mat-error>{{ validationMessages.passwordRequired }}</mat-error>
-          }
-          @if (form.controls.password.hasError('minlength') && form.controls.password.touched) {
-            <mat-error>{{ validationMessages.passwordEmpty }}</mat-error>
-          }
-          @if (form.controls.password.hasError('maxlength') && form.controls.password.touched) {
-            <mat-error>{{ validationMessages.passwordMax }}</mat-error>
-          }
-        </mat-form-field>
-
-        <div class="actions actions--auth-primary login-submit-row">
-          <button mat-flat-button color="primary" type="submit" class="auth-primary-btn login-submit-btn" [disabled]="submitting">
-            @if (submitting) {
-              <mat-spinner diameter="20"></mat-spinner>
-              <span class="btn-label">{{ pageUi.submitPending }}</span>
-            } @else {
-              {{ pageUi.submitIdle }}
-            }
-          </button>
-        </div>
-      </form>
-
-      <mat-divider class="login-footer-divider" />
-
-      <p class="footer-link">
-        {{ pageUi.registerPrompt }}
-        <a [routerLink]="pageUi.registerRoute">{{ pageUi.registerLink }}</a>
+  <section class="login-shell">
+    <aside class="login-showcase" aria-label="Beneficios de iniciar sesión">
+      <p class="login-showcase__eyebrow">Heart Prediction</p>
+      <h2>Una vista clara de tu evolución cardiovascular</h2>
+      <p>
+        Inicia sesión para revisar tu progreso, comparar resultados y mantener una lectura continua de tus predicciones en un solo lugar.
       </p>
-    </mat-card-content>
-  </mat-card>
+      <ul>
+        <li>Historial de predicciones ordenado y fácil de revisar</li>
+        <li>Acceso a detalles y factores de riesgo por cada análisis</li>
+        <li>Experiencia optimizada para seguimiento personal</li>
+      </ul>
+    </aside>
+
+    <mat-card class="auth-card auth-card--login">
+      <mat-card-header class="login-card-header">
+        <div mat-card-avatar class="login-card-avatar" aria-hidden="true">
+          <mat-icon>health_and_safety</mat-icon>
+        </div>
+        <mat-card-title-group>
+          <p class="login-eyebrow">Acceso seguro</p>
+          <mat-card-title>Iniciar sesión</mat-card-title>
+          <mat-card-subtitle>Ingresa tu correo y contraseña para continuar con tu perfil.</mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+
+      <mat-divider />
+
+      <mat-card-content class="login-card-body">
+        @if (serverError) {
+          <div class="login-error-panel" role="alert" aria-label="Mensaje del servidor">
+            <mat-icon class="login-error-panel__icon" aria-hidden="true">error_outline</mat-icon>
+            <p class="login-error-panel__text">{{ serverError }}</p>
+          </div>
+        }
+
+        <p class="login-credentials-hint">Usa las mismas credenciales con las que creaste tu cuenta.</p>
+
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="auth-form login-form-fields">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput type="email" formControlName="email" autocomplete="email" />
+            @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+              <mat-error>{{ validationMessages.emailRequired }}</mat-error>
+            }
+            @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+              <mat-error>{{ validationMessages.emailInvalid }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="password" autocomplete="current-password" />
+            @if (form.controls.password.hasError('required') && form.controls.password.touched) {
+              <mat-error>{{ validationMessages.passwordRequired }}</mat-error>
+            }
+            @if (form.controls.password.hasError('minlength') && form.controls.password.touched) {
+              <mat-error>{{ validationMessages.passwordEmpty }}</mat-error>
+            }
+            @if (form.controls.password.hasError('maxlength') && form.controls.password.touched) {
+              <mat-error>{{ validationMessages.passwordMax }}</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="actions actions--auth-primary login-submit-row">
+            <button mat-flat-button color="primary" type="submit" class="auth-primary-btn login-submit-btn" [disabled]="submitting">
+              @if (submitting) {
+                <mat-spinner diameter="20"></mat-spinner>
+                <span class="btn-label">Entrando...</span>
+              } @else {
+                Entrar
+              }
+            </button>
+          </div>
+        </form>
+
+        <mat-divider class="login-footer-divider" />
+
+        <p class="footer-link">
+          ¿No tienes cuenta?
+          <a [routerLink]="'/auth/register'">Crear cuenta</a>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </section>
 </div>

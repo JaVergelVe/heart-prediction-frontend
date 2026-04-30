@@ -1,13 +1,40 @@
 .auth-card--register {
   width: 100%;
-  max-width: 800px;
+  max-width: 920px;
   margin: 0 auto;
   overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.12) !important;
 }
 
 .register-card-header {
+  display: flex;
+  gap: 0.8rem;
   align-items: flex-start;
-  padding: var(--app-space-md) var(--app-space-md) var(--app-space-sm);
+  padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-sm);
+  background: radial-gradient(circle at 0% 0%, rgba(20, 184, 166, 0.14), transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.1), transparent 45%), #fff;
+}
+
+.register-card-header .mat-mdc-card-header-text {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.register-card-header mat-card-title-group {
+  display: block;
+  margin: 0;
+}
+
+.register-card-header .mat-mdc-card-title,
+.register-card-header .mat-mdc-card-subtitle {
+  margin: 0;
+}
+
+.register-card-header .mat-mdc-card-subtitle {
+  margin-top: 0.35rem;
+  line-height: 1.45;
 }
 
 .register-card-avatar {
@@ -17,7 +44,7 @@
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: rgba(46, 125, 50, 0.1);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(99, 102, 241, 0.16));
   color: rgb(46, 125, 50);
 }
 
@@ -33,11 +60,11 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--app-text-faint);
+  color: #475569;
 }
 
 .register-card-body {
-  padding-top: var(--app-space-md) !important;
+  padding: var(--app-space-md) var(--app-space-lg) var(--app-space-lg) !important;
 }
 
 .register-error-panel {
@@ -71,17 +98,28 @@
   margin-top: 0;
 }
 
+.register-top-hint {
+  margin: 0 0 0.95rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(16, 185, 129, 0.26);
+  background: rgba(16, 185, 129, 0.08);
+  color: #134e4a;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .register-accordion {
   display: flex;
   flex-direction: column;
-  gap: var(--app-space-sm);
+  gap: 0.65rem;
 }
 
 :host ::ng-deep .register-panel.mat-expansion-panel {
-  border-radius: var(--app-radius-md) !important;
-  border: 1px solid var(--app-border-subtle);
-  box-shadow: none !important;
-  background: rgba(255, 255, 255, 0.85);
+  border-radius: 14px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05) !important;
+  background: linear-gradient(180deg, #fff, #f8fafc);
 }
 
 :host ::ng-deep .register-panel .mat-expansion-panel-header {
@@ -130,9 +168,14 @@
   align-items: flex-start;
   padding: 0.5rem 0.65rem;
   border-radius: var(--app-radius-sm);
-  border: 1px solid var(--app-border-subtle);
+  border: 1px solid rgba(15, 23, 42, 0.09);
   background: rgba(255, 255, 255, 0.92);
   box-sizing: border-box;
+  transition: border-color 160ms ease;
+}
+
+.medical-grid--tiles .mat-mdc-checkbox:hover {
+  border-color: rgba(99, 102, 241, 0.35);
 }
 
 .register-diabetes-divider {
@@ -152,6 +195,8 @@
 .register-submit-btn {
   min-height: 52px;
   min-width: min(100%, 280px);
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.28);
 }
 
 .register-footer-divider {

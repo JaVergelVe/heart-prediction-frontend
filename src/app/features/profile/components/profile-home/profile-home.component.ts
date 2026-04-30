@@ -8,8 +8,6 @@ import {
 } from '../../../../core/constants/data/prediction-survey-options.constant';
 import { PROFILE_MESSAGES } from '../../../../core/constants/messages/profile-messages.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
-import { ANONYMOUS_PREDICTION_PAGE_UI } from '../../../../core/constants/ui/prediction-ui.constant';
-import { PROFILE_PAGE_UI } from '../../../../core/constants/ui/profile-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { RegisterMedicalIn, RegisterProfileIn, UserProfileUpdateBody } from '../../../../core/models/register-request.model';
 import { CurrentUserMe } from '../../../../core/models/user-me.model';
@@ -27,8 +25,6 @@ export class ProfileHomeComponent implements OnInit {
   private readonly currentUser = inject(CurrentUserService);
   private readonly formBuilder = inject(PredictionFormBuilderService);
 
-  readonly pageUi = PROFILE_PAGE_UI;
-  readonly fieldUi = ANONYMOUS_PREDICTION_PAGE_UI;
   readonly messages = PROFILE_MESSAGES;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly limits = VALIDATION_LIMITS;
