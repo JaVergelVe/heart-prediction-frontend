@@ -11,12 +11,8 @@ import {
 import { PREDICTION_ROUTER_STATE_KEYS } from '../../../../core/constants/prediction-router-state.constant';
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
-import { BIRTH_DATE_FIELD_UI } from '../../../../core/constants/ui/birth-date-field-ui.constant';
 import {
-  ANONYMOUS_PREDICTION_PAGE_UI,
   PREDICTION_FLOW_KIND,
-  PREDICTION_FORM_LAYOUT_UI,
-  PREDICTION_FORM_SHARED_UI
 } from '../../../../core/constants/ui/prediction-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { RegisterMedicalIn, RegisterProfileIn } from '../../../../core/models/register-request.model';
@@ -37,15 +33,11 @@ export class AnonymousPredictionPageComponent {
   private readonly session = inject(AnonymousPredictionSessionService);
   private readonly forms = inject(PredictionFormBuilderService);
 
-  readonly pageUi = ANONYMOUS_PREDICTION_PAGE_UI;
-  readonly layoutUi = PREDICTION_FORM_LAYOUT_UI;
-  readonly sharedUi = PREDICTION_FORM_SHARED_UI;
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly sexOptions = PREDICTION_SEX_OPTIONS;
   readonly removedTeethOptions = PREDICTION_REMOVED_TEETH_OPTIONS;
   readonly diabetesOptions = PREDICTION_HAD_DIABETES_OPTIONS;
-  readonly birthDateFieldUi = BIRTH_DATE_FIELD_UI;
 
   get maxBirthDate(): Date {
     return new Date();

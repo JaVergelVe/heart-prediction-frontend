@@ -10,8 +10,6 @@ import {
 } from '../../../../core/constants/data/register-api-options.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
-import { REGISTER_PAGE_UI } from '../../../../core/constants/ui/auth-register-ui.constant';
-import { BIRTH_DATE_FIELD_UI } from '../../../../core/constants/ui/birth-date-field-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { birthDateNotInFutureValidator } from '../../../../core/validators/birth-date-not-in-future.validator';
 import {
@@ -32,13 +30,11 @@ export class RegisterComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly pageUi = REGISTER_PAGE_UI;
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly removedTeethOptions = REGISTER_REMOVED_TEETH_OPTIONS;
   readonly diabetesOptions = REGISTER_DIABETES_OPTION_ITEMS;
   readonly sexOptions = REGISTER_SEX_OPTIONS;
-  readonly birthDateFieldUi = BIRTH_DATE_FIELD_UI;
 
   get maxBirthDate(): Date {
     return new Date();

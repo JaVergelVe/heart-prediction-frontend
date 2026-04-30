@@ -1,6 +1,4 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { SHAP_DISPLAY_UI } from '../../../core/constants/shap-display.constant';
-import { PREDICTION_RESULT_UI } from '../../../core/constants/ui/prediction-ui.constant';
 import type { ShapTopFactor } from '../../../core/models/prediction-response.model';
 import { buildShapFactorUserView, type ShapFactorUserView } from '../../../core/utils/shap-display.util';
 
@@ -13,9 +11,6 @@ import { buildShapFactorUserView, type ShapFactorUserView } from '../../../core/
 export class ShapFactorUserCardComponent implements OnChanges {
   @Input({ required: true }) factor!: ShapTopFactor;
   @Input() batchMaxAbs = 0;
-
-  readonly ui = SHAP_DISPLAY_UI;
-  readonly resultUi = PREDICTION_RESULT_UI;
 
   view: ShapFactorUserView = buildShapFactorUserView({} as ShapTopFactor, 0);
 

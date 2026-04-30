@@ -1,51 +1,51 @@
 <mat-card class="history-card">
-  <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
-  <mat-card-subtitle>{{ ui.cardSubtitle }}</mat-card-subtitle>
+  <mat-card-title>Historial de predicciones</mat-card-title>
+  <mat-card-subtitle>Predicciones guardadas en tu cuenta. Pulsa «Ver detalle» para ver el análisis completo.</mat-card-subtitle>
 
   <mat-card-content>
     @if (loadError) {
       <p class="server-error" role="alert">{{ loadError }}</p>
-      <button type="button" mat-stroked-button color="primary" (click)="loadHistory()">{{ ui.retry }}</button>
+      <button type="button" mat-stroked-button color="primary" (click)="loadHistory()">Reintentar</button>
     }
 
     @if (loading) {
-      <div class="loading-wrap" role="status" [attr.aria-label]="ui.loadingAriaLabel">
+      <div class="loading-wrap" role="status" aria-label="Cargando historial de predicciones">
         <mat-progress-spinner mode="indeterminate" diameter="40" />
       </div>
     } @else if (!loadError) {
       @if (rows.length === 0) {
         <div class="empty-state-panel" role="status">
-          <p class="empty-hint">{{ messages.emptyList }}</p>
+          <p class="empty-hint">Aún no hay predicciones guardadas en tu cuenta.</p>
         </div>
       } @else {
         <div class="app-table-scroll" tabindex="0">
           <table mat-table [dataSource]="rows" class="history-table">
             <ng-container [matColumnDef]="cols.date">
-              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.date }}</th>
+              <th mat-header-cell *matHeaderCellDef>Fecha</th>
               <td mat-cell *matCellDef="let row">{{ row.prediction_timestamp | date: 'medium' }}</td>
             </ng-container>
 
             <ng-container [matColumnDef]="cols.risk">
-              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.risk }}</th>
+              <th mat-header-cell *matHeaderCellDef>Nivel de riesgo</th>
               <td mat-cell *matCellDef="let row">
                 <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(row.risk_level)">{{ row.risk_level }}</span>
               </td>
             </ng-container>
 
             <ng-container [matColumnDef]="cols.probability">
-              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.probability }}</th>
+              <th mat-header-cell *matHeaderCellDef>Probabilidad</th>
               <td mat-cell *matCellDef="let row">
-                {{ row.prediction_probability | number: '1.0-2' }}{{ ui.probabilitySuffix }}
+                {{ row.prediction_probability | number: '1.0-2' }}%
               </td>
             </ng-container>
 
             <ng-container [matColumnDef]="cols.bmi">
-              <th mat-header-cell *matHeaderCellDef>{{ ui.columnHeaders.bmi }}</th>
+              <th mat-header-cell *matHeaderCellDef>IMC</th>
               <td mat-cell *matCellDef="let row">
                 @if (row.bmi != null) {
                   {{ row.bmi | number: '1.0-2' }}
                 } @else {
-                  <span class="muted">{{ ui.bmiUnavailable }}</span>
+                  <span class="muted">?</span>
                 }
               </td>
             </ng-container>
@@ -57,9 +57,9 @@
                   mat-stroked-button
                   color="primary"
                   [routerLink]="[historyBaseUrl, row.prediction_id]"
-                  [attr.aria-label]="ui.viewDetailAria"
+                  aria-label="Abrir detalle de la predicción"
                 >
-                  {{ ui.viewDetail }}
+                  Ver detalle
                 </a>
               </td>
             </ng-container>

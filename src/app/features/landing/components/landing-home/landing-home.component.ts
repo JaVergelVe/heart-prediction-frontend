@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LANDING_PAGE_UI } from '../../../../core/constants/ui/landing-ui.constant';
+import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 
 @Component({
   selector: 'app-landing-home',
@@ -7,5 +7,5 @@ import { LANDING_PAGE_UI } from '../../../../core/constants/ui/landing-ui.consta
   styleUrl: './landing-home.component.scss'
 })
 export class LandingHomeComponent {
-  readonly ui = LANDING_PAGE_UI;
+  readonly routes = APP_ROUTE_URLS;
 }

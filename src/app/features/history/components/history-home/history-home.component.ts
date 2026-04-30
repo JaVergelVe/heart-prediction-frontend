@@ -3,8 +3,7 @@ import { HISTORY_MESSAGES } from '../../../../core/constants/messages/history-me
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 import {
   HISTORY_LIST_COLUMN_KEYS,
-  HISTORY_LIST_DISPLAYED_COLUMNS,
-  HISTORY_LIST_PAGE_UI
+  HISTORY_LIST_DISPLAYED_COLUMNS
 } from '../../../../core/constants/ui/history-ui.constant';
 import {
   PREDICTION_RISK_LEVEL_KEYWORDS,
@@ -22,7 +21,6 @@ import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorize
 export class HistoryHomeComponent implements OnInit {
   private readonly predictionApi = inject(PredictionService);
 
-  readonly ui = HISTORY_LIST_PAGE_UI;
   readonly messages = HISTORY_MESSAGES;
   readonly cols = HISTORY_LIST_COLUMN_KEYS;
   readonly displayedColumns = HISTORY_LIST_DISPLAYED_COLUMNS;

@@ -4,16 +4,16 @@
       <mat-icon>favorite</mat-icon>
     </div>
     <mat-card-title-group class="prediction-card-title-group prediction-card-title-group--auth">
-      <p class="prediction-eyebrow">{{ pageUi.pageEyebrow }}</p>
-      <mat-card-title>{{ pageUi.cardTitle }}</mat-card-title>
-      <mat-card-subtitle class="prediction-card-lead">{{ pageUi.cardSubtitle }}</mat-card-subtitle>
+      <p class="prediction-eyebrow">Con tu perfil guardado</p>
+      <mat-card-title>Predicción con tu cuenta</mat-card-title>
+      <mat-card-subtitle class="prediction-card-lead">Actualiza tu peso y, si lo deseas, completa el cuestionario opcional. El resto de tu ficha ya est? guardada en tu cuenta.</mat-card-subtitle>
     </mat-card-title-group>
   </mat-card-header>
 
   <mat-divider class="prediction-card-divider prediction-card-divider--auth" />
 
   <mat-card-content class="prediction-card-body prediction-card-body--auth">
-    <p class="prediction-form-guide info-callout">{{ pageUi.formGuide }}</p>
+    <p class="prediction-form-guide info-callout">Solo el peso es obligatorio en esta pantalla. El cuestionario amplía contexto y es opcional: ábrelo cuando quieras completarlo.</p>
 
     @if (serverError) {
       <div class="prediction-error-panel" role="alert">
@@ -28,10 +28,10 @@
           <mat-expansion-panel class="prediction-panel" [expanded]="true">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <span class="prediction-panel-title-text">{{ pageUi.sections.vitals }}</span>
-                <span class="form-badge form-badge--required">{{ sharedUi.badgeRequired }}</span>
+                <span class="prediction-panel-title-text">Signos vitales</span>
+                <span class="form-badge form-badge--required">Obligatorio</span>
               </mat-panel-title>
-              <mat-panel-description>{{ pageUi.sectionDescriptions.vitals }}</mat-panel-description>
+              <mat-panel-description>Solo el peso es obligatorio aquí; el resto de tu ficha ya est? asociada a tu cuenta.</mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="prediction-panel-body prediction-panel-body--single">
@@ -41,7 +41,7 @@
                 floatLabel="always"
                 subscriptSizing="dynamic"
               >
-                <mat-label>{{ pageUi.labels.weightKilograms }}</mat-label>
+                <mat-label>Peso (kg)</mat-label>
                 <input
                   matInput
                   type="number"
@@ -50,7 +50,7 @@
                   [attr.max]="limits.weightKgMax"
                   formControlName="weight_kilograms"
                 />
-                <mat-hint>{{ pageUi.hints.weightRange }}</mat-hint>
+                <mat-hint>Entre 20 y 350 kg</mat-hint>
                 @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
                   <mat-error>{{ validationMessages.weightRequired }}</mat-error>
                 }
@@ -67,14 +67,14 @@
           <mat-expansion-panel class="prediction-panel prediction-panel--optional" [expanded]="false">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <span class="prediction-panel-title-text">{{ pageUi.sections.survey }}</span>
-                <span class="form-badge form-badge--optional">{{ sharedUi.badgeOptional }}</span>
+                <span class="prediction-panel-title-text">Cuestionario de salud (opcional)</span>
+                <span class="form-badge form-badge--optional">Opcional</span>
               </mat-panel-title>
-              <mat-panel-description>{{ pageUi.surveyPanelCollapsedHint }}</mat-panel-description>
+              <mat-panel-description>Opcional: hábitos, vacunas y bienestar.</mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="prediction-panel-body prediction-panel-body--survey">
-              <p class="prediction-inline-hint">{{ pageUi.sectionDescriptions.survey }}</p>
+              <p class="prediction-inline-hint">Refina el resultado con hábitos y prevención. Todo este bloque es opcional.</p>
               <app-prediction-survey-fields [group]="surveyForm" />
             </div>
           </mat-expansion-panel>
@@ -85,9 +85,9 @@
         <button mat-flat-button color="primary" type="submit" class="form-submit-btn prediction-submit-btn" [disabled]="submitting">
           @if (submitting) {
             <mat-spinner diameter="20"></mat-spinner>
-            <span class="btn-label">{{ pageUi.submitPending }}</span>
+            <span class="btn-label">Calculando?</span>
           } @else {
-            {{ pageUi.submitIdle }}
+            Obtener predicción
           }
         </button>
       </div>

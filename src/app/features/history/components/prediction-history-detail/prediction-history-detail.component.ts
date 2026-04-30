@@ -4,8 +4,6 @@ import { EMPTY, Subscription, distinctUntilChanged, finalize, map, switchMap } f
 import { HISTORY_ROUTE_PARAM_KEYS } from '../../../../core/constants/history-route-params.constant';
 import { HISTORY_MESSAGES } from '../../../../core/constants/messages/history-messages.constant';
 import { PredictionRiskPillKind } from '../../../../core/constants/prediction-result-risk.constant';
-import { PREDICTION_RESULT_UI } from '../../../../core/constants/ui/prediction-ui.constant';
-import { HISTORY_DETAIL_PAGE_UI } from '../../../../core/constants/ui/history-ui.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
 import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 import { PredictionService } from '../../../../core/services/prediction.service';
@@ -25,8 +23,6 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
 
   private sub: Subscription | null = null;
 
-  readonly pageUi = HISTORY_DETAIL_PAGE_UI;
-  readonly resultUi = PREDICTION_RESULT_UI;
   readonly messages = HISTORY_MESSAGES;
 
   result: PredictionResultData | null = null;
@@ -105,7 +101,7 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
     if (v != null && String(v).trim() !== '') {
       return String(v).trim();
     }
-    return this.resultUi.labels.modelVersionUnavailable;
+    return 'No disponible';
   }
 
   get hasPredictedClass(): boolean {

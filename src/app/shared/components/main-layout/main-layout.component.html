@@ -1,16 +1,16 @@
 <mat-sidenav-container class="shell app-shell">
-  <mat-sidenav #drawer mode="over" class="sidenav shell-sidenav" [attr.aria-label]="layoutUi.sidenavAriaLabel">
+  <mat-sidenav #drawer mode="over" class="sidenav shell-sidenav" aria-label="Menú lateral">
     <div class="shell-sidenav__head">
       <div class="shell-sidenav__brand">
         <span class="shell-sidenav__mark" aria-hidden="true"></span>
         <div class="shell-sidenav__brand-text">
-          <span class="shell-sidenav__product">{{ layoutUi.sidenavProductLine }}</span>
-          <span class="shell-sidenav__section">{{ layoutUi.sidenavNavSectionLabel }}</span>
+          <span class="shell-sidenav__product">Riesgo cardiovascular</span>
+          <span class="shell-sidenav__section">Menú</span>
         </div>
       </div>
     </div>
     <mat-divider class="shell-sidenav__divider"></mat-divider>
-    <mat-nav-list class="shell-sidenav__list" [attr.aria-label]="layoutUi.sidenavNavAriaLabel">
+    <mat-nav-list class="shell-sidenav__list" aria-label="Navegación principal">
       @for (link of visibleNavLinks; track link.routerLink) {
         @if (link.routerLinkActiveOptions) {
           <a
@@ -41,10 +41,10 @@
           mat-list-item
           type="button"
           class="shell-nav-link shell-nav-link--logout"
-          [attr.aria-label]="layoutUi.logoutAriaLabel"
+          aria-label="Cerrar sesión y volver a la pantalla de acceso"
           (click)="logout(); drawer.close()"
         >
-          {{ layoutUi.logoutLabel }}
+          Cerrar sesión
         </button>
       }
     </mat-nav-list>

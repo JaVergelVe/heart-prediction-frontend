@@ -6,9 +6,7 @@ import { PREDICTION_ROUTER_STATE_KEYS } from '../../../../core/constants/predict
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import {
-  AUTHENTICATED_PREDICTION_PAGE_UI,
   PREDICTION_FLOW_KIND,
-  PREDICTION_FORM_SHARED_UI
 } from '../../../../core/constants/ui/prediction-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
 import { PredictionService } from '../../../../core/services/prediction.service';
@@ -27,8 +25,6 @@ export class AuthenticatedPredictionPageComponent {
   private readonly predictionApi = inject(PredictionService);
   private readonly forms = inject(PredictionFormBuilderService);
 
-  readonly pageUi = AUTHENTICATED_PREDICTION_PAGE_UI;
-  readonly sharedUi = PREDICTION_FORM_SHARED_UI;
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
 
