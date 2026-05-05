@@ -1,6 +1,20 @@
 .result-card {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
+}
+
+.result-card .mat-mdc-card-title {
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.result-card .mat-mdc-card-subtitle {
+  text-align: center;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-heading {
@@ -21,7 +35,8 @@
 .summary-layout {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   gap: 1.25rem 2rem;
 }
 
@@ -29,6 +44,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: center;
   gap: 0.15rem 0.35rem;
 }
 
@@ -49,11 +65,13 @@
   flex-basis: 100%;
   font-size: 0.8125rem;
   color: var(--app-text-muted);
+  text-align: center;
 }
 
 .risk-block {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.35rem;
 }
 
@@ -70,6 +88,14 @@
   margin-top: 0.25rem;
 }
 
+.pdf-toolbar--card {
+  padding: var(--app-space-md);
+  border-radius: var(--app-radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(248, 250, 252, 0.55);
+  justify-content: center;
+}
+
 .pdf-spinner {
   flex-shrink: 0;
 }
@@ -80,6 +106,8 @@
 
 .actions {
   margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .error-actions {
@@ -87,4 +115,26 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+}
+
+.summary {
+  padding: var(--app-space-md);
+}
+
+.summary-card,
+.details-card,
+.recommendations-card {
+  border-radius: var(--app-radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(248, 250, 252, 0.55);
+}
+
+.details-card,
+.recommendations-card {
+  padding: var(--app-space-md);
+}
+
+.recommendations-card .rec-list {
+  margin: 0;
+  padding-left: 1.1rem;
 }
