@@ -21,7 +21,7 @@
     }
 
     @if (result && !loading) {
-      <section class="summary" [attr.aria-labelledby]="'hist-summary-heading'">
+      <section class="summary summary-card" [attr.aria-labelledby]="'hist-summary-heading'">
         <h2 class="section-heading" id="hist-summary-heading">Resumen</h2>
         <div class="summary-layout">
           <div class="probability-block">
@@ -39,7 +39,7 @@
 
       <mat-divider class="section-divider" />
 
-      <section class="details-block" [attr.aria-labelledby]="'hist-details-heading'">
+      <section class="details-block details-card" [attr.aria-labelledby]="'hist-details-heading'">
         <h2 class="section-heading" id="hist-details-heading">Detalles</h2>
         <dl class="result-grid">
           <dt>Fecha y hora</dt>
@@ -89,7 +89,7 @@
 
       @if (result.recommendations?.length) {
         <mat-divider class="section-divider" />
-        <section [attr.aria-labelledby]="'hist-rec-heading'">
+        <section class="recommendations-card" [attr.aria-labelledby]="'hist-rec-heading'">
           <h2 class="section-heading" id="hist-rec-heading">Recomendaciones</h2>
           <ul class="rec-list">
             @for (rec of result.recommendations!; track $index) {
@@ -103,7 +103,7 @@
 
       <mat-divider class="section-divider" />
 
-      <div class="pdf-toolbar">
+      <div class="pdf-toolbar pdf-toolbar--card">
         <button
           type="button"
           mat-stroked-button
