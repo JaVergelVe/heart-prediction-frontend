@@ -1,17 +1,23 @@
 import { formatDate } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import {
   REGISTER_DIABETES_OPTION_ITEMS,
-  REGISTER_REMOVED_TEETH_OPTIONS,
+  REGISTER_REMOVED_TEETH_OPTION_ITEMS,
   REGISTER_SEX_OPTIONS
 } from '../../../../core/constants/data/register-api-options.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
+import { REGISTER_PAGE_UI } from '../../../../core/constants/ui/auth-register-ui.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
-import { birthDateNotInFutureValidator } from '../../../../core/validators/birth-date-not-in-future.validator';
+import {
+  birthDateMinimumAgeValidator,
+  birthDateNotInFutureValidator
+} from '../../../../core/validators/birth-date-not-in-future.validator';
 import {
   RegisterMedicalIn,
   RegisterProfileIn,
@@ -30,11 +36,13 @@ export class RegisterComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
+  readonly ui = REGISTER_PAGE_UI;
   readonly limits = VALIDATION_LIMITS;
   readonly validationMessages = VALIDATION_MESSAGES;
-  readonly removedTeethOptions = REGISTER_REMOVED_TEETH_OPTIONS;
-  readonly diabetesOptions = REGISTER_DIABETES_OPTION_ITEMS;
+  readonly removedTeethOptions = REGISTER_REMOVED_TEETH_OPTION_ITEMS;
+  readonly diabetesOptionsAll = REGISTER_DIABETES_OPTION_ITEMS;
   readonly sexOptions = REGISTER_SEX_OPTIONS;
+  showPassword = false;
 
   get maxBirthDate(): Date {
     return new Date();
@@ -48,7 +56,7 @@ export class RegisterComponent {
     ],
     profile: this.fb.group({
       sex: ['' as RegisterProfileIn['sex'] | '', [Validators.required]],
-      birth_date: [null as Date | null, [Validators.required, birthDateNotInFutureValidator()]],
+      birth_date: [null as Date | null, [Validators.required, birthDateNotInFutureValidator(), birthDateMinimumAgeValidator(18)]],
       height_meters: [
         null as number | null,
         [Validators.required, Validators.min(this.limits.heightMetersMin), Validators.max(this.limits.heightMetersMax)]
@@ -77,6 +85,21 @@ export class RegisterComponent {
   submitting = false;
   serverError: string | null = null;
 
+  constructor() {
+    const sexControl = this.form.controls.profile.controls.sex;
+    sexControl.valueChanges.pipe(takeUntilDestroyed()).subscribe((sex) => {
+      this.enforceDiabetesOptionBySex(sex ?? '');
+    });
+  }
+
+  get diabetesOptions(): readonly (typeof REGISTER_DIABETES_OPTION_ITEMS)[number][] {
+    const sex = this.form.controls.profile.controls.sex.value;
+    if (sex === 'Male') {
+      return this.diabetesOptionsAll.filter((opt) => opt.value !== 'Yes, but only during pregnancy (female)');
+    }
+    return this.diabetesOptionsAll;
+  }
+
   submit(): void {
     this.serverError = null;
     if (this.form.invalid) {
@@ -89,11 +112,56 @@ export class RegisterComponent {
       .register(body)
       .pipe(finalize(() => (this.submitting = false)))
       .subscribe({
-        next: () => this.router.navigateByUrl(APP_ROUTE_URLS.predictionsAnonymous),
+        next: () => this.router.navigateByUrl(APP_ROUTE_URLS.predictionsAuthenticated),
         error: (err) => {
+          if (this.applyUnderageErrorIfPresent(err)) {
+            return;
+          }
           this.serverError = formatAuthHttpError(err);
         }
       });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  private enforceDiabetesOptionBySex(sex: RegisterProfileIn['sex'] | ''): void {
+    if (sex !== 'Male') {
+      return;
+    }
+    const diabetesControl = this.form.controls.medical_conditions.controls.had_diabetes;
+    if (diabetesControl.value === 'Yes, but only during pregnancy (female)') {
+      diabetesControl.setValue('No');
+      diabetesControl.markAsDirty();
+    }
+  }
+
+  private applyUnderageErrorIfPresent(err: unknown): boolean {
+    if (!(err instanceof HttpErrorResponse)) {
+      return false;
+    }
+    const detail = err.error?.detail;
+    const detailItems = Array.isArray(detail) ? detail : [];
+    const underageByList = detailItems.some((d: { loc?: unknown; msg?: string }) => {
+      const loc = Array.isArray(d?.loc) ? d.loc.map((x) => String(x).toLowerCase()) : [];
+      const targetsBirthDate = loc.includes('birth_date');
+      const msg = String(d?.msg ?? '').toLowerCase();
+      const saysUnderage = msg.includes('18') || msg.includes('adult') || msg.includes('minor');
+      return targetsBirthDate && saysUnderage;
+    });
+    const detailText = typeof detail === 'string' ? detail.toLowerCase() : '';
+    const underageByText =
+      detailText.includes('birth') &&
+      (detailText.includes('18') || detailText.includes('adult') || detailText.includes('minor'));
+    if (!underageByList && !underageByText) {
+      return false;
+    }
+    const birthDateControl = this.form.controls.profile.controls.birth_date;
+    birthDateControl.setErrors({ ...(birthDateControl.errors ?? {}), birthDateUnderage: true });
+    birthDateControl.markAsTouched();
+    this.serverError = null;
+    return true;
   }
 
   private buildRequestBody(): RegisterRequestBody {

@@ -84,6 +84,8 @@
                       {{ validationMessages.birthDateFuture }}
                     } @else if (profileForm.get('birth_date')?.hasError('birthDateInvalid')) {
                       {{ validationMessages.birthDateInvalid }}
+                    } @else if (profileForm.get('birth_date')?.hasError('birthDateUnderage')) {
+                      {{ validationMessages.birthDateUnderage }}
                     }
                   </mat-error>
                 }

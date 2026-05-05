@@ -17,6 +17,8 @@ export const LOGIN_PAGE_UI = {
   credentialsHint: 'Si acabas de registrarte, usa el mismo correo y contraseña que elegiste al crear la cuenta.',
   emailLabel: 'Correo electrónico',
   passwordLabel: 'Contraseña',
+  showPasswordAriaLabel: 'Mostrar contraseña',
+  hidePasswordAriaLabel: 'Ocultar contraseña',
   errorRegionLabel: 'Mensaje del servidor',
   submitIdle: 'Entrar',
   submitPending: 'Entrando…',

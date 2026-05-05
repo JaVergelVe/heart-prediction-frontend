@@ -11,6 +11,16 @@ export const REGISTER_REMOVED_TEETH_OPTIONS: readonly RegisterProfileIn['removed
   'All'
 ];
 
+export const REGISTER_REMOVED_TEETH_OPTION_ITEMS: readonly {
+  readonly value: RegisterProfileIn['removed_teeth'];
+  readonly label: string;
+}[] = [
+  { value: 'None of them', label: 'Ninguno' },
+  { value: '1 to 5', label: 'De 1 a 5' },
+  { value: '6 or more, but not all', label: '6 o más, pero no todos' },
+  { value: 'All', label: 'Todos' }
+];
+
 export const REGISTER_DIABETES_OPTIONS: readonly RegisterMedicalIn['had_diabetes'][] = [
   'No',
   'Yes',
