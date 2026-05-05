@@ -1,5 +1,5 @@
 .result-card {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
@@ -14,12 +14,17 @@
 .result-card--prediction .mat-mdc-card-title {
   font-size: 1.35rem;
   letter-spacing: -0.02em;
+  text-align: center;
+  margin-bottom: 0.25rem;
 }
 
 .result-card--prediction .mat-mdc-card-subtitle {
   font-size: 0.875rem;
   color: var(--app-text-muted);
   max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .section-heading {
@@ -38,13 +43,14 @@
 }
 
 .summary {
-  padding: var(--app-space-sm) 0 var(--app-space-xs);
+  padding: var(--app-space-md);
 }
 
 .summary-layout {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   gap: 1.25rem 2rem;
 }
 
@@ -89,6 +95,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: center;
   gap: 0.15rem 0.35rem;
 }
 
@@ -109,11 +116,13 @@
   flex-basis: 100%;
   font-size: 0.8125rem;
   color: var(--app-text-muted);
+  text-align: center;
 }
 
 .risk-block {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.35rem;
 }
 
@@ -130,6 +139,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.action-row--center {
+  justify-content: center;
 }
 
 .flow-hint {
@@ -182,8 +195,27 @@
 .footer-link {
   margin-top: 1.25rem;
   font-size: 0.875rem;
+  text-align: center;
 }
 
 .footer-link a {
   margin-left: 0.25rem;
+}
+
+.summary-card,
+.details-card,
+.recommendations-card {
+  border-radius: var(--app-radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(248, 250, 252, 0.55);
+}
+
+.details-card,
+.recommendations-card {
+  padding: var(--app-space-md);
+}
+
+.recommendations-card .rec-list {
+  margin: 0;
+  padding-left: 1.1rem;
 }

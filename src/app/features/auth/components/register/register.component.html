@@ -48,7 +48,22 @@
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Contraseña</mat-label>
-                <input matInput type="password" formControlName="password" autocomplete="new-password" />
+                <input
+                  matInput
+                  [type]="showPassword ? 'text' : 'password'"
+                  formControlName="password"
+                  autocomplete="new-password"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="showPassword ? ui.a11y.hidePassword : ui.a11y.showPassword"
+                  [attr.aria-pressed]="showPassword"
+                >
+                  <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
                 <mat-hint>Mínimo 8 caracteres</mat-hint>
                 @if (form.controls.password.hasError('required') && form.controls.password.touched) {
                   <mat-error>{{ validationMessages.passwordRequired }}</mat-error>
@@ -108,6 +123,8 @@
                       {{ validationMessages.birthDateFuture }}
                     } @else if (form.controls.profile.controls.birth_date.hasError('birthDateInvalid')) {
                       {{ validationMessages.birthDateInvalid }}
+                    } @else if (form.controls.profile.controls.birth_date.hasError('birthDateUnderage')) {
+                      {{ validationMessages.birthDateUnderage }}
                     }
                   </mat-error>
                 }
@@ -141,8 +158,8 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Dientes extraídos</mat-label>
                 <mat-select formControlName="removed_teeth">
-                  @for (opt of removedTeethOptions; track opt) {
-                    <mat-option [value]="opt">{{ opt }}</mat-option>
+                  @for (opt of removedTeethOptions; track opt.value) {
+                    <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
                   }
                 </mat-select>
                 @if (

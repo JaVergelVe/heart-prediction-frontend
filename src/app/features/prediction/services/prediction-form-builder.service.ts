@@ -3,7 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { VALIDATION_LIMITS } from '../../../core/constants/validation-limits.constant';
 import { RegisterMedicalIn, RegisterProfileIn } from '../../../core/models/register-request.model';
 import { PREDICTION_TRISTATE_FORM } from '../../../core/constants/data/prediction-survey-options.constant';
-import { birthDateNotInFutureValidator } from '../../../core/validators/birth-date-not-in-future.validator';
+import {
+  birthDateMinimumAgeValidator,
+  birthDateNotInFutureValidator
+} from '../../../core/validators/birth-date-not-in-future.validator';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +59,7 @@ export class PredictionFormBuilderService {
   createProfileGroup(): FormGroup {
     return this.fb.group({
       sex: ['' as RegisterProfileIn['sex'] | '', [Validators.required]],
-      birth_date: [null as Date | null, [Validators.required, birthDateNotInFutureValidator()]],
+      birth_date: [null as Date | null, [Validators.required, birthDateNotInFutureValidator(), birthDateMinimumAgeValidator(18)]],
       height_meters: [
         null as number | null,
         [

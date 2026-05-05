@@ -29,6 +29,10 @@ export const REGISTER_PAGE_UI = {
     removedTeeth: 'Dientes extraídos',
     diabetes: 'Diabetes'
   },
+  a11y: {
+    showPassword: 'Mostrar contraseña',
+    hidePassword: 'Ocultar contraseña'
+  },
   hints: {
     passwordMin: `Mínimo ${L.passwordMinRegister} caracteres`,
     heightRange: 'Entre 0,5 y 2,5'
