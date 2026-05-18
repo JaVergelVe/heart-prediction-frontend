@@ -1,31 +1,27 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { ProfileRoutingModule } from './profile-routing.module';
 import { SharedModule } from '../../shared/shared.module';
-import { ProfileHomeComponent } from './components/profile-home/profile-home.component';
+import { PredictionWhatIfPanelComponent } from '../history/components/prediction-what-if-panel/prediction-what-if-panel.component';
 
+/** Panel de simulación What-If reutilizable en historial y resultado de predicción. */
 @NgModule({
-  declarations: [ProfileHomeComponent],
+  declarations: [PredictionWhatIfPanelComponent],
   imports: [
     SharedModule,
-    ProfileRoutingModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatTooltipModule,
-    MatButtonModule,
-    MatCardModule,
     MatProgressSpinnerModule,
-    MatDividerModule
-  ]
+    MatDividerModule,
+    MatButtonModule
+  ],
+  exports: [PredictionWhatIfPanelComponent]
 })
-export class ProfileModule {}
+export class PredictionSimulationModule {}

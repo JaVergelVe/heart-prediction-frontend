@@ -2,10 +2,16 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { finalize } from 'rxjs';
 import {
-  PREDICTION_HAD_DIABETES_OPTIONS,
   PREDICTION_REMOVED_TEETH_OPTIONS,
   PREDICTION_SEX_OPTIONS
 } from '../../../../core/constants/data/prediction-survey-options.constant';
+import {
+  PROFILE_CLINICAL_PILLS,
+  PROFILE_DIABETES_PILLS,
+  PROFILE_DIABETES_PREGNANCY_PILL,
+  PROFILE_FUNCTIONAL_PILLS,
+  PROFILE_PAGE_UI
+} from '../../../../core/constants/ui/profile-ui.constant';
 import { PROFILE_MESSAGES } from '../../../../core/constants/messages/profile-messages.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
@@ -26,10 +32,14 @@ export class ProfileHomeComponent implements OnInit {
   private readonly formBuilder = inject(PredictionFormBuilderService);
 
   readonly messages = PROFILE_MESSAGES;
+  readonly pageUi = PROFILE_PAGE_UI;
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly limits = VALIDATION_LIMITS;
   readonly removedTeethOptions = PREDICTION_REMOVED_TEETH_OPTIONS;
-  readonly diabetesOptions = PREDICTION_HAD_DIABETES_OPTIONS;
+  readonly clinicalPills = PROFILE_CLINICAL_PILLS;
+  readonly functionalPills = PROFILE_FUNCTIONAL_PILLS;
+  readonly diabetesPills = PROFILE_DIABETES_PILLS;
+  readonly diabetesPregnancyPill = PROFILE_DIABETES_PREGNANCY_PILL;
 
   readonly profileForm: FormGroup = this.formBuilder.createProfileUpdateGroup();
   readonly medicalForm: FormGroup = this.formBuilder.createMedicalGroup();

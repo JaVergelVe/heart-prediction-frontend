@@ -1,4 +1,21 @@
-<div class="auth-page auth-page--wide">
+<div class="register-progress" aria-label="Progreso del registro">
+  <div class="register-progress__meta">
+    <span class="register-progress__step">{{ registerProgressStepLabel }}</span>
+    <span class="register-progress__percent" aria-hidden="true">{{ registerProgressPercent }}%</span>
+  </div>
+  <div
+    class="register-progress__track"
+    role="progressbar"
+    [attr.aria-valuenow]="registerProgressPercent"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [attr.aria-valuetext]="registerProgressStepLabel"
+  >
+    <div class="register-progress__fill" [style.width.%]="registerProgressPercent"></div>
+  </div>
+</div>
+
+<div class="auth-page auth-page--wide auth-page--register">
   <mat-card class="auth-card auth-card--register">
     <mat-card-header class="register-card-header">
       <div mat-card-avatar class="register-card-avatar" aria-hidden="true">
@@ -24,9 +41,6 @@
       }
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="auth-form auth-form--register">
-        <p class="register-top-hint">
-          Todos los datos del formulario se usan para personalizar la evaluación. Revisa cada sección antes de enviar.
-        </p>
         <mat-accordion class="register-accordion" multi="true" displayMode="flat">
           <mat-expansion-panel class="register-panel" [expanded]="true">
             <mat-expansion-panel-header>
@@ -179,42 +193,90 @@
             </mat-expansion-panel-header>
 
             <div class="register-panel-body" formGroupName="medical_conditions">
-              <p class="register-checkbox-caption">Condiciones y limitaciones (casillas)</p>
-              <p class="register-checkbox-hint">Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.</p>
+              <p class="register-checkbox-hint">
+                Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.
+              </p>
 
-              <div class="medical-grid medical-grid--tiles">
-                <mat-checkbox formControlName="had_angina">¿Angina?</mat-checkbox>
-                <mat-checkbox formControlName="had_stroke">¿Accidente cerebrovascular?</mat-checkbox>
-                <mat-checkbox formControlName="had_asthma">¿Asma?</mat-checkbox>
-                <mat-checkbox formControlName="had_copd">¿EPOC?</mat-checkbox>
-                <mat-checkbox formControlName="had_skin_cancer">¿Cáncer de piel?</mat-checkbox>
-                <mat-checkbox formControlName="had_depressive_disorder">¿Trastorno depresivo?</mat-checkbox>
-                <mat-checkbox formControlName="had_kidney_disease">¿Enfermedad renal?</mat-checkbox>
-                <mat-checkbox formControlName="had_arthritis">¿Artritis?</mat-checkbox>
-                <mat-checkbox formControlName="deaf_or_hard_of_hearing">¿Sordera o dificultad auditiva?</mat-checkbox>
-                <mat-checkbox formControlName="blind_or_vision_difficulty">¿Ceguera o dificultad visual?</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_concentrating">¿Dificultad para concentrarse?</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_walking">¿Dificultad para caminar?</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_dressing_bathing">¿Dificultad para vestirse o bañarse?</mat-checkbox>
-                <mat-checkbox formControlName="difficulty_errands">¿Dificultad para hacer recados?</mat-checkbox>
+              <h3 class="register-group-label">{{ ui.groupClinical }}</h3>
+              <div class="choice-pill-row" role="group" [attr.aria-label]="ui.groupClinical">
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_angina" />
+                  <span class="choice-pill__label">Angina</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_stroke" />
+                  <span class="choice-pill__label">ACV</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_asthma" />
+                  <span class="choice-pill__label">Asma</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_copd" />
+                  <span class="choice-pill__label">EPOC</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_skin_cancer" />
+                  <span class="choice-pill__label">Cáncer de piel</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_depressive_disorder" />
+                  <span class="choice-pill__label">Trastorno depresivo</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_kidney_disease" />
+                  <span class="choice-pill__label">Enfermedad renal</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_arthritis" />
+                  <span class="choice-pill__label">Artritis</span>
+                </label>
               </div>
 
-              <mat-divider class="register-diabetes-divider" />
-
-              <mat-form-field appearance="outline" class="full-width diabetes-field">
-                <mat-label>Diabetes</mat-label>
-                <mat-select formControlName="had_diabetes">
-                  @for (opt of diabetesOptions; track opt.value) {
-                    <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+              <div class="register-diabetes-row">
+                <span class="register-diabetes-row__label" id="register-diabetes-label">{{ ui.labels.diabetes }}</span>
+                <mat-form-field appearance="outline" class="register-diabetes-row__field full-width" aria-labelledby="register-diabetes-label">
+                  <mat-select formControlName="had_diabetes">
+                    @for (opt of diabetesOptions; track opt.value) {
+                      <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (
+                    form.controls.medical_conditions.controls.had_diabetes.hasError('required') &&
+                    form.controls.medical_conditions.controls.had_diabetes.touched
+                  ) {
+                    <mat-error>{{ validationMessages.selectRequired }}</mat-error>
                   }
-                </mat-select>
-                @if (
-                  form.controls.medical_conditions.controls.had_diabetes.hasError('required') &&
-                  form.controls.medical_conditions.controls.had_diabetes.touched
-                ) {
-                  <mat-error>{{ validationMessages.selectRequired }}</mat-error>
-                }
-              </mat-form-field>
+                </mat-form-field>
+              </div>
+
+              <h3 class="register-group-label">{{ ui.groupFunctional }}</h3>
+              <div class="choice-pill-row" role="group" [attr.aria-label]="ui.groupFunctional">
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="deaf_or_hard_of_hearing" />
+                  <span class="choice-pill__label">Sordera</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="blind_or_vision_difficulty" />
+                  <span class="choice-pill__label">Ceguera</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_concentrating" />
+                  <span class="choice-pill__label">Dificultad para concentrarse</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_walking" />
+                  <span class="choice-pill__label">Dificultad para caminar</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_dressing_bathing" />
+                  <span class="choice-pill__label">Dificultad para vestirse o bañarse</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_errands" />
+                  <span class="choice-pill__label">Dificultad para hacer recados</span>
+                </label>
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -223,7 +285,7 @@
           <button mat-flat-button color="primary" type="submit" class="auth-primary-btn register-submit-btn" [disabled]="submitting">
             @if (submitting) {
               <mat-spinner diameter="20"></mat-spinner>
-                <span class="btn-label">Registrando...</span>
+              <span class="btn-label">Registrando...</span>
             } @else {
               Registrarse
             }

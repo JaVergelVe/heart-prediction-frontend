@@ -165,6 +165,7 @@
 
     @if (sim.shapExplanation; as shapMain) {
       <mat-divider class="what-if__divider" />
+      <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
       <h3 class="what-if__subtitle" id="whatif-shap-heading">{{ ui.labels.shapSection }}</h3>
       <div aria-labelledby="whatif-shap-heading">
         <app-shap-explanation-user-card [explanation]="shapMain" />
@@ -173,6 +174,9 @@
 
     @if (sim.shapFactors.length) {
       <mat-divider class="what-if__divider" />
+      @if (!sim.shapExplanation) {
+        <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+      }
       <h3 class="what-if__subtitle" id="whatif-shap-factors-heading">{{ ui.labels.shapFactorsSection }}</h3>
       <div class="factor-stack" role="list" aria-labelledby="whatif-shap-factors-heading">
         @for (factor of sim.shapFactors; track $index) {

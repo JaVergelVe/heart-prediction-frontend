@@ -56,6 +56,7 @@
       @if (shapExplanation(); as shapMain) {
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'pred-shap-main-heading'">
+          <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
           <h2 class="section-heading" id="pred-shap-main-heading">{{ ui.sections.shapMain }}</h2>
           <app-shap-explanation-user-card [explanation]="shapMain" />
         </section>
@@ -64,6 +65,9 @@
       @if (shapFactors().length) {
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'pred-shap-factors-heading'">
+          @if (!shapExplanation()) {
+            <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+          }
           <h2 class="section-heading" id="pred-shap-factors-heading">{{ ui.sections.shapFactors }}</h2>
           <div class="factor-stack" role="list">
             @for (factor of shapFactors(); track $index) {
@@ -97,9 +101,23 @@
             }}</a>
           </div>
         } @else {
-          <a mat-flat-button color="primary" [routerLink]="backRoute">{{ backLabel }}</a>
+          <div class="action-row action-row--center">
+            @if (canOpenWhatIf && !whatIfOpen) {
+              <button type="button" mat-stroked-button color="primary" (click)="openWhatIfSimulator()">
+                {{ ui.openWhatIf }}
+              </button>
+            }
+            <a mat-flat-button color="primary" [routerLink]="backRoute">{{ backLabel }}</a>
+          </div>
         }
       </div>
+
+      @if (canOpenWhatIf && whatIfOpen) {
+        <p class="muted what-if-open-hint">{{ ui.whatIfOpenedHint }}</p>
+        <div #whatIfAnchor class="what-if-anchor">
+          <app-prediction-what-if-panel [predictionId]="result!.prediction_id" [baselineResult]="result!" />
+        </div>
+      }
 
       @if (flowKind === flowKindConst.anonymous) {
         <p class="footer-link">

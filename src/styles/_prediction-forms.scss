@@ -3,8 +3,8 @@
 .form-badge {
   display: inline-flex;
   align-items: center;
-  margin-left: 0.5rem;
-  padding: 0.12rem 0.5rem;
+  margin-left: 0;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
   font-size: 0.625rem;
   font-weight: 700;
@@ -29,21 +29,45 @@
 }
 
 .prediction-card-header {
+  display: flex;
   align-items: flex-start;
-  padding: var(--app-space-md) var(--app-space-md) var(--app-space-sm);
+  gap: 1rem;
+  padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-md);
+}
+
+.prediction-card-header .mat-mdc-card-header-text {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.prediction-card-header mat-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.prediction-card-header .mat-mdc-card-title,
+.prediction-card-header .mat-mdc-card-subtitle {
+  margin: 0;
+}
+
+.prediction-card-header .mat-mdc-card-subtitle {
+  margin-top: 0.15rem;
+  line-height: 1.5;
 }
 
 .prediction-card-header--compact {
-  padding-bottom: var(--app-space-xs);
+  padding-bottom: var(--app-space-sm);
 }
 
 .prediction-card-header--auth {
-  align-items: flex-start;
   padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-md);
 }
 
 .prediction-card-title-group--auth {
-  gap: 0.15rem;
+  gap: 0.35rem;
 }
 
 .prediction-card-lead {
@@ -83,7 +107,7 @@
 }
 
 .prediction-eyebrow {
-  margin: 0 0 0.15rem;
+  margin: 0;
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -92,23 +116,22 @@
 }
 
 .prediction-card-body {
-  padding-top: var(--app-space-md) !important;
+  padding: var(--app-space-md) var(--app-space-lg) var(--app-space-lg) !important;
 }
 
 .prediction-card-body--compact {
-  padding-top: var(--app-space-sm) !important;
+  padding-top: var(--app-space-md) !important;
 }
 
 .prediction-card-body--auth {
-  padding: var(--app-space-lg) !important;
-  padding-top: var(--app-space-md) !important;
+  padding: var(--app-space-md) var(--app-space-lg) var(--app-space-lg) !important;
 }
 
 .prediction-error-panel {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.85rem;
   align-items: flex-start;
-  padding: 0.75rem 0.875rem;
+  padding: 0.875rem 1rem;
   border-radius: var(--app-radius-sm);
   background: rgba(179, 38, 30, 0.06);
   border: 1px solid rgba(179, 38, 30, 0.22);
@@ -147,6 +170,146 @@
   gap: 0;
 }
 
+// Stepper vertical (misma referencia visual que `.how` en la landing).
+$prediction-step-accent: #2563eb;
+
+.prediction-stepper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-lg);
+}
+
+.prediction-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.35rem;
+  align-items: start;
+}
+
+.prediction-step__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 1.15rem;
+  border-radius: 999px;
+  background: $prediction-step-accent;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.prediction-step__card {
+  min-width: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem 1.35rem;
+  background: linear-gradient(180deg, #fff, #f8fafc);
+}
+
+.prediction-step__card--collapsible {
+  padding: 0;
+  overflow: hidden;
+}
+
+.prediction-step__header {
+  margin-bottom: var(--app-space-md);
+}
+
+.prediction-step__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.prediction-step__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  color: var(--app-text-primary);
+}
+
+.prediction-step__lead {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-text-muted);
+}
+
+.prediction-step__field {
+  margin: 0;
+}
+
+.prediction-step__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.prediction-step__content .prediction-inner-divider {
+  margin: var(--app-space-sm) 0 var(--app-space-md);
+}
+
+.prediction-step__content .prediction-panel-subheading {
+  margin-top: 0.15rem;
+}
+
+.prediction-step__summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.prediction-step__summary-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.prediction-step__chevron {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--app-text-muted);
+  transition: transform var(--app-motion-duration-short) var(--app-motion-ease-standard);
+}
+
+.prediction-step__card--collapsible[open] .prediction-step__chevron {
+  transform: rotate(180deg);
+}
+
+.prediction-step__body {
+  padding: 0 1.35rem 1.35rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.prediction-step--optional .prediction-step__card--collapsible {
+  border-left: 3px solid rgba(100, 116, 139, 0.22);
+  background: linear-gradient(180deg, #fff 0%, rgba(248, 250, 252, 0.95) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prediction-step__chevron {
+    transition: none;
+  }
+}
+
 .prediction-panel.mat-expansion-panel {
   border-radius: var(--app-radius-md) !important;
   border: 1px solid rgba(15, 23, 42, 0.07);
@@ -160,18 +323,18 @@
 }
 
 .prediction-panel .mat-expansion-panel-header {
-  padding: 0.95rem 1.1rem;
+  padding: 1.1rem 1.35rem;
 }
 
 .prediction-panel .mat-expansion-panel-header-title {
   flex-grow: 0;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.15rem 0.25rem;
+  gap: 0.35rem 0.65rem;
 }
 
 .prediction-panel-title-text {
-  margin-right: 0.15rem;
+  margin-right: 0;
 }
 
 .prediction-panel .mat-expansion-panel-header-description {
@@ -227,34 +390,6 @@
 
 .prediction-inner-divider {
   margin: var(--app-space-sm) 0 var(--app-space-md);
-}
-
-.medical-grid--tiles {
-  gap: 0.5rem 0.75rem;
-  margin-bottom: var(--app-space-xs);
-}
-
-.medical-grid--tiles .mat-mdc-checkbox {
-  display: flex;
-  align-items: flex-start;
-  padding: 0.65rem 0.85rem;
-  border-radius: var(--app-radius-sm);
-  border: 1px solid var(--app-border-subtle);
-  background: rgba(255, 255, 255, 0.92);
-  box-sizing: border-box;
-}
-
-.medical-grid--tiles .mat-mdc-checkbox .mdc-label,
-.medical-grid--tiles .mat-mdc-checkbox .mat-internal-form-field > label {
-  white-space: normal;
-  line-height: 1.4;
-  word-break: break-word;
-}
-
-/* Una columna en predicción: lectura cómoda de preguntas largas. */
-.medical-grid--prediction.medical-grid--tiles {
-  grid-template-columns: 1fr;
-  gap: 0.65rem;
 }
 
 .prediction-form--auth .prediction-submit-row {
@@ -346,12 +481,6 @@
 
 .prediction-panel-body .diabetes-field {
   margin-top: 0;
-}
-
-.prediction-panel-body--survey .survey-fields__intro {
-  border-color: rgba(15, 23, 42, 0.08);
-  background: rgba(63, 81, 181, 0.03);
-  color: var(--app-text-muted);
 }
 
 /* Campos Material dentro del formulario de predicción: etiquetas largas visibles. */

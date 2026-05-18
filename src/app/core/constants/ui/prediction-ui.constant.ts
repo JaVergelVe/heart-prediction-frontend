@@ -202,6 +202,8 @@ export const PREDICTION_RESULT_UI = {
   fallbackNavAuthenticated: 'Ir a predicción con cuenta',
   backToAnonymous: 'Volver a predicción sin cuenta',
   backToAuthenticated: 'Volver a predicción con cuenta',
+  openWhatIf: 'Simular cambios',
+  whatIfOpenedHint: 'Ajusta variables abajo para explorar un escenario alternativo sin guardar una nueva predicción.',
   loginPrompt: '¿Quieres guardar historial en tu cuenta?',
   loginLink: 'Iniciar sesión',
   loginRoute: APP_ROUTE_URLS.authLogin

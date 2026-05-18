@@ -70,6 +70,7 @@
       @if (shapExplanation(); as shapMain) {
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'hist-shap-main-heading'">
+          <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
           <h2 class="section-heading" id="hist-shap-main-heading">Factor con mayor influencia</h2>
           <app-shap-explanation-user-card [explanation]="shapMain" />
         </section>
@@ -78,6 +79,9 @@
       @if (shapFactors().length) {
         <mat-divider class="section-divider" />
         <section class="shap-block" [attr.aria-labelledby]="'hist-shap-factors-heading'">
+          @if (!shapExplanation()) {
+            <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+          }
           <h2 class="section-heading" id="hist-shap-factors-heading">Otros factores destacados</h2>
           <div class="factor-stack" role="list">
             @for (factor of shapFactors(); track $index) {

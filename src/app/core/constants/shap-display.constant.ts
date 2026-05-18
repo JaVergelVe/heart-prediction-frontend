@@ -215,6 +215,9 @@ export const SHAP_INTENSITY_RELATIVE_THRESHOLDS = {
   medium: 0.33
 } as const;
 
+/** Umbral IMC (kg/m²) a partir del cual se describe como elevado en narrativas. */
+export const SHAP_BMI_ELEVATED_THRESHOLD = 25;
+
 /** Textos de capa amigable SHAP (visible y panel técnico). */
 export const SHAP_DISPLAY_UI = {
   fallbackUnknownFeature: 'Factor de salud',
@@ -225,36 +228,50 @@ export const SHAP_DISPLAY_UI = {
   intensityHigh: 'Intensidad: alta',
   intensityMedium: 'Intensidad: media',
   intensityLow: 'Intensidad: baja',
-  explanationIncrease:
-    'Según el modelo, este factor empuja la estimación de probabilidad hacia valores más altos. No es un diagnóstico: resume cómo influyen los datos en esta predicción.',
-  explanationDecrease:
-    'Según el modelo, este factor ayuda a mantener la estimación de probabilidad en valores más bajos. No es un diagnóstico: resume cómo influyen los datos en esta predicción.',
+  sectionDisclaimer:
+    'Estas explicaciones indican qué variables influyeron más en la estimación del modelo. No constituyen un diagnóstico médico.',
+  explanationIncrease: 'Este factor se asoció con un aumento del riesgo estimado.',
+  explanationDecrease: 'Este factor se asoció con una reducción del riesgo estimado.',
   explanationNeutral:
-    'Este factor tiene un efecto moderado o equilibrado en la estimación. La interpretación exacta depende del resto de tus respuestas.',
+    'Este factor tuvo un efecto moderado o equilibrado en la estimación. El resultado depende del conjunto de tus respuestas.',
   moreContextHeading: 'Más detalle',
   technicalSectionTitle: 'Detalles técnicos (opcional)',
-  technicalSectionHint: 'Aquí se muestran los nombres y valores tal como los recibe el modelo. Puedes ignorarlo si solo quieres la idea general.',
+  technicalSectionHint:
+    'Datos internos del modelo para quien quiera profundizar. No son necesarios para entender la idea general.',
   technicalLabels: {
-    internalFeatureName: 'Nombre interno de la variable',
-    rawDirection: 'Código de dirección (API)',
-    contributionScore: 'Puntuación de contribución (SHAP)',
-    modelValue: 'Valor numérico en el modelo',
-    apiInterpretation: 'Texto de interpretación (API)',
-    apiMessage: 'Mensaje técnico (API)',
-    impactScore: 'Puntuación de impacto (API)'
+    modelFeature: 'Variable del modelo',
+    processedModelValue: 'Valor procesado en el modelo',
+    shapValue: 'Valor SHAP',
+    impactDirection: 'Dirección del impacto',
+    apiInterpretation: 'Interpretación (API)',
+    apiMessage: 'Mensaje (API)'
   },
-  /** Subcadenas que sugieren texto técnico / depuración (no mostrar como «lenguaje natural» principal). */
+  /** Subcadenas que sugieren texto técnico / depuración (no mostrar como lenguaje natural principal). */
   technicalInterpretationHints: [
     'input vector',
     'feature vector',
+    'vector de entrada',
+    'vector del modelo',
+    'vector de entrada del modelo',
     'shap value',
+    'valor shap',
     'model input',
     'increases_risk',
     'decreases_risk',
     'increase_risk',
     'decrease_risk',
+    'clase positiva',
+    'positive class',
+    'empuja',
+    'empuja la estimación',
+    'probabilidad hacia',
     'numpy',
     'tensor',
-    'baseline'
+    'baseline',
+    'rango 1:',
+    'rango 2:',
+    'valor en el vector',
+    'no es un diagnóstico',
+    'no constituyen un diagnóstico'
   ]
 } as const;

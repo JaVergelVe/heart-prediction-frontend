@@ -100,6 +100,45 @@ export class RegisterComponent {
     return this.diabetesOptionsAll;
   }
 
+  /** Avance visual del formulario (solo presentación). */
+  get registerProgressPercent(): number {
+    const total = 7;
+    let filled = 0;
+    const { email, password, profile, medical_conditions } = this.form.controls;
+    if ((email.value ?? '').trim()) {
+      filled++;
+    }
+    if (password.value) {
+      filled++;
+    }
+    if (profile.controls.sex.value) {
+      filled++;
+    }
+    if (profile.controls.birth_date.value) {
+      filled++;
+    }
+    if (profile.controls.height_meters.value != null) {
+      filled++;
+    }
+    if (profile.controls.removed_teeth.value) {
+      filled++;
+    }
+    if (medical_conditions.controls.had_diabetes.value) {
+      filled++;
+    }
+    return Math.round((filled / total) * 100);
+  }
+
+  get registerProgressStepLabel(): string {
+    if (!this.isRegisterAccountSectionFilled()) {
+      return 'Paso 1 de 3';
+    }
+    if (!this.isRegisterProfileSectionFilled()) {
+      return 'Paso 2 de 3';
+    }
+    return 'Paso 3 de 3';
+  }
+
   submit(): void {
     this.serverError = null;
     if (this.form.invalid) {
@@ -124,6 +163,21 @@ export class RegisterComponent {
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  private isRegisterAccountSectionFilled(): boolean {
+    const { email, password } = this.form.controls;
+    return Boolean((email.value ?? '').trim() && password.value);
+  }
+
+  private isRegisterProfileSectionFilled(): boolean {
+    const p = this.form.controls.profile.controls;
+    return Boolean(
+      p.sex.value &&
+        p.birth_date.value &&
+        p.height_meters.value != null &&
+        p.removed_teeth.value
+    );
   }
 
   private enforceDiabetesOptionBySex(sex: RegisterProfileIn['sex'] | ''): void {

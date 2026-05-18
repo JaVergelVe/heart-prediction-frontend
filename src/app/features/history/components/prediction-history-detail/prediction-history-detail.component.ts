@@ -4,6 +4,7 @@ import { EMPTY, Subscription, distinctUntilChanged, finalize, map, switchMap } f
 import { HISTORY_ROUTE_PARAM_KEYS } from '../../../../core/constants/history-route-params.constant';
 import { HISTORY_MESSAGES } from '../../../../core/constants/messages/history-messages.constant';
 import { PredictionRiskPillKind } from '../../../../core/constants/prediction-result-risk.constant';
+import { SHAP_DISPLAY_UI } from '../../../../core/constants/shap-display.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
 import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 import { PredictionService } from '../../../../core/services/prediction.service';
@@ -24,6 +25,7 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
   private sub: Subscription | null = null;
 
   readonly messages = HISTORY_MESSAGES;
+  readonly shapUi = SHAP_DISPLAY_UI;
 
   result: PredictionResultData | null = null;
   loading = false;

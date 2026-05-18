@@ -1,3 +1,68 @@
+$register-accent: #2563eb;
+.register-progress {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  padding: 0.4rem var(--app-page-padding) 0.55rem;
+  background: var(--app-bg-canvas);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  box-sizing: border-box;
+
+  @media (min-width: 720px) {
+    top: 64px;
+  }
+}
+
+.register-progress__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  max-width: var(--app-content-max);
+  margin: 0 auto 0.35rem;
+}
+
+.register-progress__step,
+.register-progress__percent {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--app-text-muted);
+}
+
+.register-progress__step {
+  font-weight: 500;
+}
+
+.register-progress__percent {
+  font-variant-numeric: tabular-nums;
+}
+
+.register-progress__track {
+  height: 4px;
+  max-width: var(--app-content-max);
+  margin: 0 auto;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.register-progress__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: $register-accent;
+  transition: width 0.2s ease;
+}
+
+:host {
+  display: block;
+}
+
+.auth-page--register {
+  padding-top: calc(var(--app-space-lg) + 2.25rem);
+}
+
 .auth-card--register {
   width: 100%;
   max-width: 920px;
@@ -98,17 +163,6 @@
   margin-top: 0;
 }
 
-.register-top-hint {
-  margin: 0 0 0.95rem;
-  padding: 0.7rem 0.85rem;
-  border-radius: 10px;
-  border: 1px solid rgba(16, 185, 129, 0.26);
-  background: rgba(16, 185, 129, 0.08);
-  color: #134e4a;
-  font-size: 0.84rem;
-  line-height: 1.45;
-}
-
 .register-accordion {
   display: flex;
   flex-direction: column;
@@ -144,13 +198,6 @@
   padding: 0 var(--app-space-md) var(--app-space-md);
 }
 
-.register-checkbox-caption {
-  margin: 0 0 0.35rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--app-text-secondary);
-}
-
 .register-checkbox-hint {
   margin: 0 0 var(--app-space-sm);
   font-size: 0.8125rem;
@@ -158,32 +205,41 @@
   color: var(--app-text-muted);
 }
 
-.medical-grid--tiles {
-  gap: 0.5rem 0.75rem;
-  margin-bottom: var(--app-space-sm);
+.register-group-label {
+  margin: 1.15rem 0 0.55rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--app-text-primary);
+
+  &:first-of-type {
+    margin-top: 0.35rem;
+  }
 }
 
-.medical-grid--tiles .mat-mdc-checkbox {
+.register-diabetes-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
-  padding: 0.5rem 0.65rem;
-  border-radius: var(--app-radius-sm);
-  border: 1px solid rgba(15, 23, 42, 0.09);
-  background: rgba(255, 255, 255, 0.92);
-  box-sizing: border-box;
-  transition: border-color 160ms ease;
+  gap: 0.65rem 1rem;
+  margin: 0.85rem 0 0.15rem;
 }
 
-.medical-grid--tiles .mat-mdc-checkbox:hover {
-  border-color: rgba(99, 102, 241, 0.35);
+.register-diabetes-row__label {
+  flex: 0 0 auto;
+  min-width: 4.5rem;
+  padding-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--app-text-secondary);
 }
 
-.register-diabetes-divider {
-  margin: var(--app-space-sm) 0 var(--app-space-md);
-}
-
-.diabetes-field {
-  margin-top: 0;
+.register-diabetes-row__field {
+  flex: 1 1 14rem;
+  min-width: min(100%, 280px);
+  margin-bottom: 0;
 }
 
 .register-submit-row {

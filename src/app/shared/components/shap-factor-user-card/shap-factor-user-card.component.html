@@ -26,7 +26,7 @@
 
   @if (view.narrativeExtra) {
     <div class="shap-user-factor__extra">
-      <span class="shap-user-factor__extra-heading">Más detalle</span>
+      <span class="shap-user-factor__extra-heading">{{ ui.moreContextHeading }}</span>
       <p class="shap-user-factor__extra-body">{{ view.narrativeExtra }}</p>
     </div>
   }
@@ -34,10 +34,10 @@
   @if (view.hasTechnicalPanel) {
     <mat-expansion-panel class="shap-tech-panel" [expanded]="false">
       <mat-expansion-panel-header>
-        <mat-panel-title>Detalles técnicos (opcional)</mat-panel-title>
+        <mat-panel-title>{{ ui.technicalSectionTitle }}</mat-panel-title>
       </mat-expansion-panel-header>
       <div class="shap-tech-panel__body">
-        <p class="shap-tech-panel__hint">Aqu? se muestran los nombres y valores tal como los recibe el modelo. Puedes ignorarlo si solo quieres la idea general.</p>
+        <p class="shap-tech-panel__hint">{{ ui.technicalSectionHint }}</p>
         <dl class="shap-tech-grid">
           @for (row of view.technicalRows; track row.label) {
             <dt>{{ row.label }}</dt>

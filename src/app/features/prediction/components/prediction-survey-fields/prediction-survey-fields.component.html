@@ -1,6 +1,4 @@
 <div [formGroup]="group" class="survey-fields">
-  <p class="survey-fields__intro">Las preguntas con «Sin especificar» son opcionales. El resto de listas debe elegirse con los mismos valores que en el registro, cuando apliquen. El bloque est? agrupado en tres partes para que sea más fácil de revisar.</p>
-
   <section class="survey-subsection" aria-label="Estado de salud y bienestar">
     <h3 class="survey-subsection__title">Estado de salud y bienestar</h3>
     <p class="survey-subsection__hint">Percepción de salud, días con malestar y seguimiento médico reciente.</p>
@@ -29,6 +27,7 @@
             type="number"
             [id]="controlHtmlId('physical_health_days')"
             formControlName="physical_health_days"
+            placeholder="ej: 5"
           />
           <mat-hint>Entre 0 y 30</mat-hint>
           @if (group.get('physical_health_days')?.hasError('min') && group.get('physical_health_days')?.touched) {
@@ -48,6 +47,7 @@
             type="number"
             [id]="controlHtmlId('mental_health_days')"
             formControlName="mental_health_days"
+            placeholder="ej: 5"
           />
           <mat-hint>Entre 0 y 30</mat-hint>
           @if (group.get('mental_health_days')?.hasError('min') && group.get('mental_health_days')?.touched) {
@@ -77,8 +77,6 @@
     </div>
   </section>
 
-  <mat-divider class="survey-fields__divider" />
-
   <section class="survey-subsection" aria-label="Hábitos y estilo de vida">
     <h3 class="survey-subsection__title">Hábitos y estilo de vida</h3>
     <p class="survey-subsection__hint">Actividad, sueño y hábitos relacionados con tabaco, alcohol y similares.</p>
@@ -101,7 +99,14 @@
       <div class="survey-stack">
         <label class="survey-stack__q" [attr.for]="controlHtmlId('sleep_hours')">Horas de sueño en promedio (24 h)</label>
         <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
-          <input matInput type="number" step="0.1" [id]="controlHtmlId('sleep_hours')" formControlName="sleep_hours" />
+          <input
+            matInput
+            type="number"
+            step="0.1"
+            [id]="controlHtmlId('sleep_hours')"
+            formControlName="sleep_hours"
+            placeholder="ej: 7"
+          />
           <mat-hint>Entre 1 y 24</mat-hint>
           @if (group.get('sleep_hours')?.hasError('min') && group.get('sleep_hours')?.touched) {
             <mat-error>{{ validationMessages.sleepHoursMin }}</mat-error>
@@ -160,8 +165,6 @@
       </div>
     </div>
   </section>
-
-  <mat-divider class="survey-fields__divider" />
 
   <section class="survey-subsection" aria-label="Prevención y cribados">
     <h3 class="survey-subsection__title">Prevención y cribados</h3>
