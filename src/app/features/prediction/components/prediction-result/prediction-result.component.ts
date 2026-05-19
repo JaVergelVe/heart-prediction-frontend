@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import {
   PREDICTION_RISK_LEVEL_KEYWORDS,
   PredictionRiskPillKind
@@ -11,6 +11,7 @@ import {
   PREDICTION_RESULT_UI,
   PredictionFlowKind
 } from '../../../../core/constants/ui/prediction-ui.constant';
+import { SHAP_DISPLAY_UI } from '../../../../core/constants/shap-display.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
 import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 
@@ -22,12 +23,16 @@ import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util
 export class PredictionResultComponent implements OnInit {
   private readonly location = inject(Location);
 
+  @ViewChild('whatIfAnchor') private whatIfAnchor?: ElementRef<HTMLElement>;
+
   readonly ui = PREDICTION_RESULT_UI;
+  readonly shapUi = SHAP_DISPLAY_UI;
   readonly routes = APP_ROUTE_URLS;
   readonly flowKindConst = PREDICTION_FLOW_KIND;
 
   result: PredictionResultData | null = null;
   flowKind: PredictionFlowKind | null = null;
+  whatIfOpen = false;
 
   ngOnInit(): void {
     const st = this.location.getState() as Record<string, unknown>;
@@ -104,5 +109,23 @@ export class PredictionResultComponent implements OnInit {
 
   get showFlowAmbiguousNav(): boolean {
     return this.result != null && this.flowKind == null;
+  }
+
+  get canOpenWhatIf(): boolean {
+    return (
+      this.flowKind === PREDICTION_FLOW_KIND.authenticated &&
+      this.result != null &&
+      String(this.result.prediction_id ?? '').trim() !== ''
+    );
+  }
+
+  openWhatIfSimulator(): void {
+    if (!this.canOpenWhatIf) {
+      return;
+    }
+    this.whatIfOpen = true;
+    queueMicrotask(() => {
+      this.whatIfAnchor?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 }

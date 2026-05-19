@@ -6,15 +6,13 @@
     <mat-card-title-group>
       <p class="prediction-eyebrow">Evaluación de riesgo</p>
       <mat-card-title>Predicción sin cuenta</mat-card-title>
-      <mat-card-subtitle>Completa primero perfil y peso, y después las condiciones médicas (obligatorio). El cuestionario de hábitos es opcional: despliega el último panel si quieres añadirlo.</mat-card-subtitle>
+      <mat-card-subtitle>Completa perfil, peso y condiciones médicas. El cuestionario de hábitos es opcional en el paso 3.</mat-card-subtitle>
     </mat-card-title-group>
   </mat-card-header>
 
   <mat-divider />
 
   <mat-card-content class="prediction-card-body">
-    <p class="prediction-form-guide info-callout">Los paneles obligatorios llevan la etiqueta «Obligatorio». Puedes tener varios abiertos a la vez. Revisa cada bloque con calma antes de enviar.</p>
-
     @if (serverError) {
       <div class="prediction-error-panel" role="alert">
         <mat-icon class="prediction-error-panel__icon" aria-hidden="true">error_outline</mat-icon>
@@ -23,233 +21,284 @@
     }
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="prediction-form">
-      <mat-accordion class="prediction-accordion" multi="true" displayMode="flat">
-        <mat-expansion-panel class="prediction-panel" [expanded]="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <span class="prediction-panel-title-text">Perfil y signos vitales</span>
-              <span class="form-badge form-badge--required">Obligatorio</span>
-            </mat-panel-title>
-            <mat-panel-description>Sexo, edad, talla, dentición y peso actual: obligatorios para el modelo y para calcular el IMC.</mat-panel-description>
-          </mat-expansion-panel-header>
+      <ol class="prediction-stepper" aria-label="Pasos del formulario de predicción">
+        <li class="prediction-step">
+          <span class="prediction-step__number" aria-hidden="true">1</span>
+          <div class="prediction-step__card">
+            <header class="prediction-step__header">
+              <div class="prediction-step__heading">
+                <h3 class="prediction-step__title" id="anon-step-profile">Perfil y signos vitales</h3>
+                <span class="form-badge form-badge--required">Obligatorio</span>
+              </div>
+              <p class="prediction-step__lead">Sexo, edad, talla, dentición y peso para el modelo y el IMC.</p>
+            </header>
 
-          <div class="prediction-panel-body">
-            <h4 class="prediction-panel-subheading">Datos personales</h4>
-            <div class="prediction-field-stack" formGroupName="profile">
-              <mat-form-field
-                appearance="outline"
-                class="full-width"
-                floatLabel="always"
-                subscriptSizing="dynamic"
-              >
-                <mat-label>Sexo biológico</mat-label>
-                <mat-select formControlName="sex" [panelClass]="'prediction-select-panel'">
-                  @for (opt of sexOptions; track opt.value) {
-                    <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-                  }
-                </mat-select>
-                @if (profileForm.get('sex')?.hasError('required') && profileForm.get('sex')?.touched) {
-                  <mat-error>{{ validationMessages.selectRequired }}</mat-error>
-                }
-              </mat-form-field>
-
-              <mat-form-field
-                appearance="outline"
-                class="full-width"
-                floatLabel="always"
-                subscriptSizing="dynamic"
-              >
-                <mat-label>Fecha de nacimiento</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="anonBirthPicker"
-                  formControlName="birth_date"
-                  [max]="maxBirthDate"
-                  readonly
-                  autocomplete="bday"
-                />
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="anonBirthPicker"
-                  aria-label="Abrir calendario y elegir fecha de nacimiento"
-                />
-                <mat-datepicker #anonBirthPicker startView="multi-year" />
-                @if (profileForm.get('birth_date')?.invalid && profileForm.get('birth_date')?.touched) {
-                  <mat-error>
-                    @if (profileForm.get('birth_date')?.hasError('required')) {
-                      {{ validationMessages.birthDateRequired }}
-                    } @else if (profileForm.get('birth_date')?.hasError('matDatepickerParse')) {
-                      {{ validationMessages.birthDateInvalid }}
-                    } @else if (profileForm.get('birth_date')?.hasError('birthDateFuture')) {
-                      {{ validationMessages.birthDateFuture }}
-                    } @else if (profileForm.get('birth_date')?.hasError('birthDateInvalid')) {
-                      {{ validationMessages.birthDateInvalid }}
-                    } @else if (profileForm.get('birth_date')?.hasError('birthDateUnderage')) {
-                      {{ validationMessages.birthDateUnderage }}
+            <div class="prediction-step__content">
+              <h4 class="prediction-panel-subheading">Datos personales</h4>
+              <div class="prediction-field-stack" formGroupName="profile">
+                <mat-form-field
+                  appearance="outline"
+                  class="full-width"
+                  floatLabel="always"
+                  subscriptSizing="dynamic"
+                >
+                  <mat-label>Sexo biológico</mat-label>
+                  <mat-select formControlName="sex" [panelClass]="'prediction-select-panel'">
+                    @for (opt of sexOptions; track opt.value) {
+                      <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
                     }
-                  </mat-error>
-                }
-              </mat-form-field>
+                  </mat-select>
+                  @if (profileForm.get('sex')?.hasError('required') && profileForm.get('sex')?.touched) {
+                    <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+                  }
+                </mat-form-field>
 
+                <mat-form-field
+                  appearance="outline"
+                  class="full-width"
+                  floatLabel="always"
+                  subscriptSizing="dynamic"
+                >
+                  <mat-label>Fecha de nacimiento</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="anonBirthPicker"
+                    formControlName="birth_date"
+                    [max]="maxBirthDate"
+                    readonly
+                    autocomplete="bday"
+                  />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="anonBirthPicker"
+                    aria-label="Abrir calendario y elegir fecha de nacimiento"
+                  />
+                  <mat-datepicker #anonBirthPicker startView="multi-year" />
+                  @if (profileForm.get('birth_date')?.invalid && profileForm.get('birth_date')?.touched) {
+                    <mat-error>
+                      @if (profileForm.get('birth_date')?.hasError('required')) {
+                        {{ validationMessages.birthDateRequired }}
+                      } @else if (profileForm.get('birth_date')?.hasError('matDatepickerParse')) {
+                        {{ validationMessages.birthDateInvalid }}
+                      } @else if (profileForm.get('birth_date')?.hasError('birthDateFuture')) {
+                        {{ validationMessages.birthDateFuture }}
+                      } @else if (profileForm.get('birth_date')?.hasError('birthDateInvalid')) {
+                        {{ validationMessages.birthDateInvalid }}
+                      } @else if (profileForm.get('birth_date')?.hasError('birthDateUnderage')) {
+                        {{ validationMessages.birthDateUnderage }}
+                      }
+                    </mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field
+                  appearance="outline"
+                  class="full-width"
+                  floatLabel="always"
+                  subscriptSizing="dynamic"
+                >
+                  <mat-label>Altura (metros)</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    step="0.01"
+                    [attr.min]="limits.heightMetersMin"
+                    [attr.max]="limits.heightMetersMax"
+                    formControlName="height_meters"
+                  />
+                  <mat-hint>Entre 0,5 y 2,5</mat-hint>
+                  @if (
+                    profileForm.get('height_meters')?.hasError('required') &&
+                    profileForm.get('height_meters')?.touched
+                  ) {
+                    <mat-error>{{ validationMessages.heightRequired }}</mat-error>
+                  }
+                  @if (profileForm.get('height_meters')?.hasError('min') && profileForm.get('height_meters')?.touched) {
+                    <mat-error>{{ validationMessages.heightMin }}</mat-error>
+                  }
+                  @if (profileForm.get('height_meters')?.hasError('max') && profileForm.get('height_meters')?.touched) {
+                    <mat-error>{{ validationMessages.heightMax }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field
+                  appearance="outline"
+                  class="full-width"
+                  floatLabel="always"
+                  subscriptSizing="dynamic"
+                >
+                  <mat-label>Dientes extraídos</mat-label>
+                  <mat-select formControlName="removed_teeth" [panelClass]="'prediction-select-panel'">
+                    @for (opt of removedTeethOptions; track opt.value) {
+                      <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (
+                    profileForm.get('removed_teeth')?.hasError('required') &&
+                    profileForm.get('removed_teeth')?.touched
+                  ) {
+                    <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <mat-divider class="prediction-inner-divider" />
+
+              <h4 class="prediction-panel-subheading">Peso</h4>
               <mat-form-field
                 appearance="outline"
                 class="full-width"
                 floatLabel="always"
                 subscriptSizing="dynamic"
               >
-                <mat-label>Altura (metros)</mat-label>
+                <mat-label>Peso (kg)</mat-label>
                 <input
                   matInput
                   type="number"
-                  step="0.01"
-                  [attr.min]="limits.heightMetersMin"
-                  [attr.max]="limits.heightMetersMax"
-                  formControlName="height_meters"
+                  step="0.1"
+                  [attr.min]="limits.weightKgMin"
+                  [attr.max]="limits.weightKgMax"
+                  formControlName="weight_kilograms"
                 />
-                <mat-hint>Entre 0,5 y 2,5</mat-hint>
-                @if (
-                  profileForm.get('height_meters')?.hasError('required') &&
-                  profileForm.get('height_meters')?.touched
-                ) {
-                  <mat-error>{{ validationMessages.heightRequired }}</mat-error>
+                <mat-hint>Entre 20 y 350 kg</mat-hint>
+                @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
+                  <mat-error>{{ validationMessages.weightRequired }}</mat-error>
                 }
-                @if (profileForm.get('height_meters')?.hasError('min') && profileForm.get('height_meters')?.touched) {
-                  <mat-error>{{ validationMessages.heightMin }}</mat-error>
+                @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
+                  <mat-error>{{ validationMessages.weightMin }}</mat-error>
                 }
-                @if (profileForm.get('height_meters')?.hasError('max') && profileForm.get('height_meters')?.touched) {
-                  <mat-error>{{ validationMessages.heightMax }}</mat-error>
-                }
-              </mat-form-field>
-
-              <mat-form-field
-                appearance="outline"
-                class="full-width"
-                floatLabel="always"
-                subscriptSizing="dynamic"
-              >
-                <mat-label>Dientes extraídos</mat-label>
-                <mat-select formControlName="removed_teeth" [panelClass]="'prediction-select-panel'">
-                  @for (opt of removedTeethOptions; track opt.value) {
-                    <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-                  }
-                </mat-select>
-                @if (
-                  profileForm.get('removed_teeth')?.hasError('required') &&
-                  profileForm.get('removed_teeth')?.touched
-                ) {
-                  <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+                @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
+                  <mat-error>{{ validationMessages.weightMax }}</mat-error>
                 }
               </mat-form-field>
             </div>
-
-            <mat-divider class="prediction-inner-divider" />
-
-            <p class="prediction-inline-hint">Indica tu peso en kilogramos con el mismo criterio que usarías en una báscula habitual.</p>
-
-            <mat-form-field
-              appearance="outline"
-              class="full-width"
-              floatLabel="always"
-              subscriptSizing="dynamic"
-            >
-              <mat-label>Peso (kg)</mat-label>
-              <input
-                matInput
-                type="number"
-                step="0.1"
-                [attr.min]="limits.weightKgMin"
-                [attr.max]="limits.weightKgMax"
-                formControlName="weight_kilograms"
-              />
-              <mat-hint>Entre 20 y 350 kg</mat-hint>
-              @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
-                <mat-error>{{ validationMessages.weightRequired }}</mat-error>
-              }
-              @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
-                <mat-error>{{ validationMessages.weightMin }}</mat-error>
-              }
-              @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
-                <mat-error>{{ validationMessages.weightMax }}</mat-error>
-              }
-            </mat-form-field>
           </div>
-        </mat-expansion-panel>
+        </li>
 
-        <mat-expansion-panel class="prediction-panel" [expanded]="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <span class="prediction-panel-title-text">Condiciones médicas y discapacidad</span>
-              <span class="form-badge form-badge--required">Obligatorio</span>
-            </mat-panel-title>
-            <mat-panel-description>Antecedentes y limitaciones funcionales. Todas las casillas y la diabetes son obligatorias.</mat-panel-description>
-          </mat-expansion-panel-header>
+        <li class="prediction-step">
+          <span class="prediction-step__number" aria-hidden="true">2</span>
+          <div class="prediction-step__card">
+            <header class="prediction-step__header">
+              <div class="prediction-step__heading">
+                <h3 class="prediction-step__title" id="anon-step-medical">Condiciones médicas y discapacidad</h3>
+                <span class="form-badge form-badge--required">Obligatorio</span>
+              </div>
+              <p class="prediction-step__lead">Antecedentes, limitaciones funcionales y diabetes.</p>
+            </header>
 
-          <div class="prediction-panel-body" formGroupName="medical_conditions">
-            <h4 class="prediction-panel-subheading">Antecedentes y limitaciones</h4>
-            <p class="prediction-inline-hint">Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.</p>
+            <div class="prediction-step__content" formGroupName="medical_conditions">
+              <div class="choice-pill-row">
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_angina" />
+                  <span class="choice-pill__label">¿Angina?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_stroke" />
+                  <span class="choice-pill__label">¿Accidente cerebrovascular?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_asthma" />
+                  <span class="choice-pill__label">¿Asma?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_copd" />
+                  <span class="choice-pill__label">¿EPOC?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_skin_cancer" />
+                  <span class="choice-pill__label">¿Cáncer de piel?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_depressive_disorder" />
+                  <span class="choice-pill__label">¿Trastorno depresivo?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_kidney_disease" />
+                  <span class="choice-pill__label">¿Enfermedad renal?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="had_arthritis" />
+                  <span class="choice-pill__label">¿Artritis?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="deaf_or_hard_of_hearing" />
+                  <span class="choice-pill__label">¿Sordera o dificultad auditiva?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="blind_or_vision_difficulty" />
+                  <span class="choice-pill__label">¿Ceguera o dificultad visual?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_concentrating" />
+                  <span class="choice-pill__label">¿Dificultad para concentrarse?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_walking" />
+                  <span class="choice-pill__label">¿Dificultad para caminar?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_dressing_bathing" />
+                  <span class="choice-pill__label">¿Dificultad para vestirse o bañarse?</span>
+                </label>
+                <label class="choice-pill">
+                  <input type="checkbox" class="choice-pill__input" formControlName="difficulty_errands" />
+                  <span class="choice-pill__label">¿Dificultad para hacer recados?</span>
+                </label>
 
-            <div class="medical-grid medical-grid--tiles medical-grid--prediction">
-              <mat-checkbox formControlName="had_angina">¿Angina?</mat-checkbox>
-              <mat-checkbox formControlName="had_stroke">¿Accidente cerebrovascular?</mat-checkbox>
-              <mat-checkbox formControlName="had_asthma">¿Asma?</mat-checkbox>
-              <mat-checkbox formControlName="had_copd">¿EPOC?</mat-checkbox>
-              <mat-checkbox formControlName="had_skin_cancer">¿Cáncer de piel?</mat-checkbox>
-              <mat-checkbox formControlName="had_depressive_disorder">¿Trastorno depresivo?</mat-checkbox>
-              <mat-checkbox formControlName="had_kidney_disease">¿Enfermedad renal?</mat-checkbox>
-              <mat-checkbox formControlName="had_arthritis">¿Artritis?</mat-checkbox>
-              <mat-checkbox formControlName="deaf_or_hard_of_hearing">¿Sordera o dificultad auditiva?</mat-checkbox>
-              <mat-checkbox formControlName="blind_or_vision_difficulty">¿Ceguera o dificultad visual?</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_concentrating">¿Dificultad para concentrarse?</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_walking">¿Dificultad para caminar?</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_dressing_bathing">¿Dificultad para vestirse o bañarse?</mat-checkbox>
-              <mat-checkbox formControlName="difficulty_errands">¿Dificultad para hacer recados?</mat-checkbox>
-            </div>
+                <div class="choice-pill-group" role="radiogroup" aria-label="Diabetes">
+                  <span class="choice-pill-group__label">Diabetes</span>
+                  <div class="choice-pill-group__options">
+                    @for (opt of diabetesOptions; track opt.value) {
+                      <label class="choice-pill">
+                        <input
+                          type="radio"
+                          class="choice-pill__input"
+                          formControlName="had_diabetes"
+                          [value]="opt.value"
+                        />
+                        <span class="choice-pill__label">{{ opt.label }}</span>
+                      </label>
+                    }
+                  </div>
+                </div>
+              </div>
 
-            <mat-divider class="prediction-inner-divider" />
-
-            <mat-form-field
-              appearance="outline"
-              class="full-width diabetes-field"
-              floatLabel="always"
-              subscriptSizing="dynamic"
-            >
-              <mat-label>Diabetes</mat-label>
-              <mat-select formControlName="had_diabetes" [panelClass]="'prediction-select-panel'">
-                @for (opt of diabetesOptions; track opt.value) {
-                  <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-                }
-              </mat-select>
               @if (
                 medicalForm.get('had_diabetes')?.hasError('required') &&
                 medicalForm.get('had_diabetes')?.touched
               ) {
-                <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+                <p class="field-error" role="alert">{{ validationMessages.selectRequired }}</p>
               }
-            </mat-form-field>
+            </div>
           </div>
-        </mat-expansion-panel>
+        </li>
 
-        <mat-expansion-panel class="prediction-panel prediction-panel--optional" [expanded]="false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <span class="prediction-panel-title-text">Cuestionario de salud (opcional)</span>
-              <span class="form-badge form-badge--optional">Opcional</span>
-            </mat-panel-title>
-            <mat-panel-description>Opcional: despliega para añadir hábitos y prevención.</mat-panel-description>
-          </mat-expansion-panel-header>
+        <li class="prediction-step prediction-step--optional">
+          <span class="prediction-step__number" aria-hidden="true">3</span>
+          <details class="prediction-step__card prediction-step__card--collapsible">
+            <summary class="prediction-step__summary">
+              <div class="prediction-step__summary-main">
+                <div class="prediction-step__heading">
+                  <h3 class="prediction-step__title">Cuestionario de salud</h3>
+                  <span class="form-badge form-badge--optional">Opcional</span>
+                </div>
+                <p class="prediction-step__lead">Hábitos, vacunas y bienestar para afinar el resultado.</p>
+              </div>
+              <mat-icon class="prediction-step__chevron" aria-hidden="true">expand_more</mat-icon>
+            </summary>
 
-          <div class="prediction-panel-body prediction-panel-body--survey">
-            <p class="prediction-inline-hint">Hábitos, vacunas y percepción de salud. Puedes omitirlo o dejar «Sin especificar» donde aplique.</p>
-            <app-prediction-survey-fields [group]="surveyForm" />
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
+            <div class="prediction-step__body">
+              <app-prediction-survey-fields [group]="surveyForm" />
+            </div>
+          </details>
+        </li>
+      </ol>
 
       <div class="actions actions--form-submit prediction-submit-row">
         <button mat-flat-button color="primary" type="submit" class="form-submit-btn prediction-submit-btn" [disabled]="submitting">
           @if (submitting) {
             <mat-spinner diameter="20"></mat-spinner>
-            <span class="btn-label">Calculando?</span>
+            <span class="btn-label">Calculando…</span>
           } @else {
             Obtener predicción
           }

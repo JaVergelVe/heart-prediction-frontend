@@ -43,7 +43,7 @@
 }
 
 .summary {
-  padding: var(--app-space-md);
+  padding: var(--app-space-md) var(--app-space-lg);
 }
 
 .summary-layout {
@@ -96,7 +96,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: center;
-  gap: 0.15rem 0.35rem;
+  gap: 0.25rem 0.5rem;
 }
 
 .probability-value {
@@ -133,6 +133,16 @@
 
 .actions {
   margin-top: 0.5rem;
+}
+
+.what-if-open-hint {
+  margin: 0.75rem 0 0;
+  max-width: 40rem;
+  line-height: 1.5;
+}
+
+.what-if-anchor {
+  margin-top: var(--app-space-md);
 }
 
 .action-row {

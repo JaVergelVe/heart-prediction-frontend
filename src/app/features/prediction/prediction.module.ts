@@ -17,6 +17,7 @@ import { AuthenticatedPredictionPageComponent } from './components/authenticated
 import { PredictionResultComponent } from './components/prediction-result/prediction-result.component';
 import { PredictionSurveyFieldsComponent } from './components/prediction-survey-fields/prediction-survey-fields.component';
 import { PredictionRoutingModule } from './prediction-routing.module';
+import { PredictionSimulationModule } from './prediction-simulation.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PredictionRoutingModule } from './prediction-routing.module';
   ],
   imports: [
     SharedModule,
+    PredictionSimulationModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

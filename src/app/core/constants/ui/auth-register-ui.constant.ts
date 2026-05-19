@@ -19,6 +19,8 @@ export const REGISTER_PAGE_UI = {
     profile: 'Datos basales que el modelo usa junto con tu peso y el cuestionario de salud.',
     medical: 'Antecedentes y limitaciones funcionales: marca Sí o No en cada casilla.'
   },
+  groupClinical: 'Condiciones clínicas',
+  groupFunctional: 'Discapacidad funcional',
   medicalCheckboxGroupCaption: 'Condiciones y limitaciones (casillas)',
   labels: {
     email: 'Correo electrónico',

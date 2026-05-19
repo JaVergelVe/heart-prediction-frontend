@@ -1,45 +1,59 @@
-<mat-card class="profile-card">
-  <mat-card-title>Mi perfil</mat-card-title>
-  <mat-card-subtitle>Aqu? ves lo que tenemos asociado a tu cuenta. El sexo y la fecha de nacimiento no se pueden cambiar tras el registro. Puedes actualizar altura y dientes; las condiciones médicas se guardan por separado.</mat-card-subtitle>
+<div class="profile-page">
+  <header class="profile-page__header">
+    <h1 class="profile-page__title">{{ pageUi.pageTitle }}</h1>
+    <p class="profile-page__subtitle">{{ pageUi.pageSubtitle }}</p>
+  </header>
 
-  <mat-card-content>
-    @if (loadError) {
-      <p class="server-error" role="alert">{{ loadError }}</p>
-      <button type="button" mat-stroked-button color="primary" (click)="loadUser()">Recargar datos</button>
-    }
+  @if (loadError) {
+    <p class="server-error" role="alert">{{ loadError }}</p>
+    <button type="button" mat-stroked-button color="primary" (click)="loadUser()">{{ pageUi.reload }}</button>
+  }
 
-    @if (pageLoading) {
-      <div class="loading-wrap" role="status" aria-label="Cargando datos del perfil">
-        <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
-      </div>
-    } @else if (!loadError) {
-      <p class="email-line">
-        <span class="email-label">Correo de la cuenta</span>
+  @if (pageLoading) {
+    <div class="loading-wrap" role="status" [attr.aria-label]="pageUi.loadingAriaLabel">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    </div>
+  } @else if (!loadError) {
+    <section class="profile-section-card" aria-labelledby="profile-section-account">
+      <h2 id="profile-section-account" class="section-title profile-section-card__title">{{ pageUi.sectionAccount }}</h2>
+      <p class="profile-account-email">
         @if (emailDisplay) {
-          <span class="email-value">{{ emailDisplay }}</span>
+          {{ emailDisplay }}
         } @else {
-          <span class="email-value muted">No disponible</span>
+          <span class="muted">{{ pageUi.emailUnavailable }}</span>
         }
       </p>
+    </section>
 
-      <mat-divider class="block-divider"></mat-divider>
+    <section class="profile-section-card" aria-labelledby="profile-section-base">
+      <h2 id="profile-section-base" class="section-title profile-section-card__title">{{ pageUi.sectionProfileBase }}</h2>
 
-      <h3 class="section-title">Datos del perfil (solo lectura)</h3>
-      <p class="section-hint">Tras el registro, el sexo y la fecha de nacimiento no se pueden corregir aquí. Si necesitas un cambio, contacta con soporte o sigue el procedimiento de tu institución.</p>
-      <dl class="readonly-grid">
-        <dt>Sexo biológico</dt>
-        <dd>{{ sexReadOnlyLabel }}</dd>
-        <dt>Fecha de nacimiento</dt>
-        <dd>
+      <div class="profile-subsection">
+        <div class="profile-subsection-head">
+          <h3 class="profile-subsection-label">{{ pageUi.subsectionFixedData }}</h3>
+          <button
+            type="button"
+            class="support-hint-link"
+            [matTooltip]="pageUi.supportHintTooltip"
+            matTooltipPosition="above"
+            [attr.aria-label]="pageUi.supportHintTooltip"
+          >
+            {{ pageUi.supportHintLink }}
+          </button>
+        </div>
+        <p class="profile-subsection-hint">{{ pageUi.fixedDataHint }}</p>
+        <p class="readonly-inline-data" aria-label="Sexo y fecha de nacimiento">
+          {{ sexReadOnlyLabel }}
+          <span aria-hidden="true"> · </span>
           @if (birthDateIso) {
-            {{ birthDateIso | date: 'mediumDate' }}
+            {{ birthDateIso | date: 'd MMM y' }}
           } @else {
-            <span class="muted">No indicada</span>
+            {{ pageUi.birthDateUnavailable }}
           }
-        </dd>
-      </dl>
+        </p>
+      </div>
 
-      <mat-divider class="block-divider"></mat-divider>
+      <mat-divider class="profile-subsection-divider"></mat-divider>
 
       @if (profileSuccess) {
         <p class="feedback feedback--success" role="status">{{ profileSuccess }}</p>
@@ -48,8 +62,8 @@
         <p class="feedback feedback--error" role="alert">{{ profileError }}</p>
       }
 
-      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
-        <h3 class="section-title">Datos que puedes actualizar</h3>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate class="profile-subsection">
+        <h3 class="profile-subsection-label">{{ pageUi.subsectionEditableData }}</h3>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Altura (metros)</mat-label>
@@ -87,17 +101,17 @@
             @if (profileSaving) {
               <mat-spinner diameter="20"></mat-spinner>
             } @else {
-              Guardar cambios de altura y dientes
+              {{ pageUi.saveProfile }}
             }
           </button>
           @if (profileSaving) {
-            <span class="pending-caption">Guardando perfil?</span>
+            <span class="pending-caption">{{ pageUi.saveProfilePending }}</span>
           }
         </div>
       </form>
+    </section>
 
-      <mat-divider class="block-divider"></mat-divider>
-
+    <section class="profile-section-card" aria-labelledby="profile-section-medical">
       @if (medicalSuccess) {
         <p class="feedback feedback--success" role="status">{{ medicalSuccess }}</p>
       }
@@ -106,51 +120,82 @@
       }
 
       <form [formGroup]="medicalForm" (ngSubmit)="saveMedical()" novalidate>
-        <h3 class="section-title">Condiciones médicas y discapacidad</h3>
-        <p class="section-hint">Marca Sí o No según tu situación actual. Si no estás seguro, elige la opción más cercana a la realidad.</p>
+        <h2 id="profile-section-medical" class="section-title profile-section-card__title">{{ pageUi.sectionMedical }}</h2>
+        <p class="section-hint">{{ pageUi.medicalHint }}</p>
 
-        <div class="medical-grid">
-          <mat-checkbox formControlName="had_angina">¿Angina?</mat-checkbox>
-          <mat-checkbox formControlName="had_stroke">¿Accidente cerebrovascular?</mat-checkbox>
-          <mat-checkbox formControlName="had_asthma">¿Asma?</mat-checkbox>
-          <mat-checkbox formControlName="had_copd">¿EPOC?</mat-checkbox>
-          <mat-checkbox formControlName="had_skin_cancer">¿Cáncer de piel?</mat-checkbox>
-          <mat-checkbox formControlName="had_depressive_disorder">¿Trastorno depresivo?</mat-checkbox>
-          <mat-checkbox formControlName="had_kidney_disease">¿Enfermedad renal?</mat-checkbox>
-          <mat-checkbox formControlName="had_arthritis">¿Artritis?</mat-checkbox>
-          <mat-checkbox formControlName="deaf_or_hard_of_hearing">¿Sordera o dificultad auditiva?</mat-checkbox>
-          <mat-checkbox formControlName="blind_or_vision_difficulty">¿Ceguera o dificultad visual?</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_concentrating">¿Dificultad para concentrarse?</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_walking">¿Dificultad para caminar?</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_dressing_bathing">¿Dificultad para vestirse o bañarse?</mat-checkbox>
-          <mat-checkbox formControlName="difficulty_errands">¿Dificultad para hacer recados?</mat-checkbox>
+        <h3 class="profile-group-label">{{ pageUi.groupClinical }}</h3>
+        <div class="choice-pill-row" role="group" [attr.aria-label]="pageUi.groupClinical">
+          @for (pill of clinicalPills; track pill.control) {
+            <label class="choice-pill">
+              <input
+                type="checkbox"
+                class="choice-pill__input"
+                [formControlName]="pill.control"
+              />
+              <span class="choice-pill__label">{{ pill.label }}</span>
+            </label>
+          }
+
+          <div class="choice-pill-group" role="radiogroup" [attr.aria-label]="pageUi.diabetesLabel">
+            <span class="choice-pill-group__label">{{ pageUi.diabetesLabel }}</span>
+            <div class="choice-pill-group__options">
+              @for (opt of diabetesPills; track opt.value) {
+                <label class="choice-pill">
+                  <input
+                    type="radio"
+                    class="choice-pill__input"
+                    formControlName="had_diabetes"
+                    [value]="opt.value"
+                  />
+                  <span class="choice-pill__label">{{ opt.label }}</span>
+                </label>
+              }
+              @if (medicalForm.get('had_diabetes')?.value === diabetesPregnancyPill.value) {
+                <label class="choice-pill">
+                  <input
+                    type="radio"
+                    class="choice-pill__input"
+                    formControlName="had_diabetes"
+                    [value]="diabetesPregnancyPill.value"
+                  />
+                  <span class="choice-pill__label">{{ diabetesPregnancyPill.label }}</span>
+                </label>
+              }
+            </div>
+          </div>
         </div>
 
-        <mat-form-field appearance="outline" class="full-width diabetes-field">
-          <mat-label>Diabetes</mat-label>
-          <mat-select formControlName="had_diabetes">
-            @for (opt of diabetesOptions; track opt.value) {
-              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-            }
-          </mat-select>
-          @if (medicalForm.get('had_diabetes')?.hasError('required') && medicalForm.get('had_diabetes')?.touched) {
-            <mat-error>{{ validationMessages.selectRequired }}</mat-error>
+        @if (medicalForm.get('had_diabetes')?.hasError('required') && medicalForm.get('had_diabetes')?.touched) {
+          <p class="field-error" role="alert">{{ validationMessages.selectRequired }}</p>
+        }
+
+        <h3 class="profile-group-label">{{ pageUi.groupFunctional }}</h3>
+        <div class="choice-pill-row" role="group" [attr.aria-label]="pageUi.groupFunctional">
+          @for (pill of functionalPills; track pill.control) {
+            <label class="choice-pill">
+              <input
+                type="checkbox"
+                class="choice-pill__input"
+                [formControlName]="pill.control"
+              />
+              <span class="choice-pill__label">{{ pill.label }}</span>
+            </label>
           }
-        </mat-form-field>
+        </div>
 
         <div class="actions">
           <button mat-flat-button color="primary" type="submit" [disabled]="medicalSaving">
             @if (medicalSaving) {
               <mat-spinner diameter="20"></mat-spinner>
             } @else {
-              Guardar condiciones médicas
+              {{ pageUi.saveMedical }}
             }
           </button>
           @if (medicalSaving) {
-            <span class="pending-caption">Guardando condiciones médicas?</span>
+            <span class="pending-caption">{{ pageUi.saveMedicalPending }}</span>
           }
         </div>
       </form>
-    }
-  </mat-card-content>
-</mat-card>
+    </section>
+  }
+</div>
