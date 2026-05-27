@@ -1,0 +1,99 @@
+<mat-card class="prediction-card prediction-card--authenticated">
+  <mat-card-header class="prediction-card-header prediction-card-header--auth">
+    <div mat-card-avatar class="prediction-card-avatar prediction-card-avatar--soft" aria-hidden="true">
+      <mat-icon>favorite</mat-icon>
+    </div>
+    <mat-card-title-group class="prediction-card-title-group prediction-card-title-group--auth">
+      <p class="prediction-eyebrow">Con tu perfil guardado</p>
+      <mat-card-title>Predicción con tu cuenta</mat-card-title>
+      <mat-card-subtitle class="prediction-card-lead">Actualiza tu peso y, si lo deseas, completa el cuestionario opcional. El resto de tu ficha ya está guardada en tu cuenta.</mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
+
+  <mat-divider class="prediction-card-divider prediction-card-divider--auth" />
+
+  <mat-card-content class="prediction-card-body prediction-card-body--auth">
+    @if (serverError) {
+      <div class="prediction-error-panel" role="alert">
+        <mat-icon class="prediction-error-panel__icon" aria-hidden="true">error_outline</mat-icon>
+        <p class="prediction-error-panel__text">{{ serverError }}</p>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="prediction-form prediction-form--auth">
+      <ol class="prediction-stepper" aria-label="Pasos del formulario de predicción">
+        <li class="prediction-step">
+          <span class="prediction-step__number" aria-hidden="true">1</span>
+          <div class="prediction-step__card">
+            <header class="prediction-step__header">
+              <div class="prediction-step__heading">
+                <h3 class="prediction-step__title" id="auth-step-weight">Peso</h3>
+                <span class="form-badge form-badge--required">Obligatorio</span>
+              </div>
+              <p class="prediction-step__lead">Indica tu peso actual en kilogramos.</p>
+            </header>
+
+            <mat-form-field
+              appearance="outline"
+              class="full-width prediction-step__field"
+              floatLabel="always"
+              subscriptSizing="dynamic"
+              aria-labelledby="auth-step-weight"
+            >
+              <mat-label>Peso (kg)</mat-label>
+              <input
+                matInput
+                type="number"
+                step="0.1"
+                [attr.min]="limits.weightKgMin"
+                [attr.max]="limits.weightKgMax"
+                formControlName="weight_kilograms"
+              />
+              <mat-hint>Entre 20 y 350 kg</mat-hint>
+              @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
+                <mat-error>{{ validationMessages.weightRequired }}</mat-error>
+              }
+              @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
+                <mat-error>{{ validationMessages.weightMin }}</mat-error>
+              }
+              @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
+                <mat-error>{{ validationMessages.weightMax }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </li>
+
+        <li class="prediction-step prediction-step--optional">
+          <span class="prediction-step__number" aria-hidden="true">2</span>
+          <details class="prediction-step__card prediction-step__card--collapsible">
+            <summary class="prediction-step__summary">
+              <div class="prediction-step__summary-main">
+                <div class="prediction-step__heading">
+                  <h3 class="prediction-step__title">Cuestionario de salud</h3>
+                  <span class="form-badge form-badge--optional">Opcional</span>
+                </div>
+                <p class="prediction-step__lead">Hábitos, vacunas y bienestar para afinar el resultado.</p>
+              </div>
+              <mat-icon class="prediction-step__chevron" aria-hidden="true">expand_more</mat-icon>
+            </summary>
+
+            <div class="prediction-step__body">
+              <app-prediction-survey-fields [group]="surveyForm" />
+            </div>
+          </details>
+        </li>
+      </ol>
+
+      <div class="actions actions--form-submit prediction-submit-row prediction-submit-row--auth">
+        <button mat-flat-button color="primary" type="submit" class="form-submit-btn prediction-submit-btn" [disabled]="submitting">
+          @if (submitting) {
+            <mat-spinner diameter="20"></mat-spinner>
+            <span class="btn-label">Calculando…</span>
+          } @else {
+            Obtener predicción
+          }
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

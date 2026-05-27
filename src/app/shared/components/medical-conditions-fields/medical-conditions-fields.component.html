@@ -1,0 +1,49 @@
+<div class="medical-fields" [formGroup]="group">
+  @if (showIntroHint) {
+    <p class="medical-fields__intro">{{ ui.introHint }}</p>
+  }
+
+  <section class="medical-fields__section" aria-labelledby="medical-clinical-heading">
+    <h3 class="medical-fields__heading" id="medical-clinical-heading">{{ ui.groupClinical }}</h3>
+    <div class="choice-pill-grid" role="group" [attr.aria-label]="ui.groupClinical">
+      @for (pill of clinicalPills; track pill.control) {
+        <label class="choice-pill">
+          <input type="checkbox" class="choice-pill__input" [formControlName]="pill.control" />
+          <span class="choice-pill__label">{{ pill.label }}</span>
+        </label>
+      }
+    </div>
+  </section>
+
+  <section
+    class="medical-fields__section medical-fields__section--diabetes"
+    role="radiogroup"
+    aria-labelledby="medical-diabetes-heading"
+  >
+    <h3 class="medical-fields__heading" id="medical-diabetes-heading">{{ ui.groupDiabetes }}</h3>
+    <p class="medical-fields__subhint">{{ ui.diabetesHint }}</p>
+    <div class="choice-pill-grid choice-pill-grid--diabetes">
+      @for (opt of diabetesOptions; track opt.value) {
+        <label class="choice-pill">
+          <input type="radio" class="choice-pill__input" formControlName="had_diabetes" [value]="opt.value" />
+          <span class="choice-pill__label">{{ opt.label }}</span>
+        </label>
+      }
+    </div>
+    @if (group.get('had_diabetes')?.hasError('required') && group.get('had_diabetes')?.touched) {
+      <p class="medical-fields__error field-error" role="alert">{{ validationMessages.selectRequired }}</p>
+    }
+  </section>
+
+  <section class="medical-fields__section" aria-labelledby="medical-functional-heading">
+    <h3 class="medical-fields__heading" id="medical-functional-heading">{{ ui.groupFunctional }}</h3>
+    <div class="choice-pill-grid" role="group" [attr.aria-label]="ui.groupFunctional">
+      @for (pill of functionalPills; track pill.control) {
+        <label class="choice-pill">
+          <input type="checkbox" class="choice-pill__input" [formControlName]="pill.control" />
+          <span class="choice-pill__label">{{ pill.label }}</span>
+        </label>
+      }
+    </div>
+  </section>
+</div>

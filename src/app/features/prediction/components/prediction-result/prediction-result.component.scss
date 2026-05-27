@@ -1,0 +1,256 @@
+.result-card {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.result-card--prediction.mat-mdc-card {
+  border-radius: var(--app-radius-lg) !important;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 8px 22px rgba(15, 23, 42, 0.06) !important;
+}
+
+.result-card--prediction .mat-mdc-card-title {
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.result-card--prediction .mat-mdc-card-subtitle {
+  font-size: 0.875rem;
+  color: var(--app-text-muted);
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.section-heading {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--app-text-faint);
+  margin: 0 0 var(--app-space-sm);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.section-divider {
+  margin: var(--app-space-lg) 0;
+}
+
+.summary {
+  padding: var(--app-space-md) var(--app-space-lg);
+}
+
+.summary-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem 2rem;
+}
+
+.result-card--prediction .details-block,
+.result-card--prediction .shap-block {
+  margin-top: 0.15rem;
+}
+
+.result-card--prediction .result-grid {
+  row-gap: 0.6rem;
+}
+
+.result-card--prediction .shap-grid {
+  padding: var(--app-space-sm) 0;
+  row-gap: 0.65rem;
+}
+
+.result-card--prediction .result-grid dt,
+.result-card--prediction .shap-grid dt {
+  color: var(--app-text-faint);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.result-card--prediction .shap-grid dd {
+  font-size: 0.9375rem;
+}
+
+.result-card--prediction .shap-message {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+
+.result-card--prediction .factor-stack {
+  gap: var(--app-space-md);
+}
+
+.probability-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.probability-value {
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--app-text-primary);
+}
+
+.probability-unit {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--app-text-muted);
+}
+
+.probability-caption {
+  flex-basis: 100%;
+  font-size: 0.8125rem;
+  color: var(--app-text-muted);
+  text-align: center;
+}
+
+.risk-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.risk-label {
+  font-size: 0.8125rem;
+  color: var(--app-text-muted);
+}
+
+.pdf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.pdf-toolbar--card {
+  padding: var(--app-space-md);
+  border-radius: var(--app-radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(248, 250, 252, 0.55);
+  justify-content: center;
+}
+
+.pdf-spinner {
+  flex-shrink: 0;
+}
+
+.pdf-error {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.actions {
+  margin-top: 0.5rem;
+}
+
+.what-if-open-hint {
+  margin: 0.75rem 0 0;
+  max-width: 40rem;
+  line-height: 1.5;
+}
+
+.what-if-anchor {
+  margin-top: var(--app-space-md);
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.action-row--center {
+  justify-content: center;
+}
+
+.flow-hint {
+  margin: 0 0 0.75rem;
+  max-width: 40rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 0.5rem 0 1rem;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  color: rgba(25, 118, 210, 0.75);
+  margin-bottom: 0.5rem;
+}
+
+.empty-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.empty-body,
+.empty-hint {
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.empty-body {
+  margin-bottom: 0.5rem;
+}
+
+.empty-hint {
+  margin-bottom: 1.25rem;
+}
+
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.footer-link {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.footer-link a {
+  margin-left: 0.25rem;
+}
+
+.summary-card,
+.details-card,
+.recommendations-card {
+  border-radius: var(--app-radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(248, 250, 252, 0.55);
+}
+
+.details-card,
+.recommendations-card {
+  padding: var(--app-space-md);
+}
+
+.recommendations-card .rec-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}

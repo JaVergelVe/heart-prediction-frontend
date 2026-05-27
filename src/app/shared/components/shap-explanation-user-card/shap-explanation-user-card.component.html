@@ -1,0 +1,40 @@
+<div class="shap-main-user">
+  <h3 class="shap-main-user__title">{{ view.friendlyTitle }}</h3>
+
+  <div class="shap-main-user__impact-row">
+    <span
+      class="shap-impact-chip"
+      [class.shap-impact-chip--increase]="view.impactKind === 'increase'"
+      [class.shap-impact-chip--decrease]="view.impactKind === 'decrease'"
+      [class.shap-impact-chip--neutral]="view.impactKind === 'neutral' || view.impactKind === 'unknown'"
+    >
+      {{ view.impactLabel }}
+    </span>
+  </div>
+
+  <p class="shap-main-user__explain">{{ view.primaryExplanation }}</p>
+
+  @if (view.narrativeExtra) {
+    <div class="shap-main-user__extra">
+      <span class="shap-main-user__extra-heading">{{ ui.moreContextHeading }}</span>
+      <p class="shap-main-user__extra-body">{{ view.narrativeExtra }}</p>
+    </div>
+  }
+
+  @if (view.hasTechnicalPanel) {
+    <mat-expansion-panel class="shap-tech-panel" [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ ui.technicalSectionTitle }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="shap-tech-panel__body">
+        <p class="shap-tech-panel__hint">{{ ui.technicalSectionHint }}</p>
+        <dl class="shap-tech-grid">
+          @for (row of view.technicalRows; track row.label) {
+            <dt>{{ row.label }}</dt>
+            <dd class="mono-wrap">{{ row.value }}</dd>
+          }
+        </dl>
+      </div>
+    </mat-expansion-panel>
+  }
+</div>

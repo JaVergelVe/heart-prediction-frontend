@@ -1,0 +1,115 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.shell-sidenav__head {
+  padding: var(--app-space-md) var(--app-space-md) var(--app-space-sm);
+  background: linear-gradient(145deg, rgba(63, 81, 181, 0.08) 0%, rgba(63, 81, 181, 0.02) 100%);
+  border-bottom: 1px solid var(--app-border-subtle);
+}
+
+.shell-sidenav__brand {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--app-space-sm);
+}
+
+.shell-sidenav__mark {
+  flex-shrink: 0;
+  width: 4px;
+  height: 40px;
+  margin-top: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgb(63, 81, 181) 0%, rgba(63, 81, 181, 0.45) 100%);
+}
+
+.shell-sidenav__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-xs);
+  min-width: 0;
+}
+
+.shell-sidenav__product {
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--app-text-primary);
+}
+
+.shell-sidenav__section {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-text-faint);
+}
+
+.shell-sidenav__divider {
+  margin: 0;
+  border-top-color: var(--app-border-subtle);
+}
+
+.shell-sidenav__list {
+  padding: var(--app-space-sm) 0 var(--app-space-md);
+}
+
+.shell-nav-link {
+  margin: 3px var(--app-space-sm) !important;
+  border-radius: var(--app-radius-sm) !important;
+  height: 46px !important;
+  font-size: 0.9375rem !important;
+  transition:
+    background-color var(--app-motion-duration-short) var(--app-motion-ease-standard),
+    color var(--app-motion-duration-short) var(--app-motion-ease-standard),
+    box-shadow var(--app-motion-duration-short) var(--app-motion-ease-standard),
+    transform var(--app-motion-duration-short) var(--app-motion-ease-out);
+}
+
+.shell-nav-link:hover {
+  background-color: var(--app-nav-item-hover) !important;
+  transform: translateX(2px);
+}
+
+.shell-nav-link:focus-visible {
+  outline: 2px solid rgba(63, 81, 181, 0.45);
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.shell-nav-link.shell-nav-link--active {
+  background-color: var(--app-nav-item-active-bg) !important;
+  color: var(--app-nav-item-active-fg) !important;
+  font-weight: 600 !important;
+  box-shadow:
+    inset 3px 0 0 0 var(--app-nav-item-active-accent),
+    0 1px 0 rgba(255, 255, 255, 0.65) inset;
+  transform: none;
+}
+
+.shell-nav-link.shell-nav-link--active:hover {
+  background-color: rgba(63, 81, 181, 0.14) !important;
+  transform: translateX(1px);
+}
+
+.shell-sidenav__divider--before-logout {
+  margin-top: var(--app-space-xs);
+}
+
+.shell-nav-link--logout {
+  width: calc(100% - 2 * var(--app-space-sm));
+  margin-left: var(--app-space-sm);
+  margin-right: var(--app-space-sm);
+  text-align: left;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--app-text-secondary, rgba(0, 0, 0, 0.65));
+}
+
+.shell-nav-link--logout:hover {
+  background-color: rgba(211, 47, 47, 0.08) !important;
+  color: rgb(183, 28, 28);
+}

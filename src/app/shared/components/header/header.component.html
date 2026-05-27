@@ -1,0 +1,19 @@
+<mat-toolbar class="header-toolbar">
+  <div class="header-toolbar__inner">
+    <div class="header-toolbar__start">
+      <button mat-icon-button type="button" class="menu-btn" aria-label="Abrir menú de navegación" (click)="menuClick.emit()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="header-brand">
+        <span class="header-brand__icon" aria-hidden="true">
+          <mat-icon>monitor_heart</mat-icon>
+        </span>
+        <div class="header-brand__text">
+          <span class="header-brand__title">Riesgo cardiovascular</span>
+          <span class="header-brand__tagline">Predicción orientativa para apoyo preventivo</span>
+        </div>
+      </div>
+    </div>
+    <span class="spacer"></span>
+  </div>
+</mat-toolbar>

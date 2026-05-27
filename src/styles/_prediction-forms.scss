@@ -1,0 +1,534 @@
+// Formularios de predicción (anónimo / autenticado): paneles, badges y rejillas compartidas.
+
+.form-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+.form-badge--required {
+  background: rgba(25, 118, 210, 0.07);
+  color: rgb(25, 118, 210);
+  border: 1px solid rgba(25, 118, 210, 0.2);
+  font-weight: 600;
+}
+
+.form-badge--optional {
+  background: rgba(15, 23, 42, 0.03);
+  color: var(--app-text-muted);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-weight: 600;
+}
+
+.prediction-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-md);
+}
+
+.prediction-card-header .mat-mdc-card-header-text {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.prediction-card-header mat-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.prediction-card-header .mat-mdc-card-title,
+.prediction-card-header .mat-mdc-card-subtitle {
+  margin: 0;
+}
+
+.prediction-card-header .mat-mdc-card-subtitle {
+  margin-top: 0.15rem;
+  line-height: 1.5;
+}
+
+.prediction-card-header--compact {
+  padding-bottom: var(--app-space-sm);
+}
+
+.prediction-card-header--auth {
+  padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-md);
+}
+
+.prediction-card-title-group--auth {
+  gap: 0.35rem;
+}
+
+.prediction-card-lead {
+  display: block;
+  max-width: 42rem;
+  margin-top: 0.35rem !important;
+  line-height: 1.5 !important;
+  font-size: 0.875rem !important;
+  color: var(--app-text-muted) !important;
+}
+
+.prediction-card-divider--auth {
+  margin: 0 !important;
+  border-top-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+.prediction-card-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(183, 28, 28, 0.08);
+  color: rgb(183, 28, 28);
+}
+
+.prediction-card-avatar--soft {
+  background: rgba(63, 81, 181, 0.1);
+  color: rgb(63, 81, 181);
+}
+
+.prediction-card-avatar mat-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.prediction-eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--app-text-faint);
+}
+
+.prediction-card-body {
+  padding: var(--app-space-md) var(--app-space-lg) var(--app-space-lg) !important;
+}
+
+.prediction-card-body--compact {
+  padding-top: var(--app-space-md) !important;
+}
+
+.prediction-card-body--auth {
+  padding: var(--app-space-md) var(--app-space-lg) var(--app-space-lg) !important;
+}
+
+.prediction-error-panel {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.875rem 1rem;
+  border-radius: var(--app-radius-sm);
+  background: rgba(179, 38, 30, 0.06);
+  border: 1px solid rgba(179, 38, 30, 0.22);
+  margin-bottom: var(--app-space-md);
+}
+
+.prediction-error-panel__icon {
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  color: var(--app-text-error);
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.prediction-error-panel__text {
+  margin: 0;
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.prediction-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-md);
+}
+
+.prediction-accordion--auth {
+  gap: var(--app-space-md);
+}
+
+.prediction-auth-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// Stepper vertical (misma referencia visual que `.how` en la landing).
+$prediction-step-accent: #2563eb;
+
+.prediction-stepper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-lg);
+}
+
+.prediction-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.35rem;
+  align-items: start;
+}
+
+.prediction-step__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 1.15rem;
+  border-radius: 999px;
+  background: $prediction-step-accent;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.prediction-step__card {
+  min-width: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem 1.35rem;
+  background: linear-gradient(180deg, #fff, #f8fafc);
+}
+
+.prediction-step__card--collapsible {
+  padding: 0;
+  overflow: hidden;
+}
+
+.prediction-step__header {
+  margin-bottom: var(--app-space-md);
+}
+
+.prediction-step__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.prediction-step__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  color: var(--app-text-primary);
+}
+
+.prediction-step__lead {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-text-muted);
+}
+
+.prediction-step__field {
+  margin: 0;
+}
+
+.prediction-step__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.prediction-step__content .prediction-inner-divider {
+  margin: var(--app-space-sm) 0 var(--app-space-md);
+}
+
+.prediction-step__content .prediction-panel-subheading {
+  margin-top: 0.15rem;
+}
+
+.prediction-step__summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.prediction-step__summary-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.prediction-step__chevron {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--app-text-muted);
+  transition: transform var(--app-motion-duration-short) var(--app-motion-ease-standard);
+}
+
+.prediction-step__card--collapsible[open] .prediction-step__chevron {
+  transform: rotate(180deg);
+}
+
+.prediction-step__body {
+  padding: 0 1.35rem 1.35rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.prediction-step--optional .prediction-step__card--collapsible {
+  border-left: 3px solid rgba(100, 116, 139, 0.22);
+  background: linear-gradient(180deg, #fff 0%, rgba(248, 250, 252, 0.95) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prediction-step__chevron {
+    transition: none;
+  }
+}
+
+.prediction-panel.mat-expansion-panel {
+  border-radius: var(--app-radius-md) !important;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow: none !important;
+  background: var(--app-bg-elevated);
+}
+
+.prediction-panel--optional.mat-expansion-panel {
+  background: rgba(248, 250, 252, 0.85);
+  border-left: 3px solid rgba(100, 116, 139, 0.22);
+}
+
+.prediction-panel .mat-expansion-panel-header {
+  padding: 1.1rem 1.35rem;
+}
+
+.prediction-panel .mat-expansion-panel-header-title {
+  flex-grow: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+}
+
+.prediction-panel-title-text {
+  margin-right: 0;
+}
+
+.prediction-panel .mat-expansion-panel-header-description {
+  flex-grow: 2;
+  justify-content: flex-start;
+  margin-right: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--app-text-muted);
+  font-weight: 400;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.prediction-form-guide {
+  margin: 0 0 var(--app-space-md);
+}
+
+.prediction-panel-subheading {
+  margin: 0 0 var(--app-space-xs);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--app-text-primary);
+}
+
+.prediction-field-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.prediction-panel-body {
+  padding: 0 var(--app-space-lg) var(--app-space-lg);
+}
+
+.prediction-panel-body--survey {
+  padding-top: var(--app-space-sm);
+}
+
+.prediction-panel-body--single {
+  max-width: 100%;
+  padding-top: var(--app-space-sm);
+}
+
+.prediction-inline-hint {
+  margin: 0 0 var(--app-space-md);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+
+.prediction-inner-divider {
+  margin: var(--app-space-sm) 0 var(--app-space-md);
+}
+
+.prediction-form--auth .prediction-submit-row {
+  margin-top: var(--app-space-lg);
+}
+
+.prediction-submit-row {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  border-top: none;
+  padding-top: var(--app-space-lg);
+  padding-bottom: var(--app-space-sm);
+  margin-top: var(--app-space-md);
+  margin-bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.92) 28%,
+    rgba(255, 255, 255, 0.98) 100%
+  );
+  backdrop-filter: blur(6px);
+}
+
+.prediction-submit-row--auth {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--app-space-sm);
+  margin-top: var(--app-space-xl);
+  padding-top: var(--app-space-lg);
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.prediction-submit-row--auth .form-submit-btn {
+  align-self: center;
+}
+
+.prediction-submit-btn {
+  min-height: 48px;
+  min-width: min(100%, 280px);
+  padding-inline: 1.5rem;
+}
+
+.prediction-card.prediction-card--anonymous {
+  max-width: 840px;
+  margin: 0 auto;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.prediction-card.prediction-card--authenticated {
+  max-width: 720px;
+  margin: 0 auto;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.prediction-card.prediction-card--authenticated.mat-mdc-card {
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow:
+    0 1px 1px rgba(15, 23, 42, 0.04),
+    0 6px 16px rgba(15, 23, 42, 0.05) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .prediction-card.prediction-card--authenticated.mat-mdc-card:hover {
+    transform: none;
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.05),
+      0 10px 22px rgba(15, 23, 42, 0.06) !important;
+  }
+}
+
+.prediction-card.prediction-card--authenticated .mat-mdc-card-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.prediction-card.prediction-card--authenticated .prediction-card-avatar--soft {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(63, 81, 181, 0.08);
+  color: rgb(57, 73, 171);
+}
+
+.prediction-panel-body .diabetes-field {
+  margin-top: 0;
+}
+
+/* Campos Material dentro del formulario de predicción: etiquetas largas visibles. */
+.prediction-form .mat-mdc-form-field .mat-mdc-floating-label,
+.prediction-form .mat-mdc-form-field .mdc-floating-label {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  line-height: 1.3;
+  text-overflow: clip;
+  overflow: visible;
+}
+
+.prediction-form .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  align-items: flex-start;
+}
+
+.prediction-form .mat-mdc-form-field .mat-mdc-form-field-infix {
+  padding-top: 1.3rem;
+}
+
+.prediction-form .mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-notch-piece {
+  overflow: visible;
+}
+
+.prediction-form .mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-error {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+/* Panel de opciones de select: ancho suficiente y texto multilínea. */
+.mat-mdc-select-panel.prediction-select-panel {
+  max-width: min(100vw - 24px, 42rem);
+  min-width: min(100vw - 24px, var(--mat-select-trigger-width, 280px));
+}
+
+.mat-mdc-select-panel.prediction-select-panel .mat-mdc-option {
+  min-height: 3rem;
+  height: auto;
+  align-items: flex-start;
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+.mat-mdc-select-panel.prediction-select-panel .mat-mdc-option .mdc-list-item__primary-text,
+.mat-mdc-select-panel.prediction-select-panel .mat-mdc-option .mat-mdc-option-text {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.35;
+}

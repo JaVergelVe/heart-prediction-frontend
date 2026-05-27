@@ -1,0 +1,170 @@
+<mat-card class="result-card result-card--prediction">
+  <mat-card-title>{{ ui.cardTitle }}</mat-card-title>
+
+  @if (result) {
+    <mat-card-subtitle>{{ ui.cardSubtitleWithData }}</mat-card-subtitle>
+  }
+
+  <mat-card-content>
+    @if (result) {
+      <section class="summary summary-card" [attr.aria-labelledby]="'pred-summary-heading'">
+        <h2 class="section-heading" id="pred-summary-heading">{{ ui.sections.summary }}</h2>
+        <div class="summary-layout">
+          <div class="probability-block">
+            <span class="sr-only">{{ ui.labels.probability }}:</span>
+            <span class="probability-value" aria-hidden="true">{{ result.prediction_probability | number: '1.0-2' }}</span>
+            <span class="probability-unit" aria-hidden="true">{{ ui.units.probabilitySuffix }}</span>
+            <span class="probability-caption">{{ ui.labels.probabilityShort }}</span>
+          </div>
+          <div class="risk-block">
+            <span class="risk-label">{{ ui.labels.riskLevel }}</span>
+            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ riskDisplayLabel() }}</span>
+          </div>
+        </div>
+      </section>
+
+      <mat-divider class="section-divider" />
+
+      <section class="details-block details-card" [attr.aria-labelledby]="'pred-details-heading'">
+        <h2 class="section-heading" id="pred-details-heading">{{ ui.sections.details }}</h2>
+        <dl class="result-grid">
+          <dt>{{ ui.labels.timestamp }}</dt>
+          <dd>{{ result.prediction_timestamp | date: 'medium' }}</dd>
+
+          <dt>{{ ui.labels.bmi }}</dt>
+          <dd>
+            @if (result.bmi != null) {
+              {{ result.bmi | number: '1.0-2' }}
+            } @else {
+              <span class="muted">{{ ui.labels.bmiUnavailable }}</span>
+            }
+          </dd>
+
+          <dt>{{ ui.labels.modelVersion }}</dt>
+          <dd>{{ modelVersionDisplay }}</dd>
+
+          @if (hasPredictedClass) {
+            <dt>{{ ui.labels.predictedClass }}</dt>
+            <dd>{{ result.predicted_class }}</dd>
+          }
+
+          <dt>{{ ui.labels.predictionId }}</dt>
+          <dd class="mono wrap-id">{{ result.prediction_id }}</dd>
+        </dl>
+      </section>
+
+      @if (shapExplanation(); as shapMain) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'pred-shap-main-heading'">
+          <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+          <h2 class="section-heading" id="pred-shap-main-heading">{{ ui.sections.shapMain }}</h2>
+          <app-shap-explanation-user-card [explanation]="shapMain" />
+        </section>
+      }
+
+      @if (shapFactors().length) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'pred-shap-factors-heading'">
+          @if (!shapExplanation()) {
+            <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+          }
+          <h2 class="section-heading" id="pred-shap-factors-heading">{{ ui.sections.shapFactors }}</h2>
+          <div class="factor-stack" role="list">
+            @for (factor of shapFactors(); track $index) {
+              <app-shap-factor-user-card [factor]="factor" [batchMaxAbs]="shapFactorsMaxAbs" />
+            }
+          </div>
+        </section>
+      }
+
+      @if (result.recommendations?.length) {
+        <mat-divider class="section-divider" />
+        <section class="recommendations-card" [attr.aria-labelledby]="'pred-rec-heading'">
+          <h2 class="section-heading" id="pred-rec-heading">{{ ui.sections.recommendations }}</h2>
+          <ul class="rec-list">
+            @for (rec of result.recommendations!; track $index) {
+              <li>{{ rec }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (canDownloadPdf) {
+        <mat-divider class="section-divider" />
+        <div class="pdf-toolbar pdf-toolbar--card">
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="downloadPdf()"
+            [disabled]="pdfDownloading"
+            [attr.aria-label]="ui.pdfDownloadAriaLabel"
+          >
+            {{ pdfDownloading ? ui.pdfDownloadPending : ui.pdfDownload }}
+          </button>
+          @if (pdfDownloading) {
+            <mat-progress-spinner
+              class="pdf-spinner"
+              mode="indeterminate"
+              diameter="28"
+              [attr.aria-label]="ui.pdfDownloadLoadingAriaLabel"
+            />
+          }
+        </div>
+        @if (pdfError) {
+          <p class="server-error pdf-error" role="alert">{{ pdfError }}</p>
+        }
+      }
+
+      <mat-divider class="section-divider" />
+
+      <div class="actions">
+        @if (showFlowAmbiguousNav) {
+          <p class="muted flow-hint">{{ ui.partialStateHint }}</p>
+          <div class="action-row action-row--center">
+            <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.backToAnonymous }}</a>
+            <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAuthenticated">{{
+              ui.backToAuthenticated
+            }}</a>
+          </div>
+        } @else {
+          <div class="action-row action-row--center">
+            @if (canOpenWhatIf && !whatIfOpen) {
+              <button type="button" mat-stroked-button color="primary" (click)="openWhatIfSimulator()">
+                {{ ui.openWhatIf }}
+              </button>
+            }
+            <a mat-flat-button color="primary" [routerLink]="backRoute">{{ backLabel }}</a>
+          </div>
+        }
+      </div>
+
+      @if (canOpenWhatIf && whatIfOpen) {
+        <p class="muted what-if-open-hint">{{ ui.whatIfOpenedHint }}</p>
+        <div #whatIfAnchor class="what-if-anchor">
+          <app-prediction-what-if-panel [predictionId]="result!.prediction_id" [baselineResult]="result!" />
+        </div>
+      }
+
+      @if (flowKind === flowKindConst.anonymous) {
+        <p class="footer-link">
+          {{ ui.loginPrompt }}
+          <a [routerLink]="ui.loginRoute">{{ ui.loginLink }}</a>
+        </p>
+      }
+    } @else {
+      <div class="empty-state" role="status">
+        <mat-icon class="empty-icon" [attr.aria-label]="ui.noDataIconAriaLabel">info</mat-icon>
+        <h3 class="empty-title">{{ ui.noDataTitle }}</h3>
+        <p class="empty-body">{{ ui.noDataBody }}</p>
+        <p class="empty-hint muted">{{ ui.noDataHint }}</p>
+        <div class="empty-actions">
+          <a mat-flat-button color="primary" [routerLink]="routes.predictionsAnonymous">{{ ui.fallbackNavAnonymous }}</a>
+          <a mat-stroked-button color="primary" [routerLink]="routes.predictionsAuthenticated">{{
+            ui.fallbackNavAuthenticated
+          }}</a>
+        </div>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

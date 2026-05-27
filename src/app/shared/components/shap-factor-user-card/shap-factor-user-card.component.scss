@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+
+.shap-user-factor__impact-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.shap-impact-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(15, 23, 42, 0.04);
+  color: var(--app-text-secondary);
+}
+
+.shap-impact-chip--increase {
+  background: rgba(211, 47, 47, 0.1);
+  border-color: rgba(211, 47, 47, 0.28);
+  color: rgb(183, 28, 28);
+}
+
+.shap-impact-chip--decrease {
+  background: rgba(46, 125, 50, 0.1);
+  border-color: rgba(46, 125, 50, 0.28);
+  color: rgb(27, 94, 32);
+}
+
+.shap-intensity-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--app-text-muted);
+}
+
+.shap-user-factor__explain {
+  margin: var(--app-space-sm) 0 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--app-text-secondary);
+}
+
+.shap-user-factor__extra {
+  margin-top: var(--app-space-md);
+  padding-top: var(--app-space-sm);
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.shap-user-factor__extra-heading {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-text-faint);
+  margin-bottom: 0.35rem;
+}
+
+.shap-user-factor__extra-body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--app-text-primary);
+}
+
+.shap-tech-panel {
+  margin-top: var(--app-space-md);
+  border-radius: var(--app-radius-sm) !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.shap-tech-panel__body {
+  padding: 0 var(--app-space-md) var(--app-space-md);
+}
+
+.shap-tech-panel__hint {
+  margin: 0 0 var(--app-space-sm);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--app-text-muted);
+}
+
+.shap-tech-grid {
+  display: grid;
+  grid-template-columns: minmax(10rem, 38%) 1fr;
+  gap: 0.45rem 0.75rem;
+  margin: 0;
+}
+
+.shap-tech-grid dt {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--app-text-muted);
+}
+
+.shap-tech-grid dd {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--app-text-secondary);
+  word-break: break-word;
+}
+
+.mono-wrap {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.78rem;
+}

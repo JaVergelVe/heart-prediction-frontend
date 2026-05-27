@@ -1,0 +1,158 @@
+<div class="landing-page">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__orb hero__orb--one" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--two" aria-hidden="true"></div>
+
+    <div class="hero__copy">
+      <p class="hero__eyebrow">Evaluación preventiva digital</p>
+      <h1 id="hero-title">Predicción cardiovascular con un diseño pensado para decidir mejor</h1>
+      <p class="hero__lead">
+        Ingresa tus datos, entiende tu nivel de riesgo y recibe recomendaciones claras en una experiencia visual directa, moderna y
+        enfocada en la acción.
+      </p>
+      <ul class="hero__bullets">
+        <li>Resultado inmediato con probabilidad y nivel de riesgo</li>
+        <li>Lectura guiada de factores clave que más influyen</li>
+        <li>Flujo sin cuenta o experiencia completa con historial</li>
+      </ul>
+      <div class="hero__actions">
+        <a mat-flat-button color="primary" class="hero__btn hero__btn--primary" [routerLink]="routes.predictionsAnonymous">
+          Comenzar ahora
+        </a>
+        <a mat-stroked-button color="primary" class="hero__btn" [routerLink]="routes.authLogin"> Iniciar sesión </a>
+      </div>
+    </div>
+
+    <div class="hero__visual" role="img" aria-label="Vista ilustrativa del sistema de predicción">
+      <div class="hero-visual-card">
+        <div class="hero-visual-card__header">
+          <mat-icon>favorite</mat-icon>
+          <span>Predicción en tiempo real</span>
+        </div>
+        <div class="hero-visual-card__row">
+          <span>Probabilidad estimada</span>
+          <strong>18.4%</strong>
+        </div>
+        <div class="hero-visual-card__row">
+          <span>Nivel de riesgo</span>
+          <strong class="risk-medium">Moderado</strong>
+        </div>
+        <div class="hero-visual-card__chips">
+          <span>Resumen clínico</span>
+          <span>Factores clave</span>
+          <span>Acciones sugeridas</span>
+        </div>
+      </div>
+      <div class="hero-visual-pill">
+        <mat-icon>verified_user</mat-icon>
+        <span>Interfaz clara, rápida y fácil de interpretar</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick-highlights" appRevealOnScroll>
+    <article>
+      <mat-icon>bolt</mat-icon>
+      <h3>Rápido</h3>
+      <p>Obtén una estimación útil en pocos minutos.</p>
+    </article>
+    <article>
+      <mat-icon>visibility</mat-icon>
+      <h3>Visual</h3>
+      <p>Interpretación simple, sin ruido ni complejidad técnica.</p>
+    </article>
+    <article>
+      <mat-icon>insights</mat-icon>
+      <h3>Accionable</h3>
+      <p>Convierte tus resultados en decisiones de cuidado.</p>
+    </article>
+  </section>
+
+  <section class="how" appRevealOnScroll aria-labelledby="how-title">
+    <h2 id="how-title">Cómo funciona</h2>
+    <div class="how__grid">
+      <article>
+        <span>1</span>
+        <h3>Elige modo</h3>
+        <p>Sin cuenta para probar rápido o con cuenta para guardar historial.</p>
+      </article>
+      <article>
+        <span>2</span>
+        <h3>Completa datos</h3>
+        <p>Peso y perfil; cuestionario ampliado opcional.</p>
+      </article>
+      <article>
+        <span>3</span>
+        <h3>Revisa resultado</h3>
+        <p>Probabilidad, riesgo y explicación de factores principales.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="visual-data" appRevealOnScroll aria-labelledby="visual-title">
+    <div class="visual-data__copy">
+      <h2 id="visual-title">Qué evalúa la aplicación</h2>
+      <p>Solo trabaja con datos que tú introduces en el formulario.</p>
+      <ul>
+        <li>Perfil base (sexo, edad, altura y peso)</li>
+        <li>Condiciones médicas y funcionales</li>
+        <li>Hábitos y prevención (bloque opcional)</li>
+      </ul>
+    </div>
+    <div class="visual-data__chart" role="img" aria-label="Distribución de bloques de información">
+      <div class="bar">
+        <span>Perfil base</span>
+        <div><i style="width: 33%"></i></div>
+      </div>
+      <div class="bar">
+        <span>Condiciones médicas</span>
+        <div><i style="width: 37%"></i></div>
+      </div>
+      <div class="bar">
+        <span>Hábitos y prevención</span>
+        <div><i style="width: 30%"></i></div>
+      </div>
+      <p class="visual-data__caption">Distribución referencial para entender el flujo, no representa peso clínico del modelo.</p>
+    </div>
+  </section>
+
+  <section class="compare" appRevealOnScroll aria-labelledby="compare-title">
+    <h2 id="compare-title">Modo rápido vs seguimiento completo</h2>
+    <div class="compare__cards">
+      <article>
+        <h3>Sin cuenta</h3>
+        <p>Acceso inmediato para conocer tu riesgo sin fricción.</p>
+      </article>
+      <article>
+        <h3>Con cuenta</h3>
+        <p>Historial, detalle de cada predicción y análisis comparativo.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="faq" appRevealOnScroll>
+    <mat-accordion displayMode="flat">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>¿Es un diagnóstico médico?</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>No. Es una estimación orientativa basada en los datos ingresados.</p>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>¿Puedo usarla sin registrarme?</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>Sí. La ruta sin cuenta está disponible desde el botón principal.</p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </section>
+
+  <section class="cta" appRevealOnScroll>
+    <h2>Empieza ahora</h2>
+    <p>Haz tu primera predicción en segundos o crea tu cuenta para una experiencia completa.</p>
+    <div class="cta__actions">
+      <a mat-flat-button color="primary" [routerLink]="routes.predictionsAnonymous">Comenzar sin cuenta</a>
+      <a mat-stroked-button color="primary" [routerLink]="routes.authRegister">Crear cuenta</a>
+    </div>
+  </section>
+</div>

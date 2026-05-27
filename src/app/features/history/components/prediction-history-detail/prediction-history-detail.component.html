@@ -1,0 +1,140 @@
+<mat-card class="result-card">
+  <mat-card-header class="result-card-header">
+    <mat-card-title-group>
+      <mat-card-title>Detalle de predicción</mat-card-title>
+      @if (result) {
+        <mat-card-subtitle>Información guardada de esta predicción en tu cuenta.</mat-card-subtitle>
+      }
+    </mat-card-title-group>
+  </mat-card-header>
+
+  <mat-card-content class="result-card-body">
+    @if (loadError) {
+      <p class="server-error" role="alert">{{ loadError }}</p>
+      <div class="error-actions">
+        <button type="button" mat-stroked-button color="primary" (click)="retry()">Reintentar</button>
+        <a mat-button color="primary" [routerLink]="'/history'">Volver al historial</a>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading-wrap" role="status" aria-label="Cargando detalle de la predicción">
+        <mat-progress-spinner mode="indeterminate" diameter="40" />
+      </div>
+    }
+
+    @if (result && !loading) {
+      <section class="summary summary-card" [attr.aria-labelledby]="'hist-summary-heading'">
+        <h2 class="section-heading" id="hist-summary-heading">Resumen</h2>
+        <div class="summary-layout">
+          <div class="probability-block">
+            <span class="sr-only">Probabilidad estimada:</span>
+            <span class="probability-value" aria-hidden="true">{{ result.prediction_probability | number: '1.0-2' }}</span>
+            <span class="probability-unit" aria-hidden="true">%</span>
+            <span class="probability-caption">Probabilidad</span>
+          </div>
+          <div class="risk-block">
+            <span class="risk-label">Nivel de riesgo</span>
+            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ riskDisplayLabel() }}</span>
+          </div>
+        </div>
+      </section>
+
+      <mat-divider class="section-divider" />
+
+      <section class="details-block details-card" [attr.aria-labelledby]="'hist-details-heading'">
+        <h2 class="section-heading" id="hist-details-heading">Detalles</h2>
+        <dl class="result-grid">
+          <dt>Fecha y hora</dt>
+          <dd>{{ result.prediction_timestamp | date: 'medium' }}</dd>
+
+          <dt>IMC</dt>
+          <dd>
+            @if (result.bmi != null) {
+              {{ result.bmi | number: '1.0-2' }}
+            } @else {
+              <span class="muted">No incluido en este resultado</span>
+            }
+          </dd>
+
+          <dt>Versión del modelo</dt>
+          <dd>{{ modelVersionDisplay }}</dd>
+
+          @if (hasPredictedClass) {
+            <dt>Categoría según el modelo</dt>
+            <dd>{{ result.predicted_class }}</dd>
+          }
+
+          <dt>Referencia de la predicción</dt>
+          <dd class="mono wrap-id">{{ result.prediction_id }}</dd>
+        </dl>
+      </section>
+
+      @if (shapExplanation(); as shapMain) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'hist-shap-main-heading'">
+          <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+          <h2 class="section-heading" id="hist-shap-main-heading">Factor con mayor influencia</h2>
+          <app-shap-explanation-user-card [explanation]="shapMain" />
+        </section>
+      }
+
+      @if (shapFactors().length) {
+        <mat-divider class="section-divider" />
+        <section class="shap-block" [attr.aria-labelledby]="'hist-shap-factors-heading'">
+          @if (!shapExplanation()) {
+            <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+          }
+          <h2 class="section-heading" id="hist-shap-factors-heading">Otros factores destacados</h2>
+          <div class="factor-stack" role="list">
+            @for (factor of shapFactors(); track $index) {
+              <app-shap-factor-user-card [factor]="factor" [batchMaxAbs]="shapFactorsMaxAbs" />
+            }
+          </div>
+        </section>
+      }
+
+      @if (result.recommendations?.length) {
+        <mat-divider class="section-divider" />
+        <section class="recommendations-card" [attr.aria-labelledby]="'hist-rec-heading'">
+          <h2 class="section-heading" id="hist-rec-heading">Recomendaciones</h2>
+          <ul class="rec-list">
+            @for (rec of result.recommendations!; track $index) {
+              <li>{{ rec }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <app-prediction-what-if-panel [predictionId]="result.prediction_id" [baselineResult]="result" />
+
+      <mat-divider class="section-divider" />
+
+      <div class="pdf-toolbar pdf-toolbar--card">
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          (click)="downloadPdf()"
+          [disabled]="pdfDownloading"
+          aria-label="Descargar informe de predicción en formato PDF"
+        >
+          {{ pdfDownloading ? 'Generando PDF?' : 'Descargar informe PDF' }}
+        </button>
+        @if (pdfDownloading) {
+          <mat-progress-spinner class="pdf-spinner" mode="indeterminate" diameter="28" aria-label="Descargando informe PDF" />
+        }
+      </div>
+
+      @if (pdfError) {
+        <p class="server-error pdf-error" role="alert">{{ pdfError }}</p>
+      }
+
+      <mat-divider class="section-divider" />
+
+      <div class="actions">
+        <a mat-flat-button color="primary" [routerLink]="'/history'">Volver al historial</a>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

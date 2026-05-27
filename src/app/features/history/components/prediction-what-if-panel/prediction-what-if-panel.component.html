@@ -1,0 +1,198 @@
+<section class="what-if" [attr.aria-labelledby]="'whatif-heading'">
+  <mat-divider class="what-if__divider" />
+  <h2 class="what-if__title" id="whatif-heading">{{ ui.sectionTitle }}</h2>
+  <p class="what-if__intro">{{ ui.sectionIntro }}</p>
+  <p class="what-if__hint what-if__hint--emphasis">{{ ui.nonPersistentHint }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="submitSimulation()" class="what-if__form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.weightKilograms }}</mat-label>
+      <input matInput type="number" formControlName="weight_kilograms" />
+      <mat-hint>{{ ui.hints.weightRange }}</mat-hint>
+      @if (form.get('weight_kilograms')?.hasError('required') && form.get('weight_kilograms')?.touched) {
+        <mat-error>{{ validationMessages.weightRequired }}</mat-error>
+      }
+      @if (form.get('weight_kilograms')?.hasError('min') && form.get('weight_kilograms')?.touched) {
+        <mat-error>{{ validationMessages.weightMin }}</mat-error>
+      }
+      @if (form.get('weight_kilograms')?.hasError('max') && form.get('weight_kilograms')?.touched) {
+        <mat-error>{{ validationMessages.weightMax }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.generalHealth }}</mat-label>
+      <mat-select formControlName="general_health">
+        <mat-option [value]="''">{{ ui.optionalBlankLabel }}</mat-option>
+        @for (opt of generalHealthOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.physicalHealthDays }}</mat-label>
+      <input matInput type="number" formControlName="physical_health_days" />
+      <mat-hint>{{ ui.hints.healthDays }}</mat-hint>
+      @if (form.get('physical_health_days')?.hasError('min') && form.get('physical_health_days')?.touched) {
+        <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
+      }
+      @if (form.get('physical_health_days')?.hasError('max') && form.get('physical_health_days')?.touched) {
+        <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.mentalHealthDays }}</mat-label>
+      <input matInput type="number" formControlName="mental_health_days" />
+      <mat-hint>{{ ui.hints.healthDays }}</mat-hint>
+      @if (form.get('mental_health_days')?.hasError('min') && form.get('mental_health_days')?.touched) {
+        <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
+      }
+      @if (form.get('mental_health_days')?.hasError('max') && form.get('mental_health_days')?.touched) {
+        <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.physicalActivities }}</mat-label>
+      <mat-select formControlName="physical_activities">
+        @for (opt of triStateOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.sleepHours }}</mat-label>
+      <input matInput type="number" step="0.1" formControlName="sleep_hours" />
+      <mat-hint>{{ ui.hints.sleepHours }}</mat-hint>
+      @if (form.get('sleep_hours')?.hasError('min') && form.get('sleep_hours')?.touched) {
+        <mat-error>{{ validationMessages.sleepHoursMin }}</mat-error>
+      }
+      @if (form.get('sleep_hours')?.hasError('max') && form.get('sleep_hours')?.touched) {
+        <mat-error>{{ validationMessages.sleepHoursMax }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.smokerStatus }}</mat-label>
+      <mat-select formControlName="smoker_status">
+        <mat-option [value]="''">{{ ui.optionalBlankLabel }}</mat-option>
+        @for (opt of smokerStatusOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.ecigaretteUsage }}</mat-label>
+      <mat-select formControlName="ecigarette_usage">
+        <mat-option [value]="''">{{ ui.optionalBlankLabel }}</mat-option>
+        @for (opt of ecigaretteOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ ui.fieldLabels.alcoholDrinkers }}</mat-label>
+      <mat-select formControlName="alcohol_drinkers">
+        @for (opt of triStateOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="what-if__actions">
+      <button type="submit" mat-flat-button color="primary" [disabled]="submitting">
+        {{ submitting ? ui.submitPending : ui.submitIdle }}
+      </button>
+      <button type="button" mat-stroked-button color="primary" (click)="resetToBaseline()" [disabled]="submitting">
+        {{ ui.resetForm }}
+      </button>
+      @if (simulationView) {
+        <button type="button" mat-button (click)="hideSimulationOutput()" [disabled]="submitting">
+          {{ ui.clearResult }}
+        </button>
+      }
+    </div>
+  </form>
+
+  @if (submitting) {
+    <div class="what-if__loading" role="status" [attr.aria-label]="ui.loadingAriaLabel">
+      <mat-progress-spinner mode="indeterminate" diameter="36" />
+    </div>
+  }
+
+  @if (simError) {
+    <p class="what-if__error" role="alert">{{ simError }}</p>
+  }
+
+  @if (simulationView; as sim) {
+    <mat-divider class="what-if__divider" />
+    <h3 class="what-if__subtitle">{{ ui.comparisonSectionTitle }}</h3>
+    <dl class="what-if__compare">
+      <dt>{{ ui.labels.originalProbability }}</dt>
+      <dd>{{ sim.originalProbability | number: '1.0-2' }}{{ ui.probabilitySuffix }}</dd>
+      <dt>{{ ui.labels.simulatedProbability }}</dt>
+      <dd>{{ sim.simulatedProbability | number: '1.0-2' }}{{ ui.probabilitySuffix }}</dd>
+      <dt>{{ ui.labels.originalRisk }}</dt>
+      <dd>
+        <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(sim.originalRiskLevel)">{{ sim.originalRiskLevel }}</span>
+      </dd>
+      <dt>{{ ui.labels.simulatedRisk }}</dt>
+      <dd>
+        <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(sim.simulatedRiskLevel)">{{ sim.simulatedRiskLevel }}</span>
+      </dd>
+      <dt>{{ ui.labels.probabilityDifference }}</dt>
+      <dd>
+        {{ sim.probabilityDifference | number: '1.0-2' }}{{ ui.probabilitySuffix }} ({{ ui.probabilityDifferenceUnit }})
+      </dd>
+      <dt>{{ ui.labels.changedFields }}</dt>
+      <dd>
+        @if (sim.changedFieldKeys.length) {
+          <ul class="what-if__changed-list">
+            @for (key of sim.changedFieldKeys; track key) {
+              <li>{{ labelForChangedField(key) }}</li>
+            }
+          </ul>
+        } @else {
+          <span class="muted">{{ ui.labels.noFieldChangesDetected }}</span>
+        }
+      </dd>
+    </dl>
+
+    @if (sim.shapExplanation; as shapMain) {
+      <mat-divider class="what-if__divider" />
+      <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+      <h3 class="what-if__subtitle" id="whatif-shap-heading">{{ ui.labels.shapSection }}</h3>
+      <div aria-labelledby="whatif-shap-heading">
+        <app-shap-explanation-user-card [explanation]="shapMain" />
+      </div>
+    }
+
+    @if (sim.shapFactors.length) {
+      <mat-divider class="what-if__divider" />
+      @if (!sim.shapExplanation) {
+        <p class="shap-section-disclaimer" role="note">{{ shapUi.sectionDisclaimer }}</p>
+      }
+      <h3 class="what-if__subtitle" id="whatif-shap-factors-heading">{{ ui.labels.shapFactorsSection }}</h3>
+      <div class="factor-stack" role="list" aria-labelledby="whatif-shap-factors-heading">
+        @for (factor of sim.shapFactors; track $index) {
+          <app-shap-factor-user-card [factor]="factor" [batchMaxAbs]="shapFactorsMaxAbs(sim.shapFactors)" />
+        }
+      </div>
+    }
+
+    @if (sim.recommendations.length) {
+      <mat-divider class="what-if__divider" />
+      <h3 class="what-if__subtitle" id="whatif-rec-heading">{{ ui.labels.recommendationsSection }}</h3>
+      <ul class="rec-list" aria-labelledby="whatif-rec-heading">
+        @for (rec of sim.recommendations; track $index) {
+          <li>{{ rec }}</li>
+        }
+      </ul>
+    }
+  }
+</section>

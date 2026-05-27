@@ -1,0 +1,88 @@
+.what-if__divider {
+  margin: 1.25rem 0;
+}
+
+.what-if__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--app-text-faint);
+  margin: 0 0 0.5rem;
+}
+
+.what-if__subtitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--app-text-faint);
+  margin: 0 0 0.75rem;
+}
+
+.what-if__intro,
+.what-if__hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.what-if__hint--emphasis {
+  font-size: 0.8125rem;
+  color: var(--app-text-muted);
+}
+
+.what-if__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.what-if__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.what-if__loading {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.what-if__error {
+  color: var(--app-text-error);
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+}
+
+.what-if__compare {
+  display: grid;
+  grid-template-columns: minmax(10rem, max-content) 1fr;
+  gap: 0.5rem 1rem;
+  margin: 0;
+}
+
+.what-if__compare dt {
+  font-weight: 600;
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: 0.875rem;
+}
+
+.what-if__compare dd {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.what-if__changed-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.what-if__changed-list li {
+  margin-bottom: 0.25rem;
+}

@@ -1,0 +1,79 @@
+// Acento alineado con la sección «Cómo funciona» de la landing.
+$survey-accent: #2563eb;
+
+.survey-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-lg);
+}
+
+.survey-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff, #f8fafc);
+}
+
+.survey-subsection__title {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $survey-accent;
+}
+
+.survey-subsection__hint {
+  margin: 0 0 var(--app-space-sm);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-text-muted);
+}
+
+/* Una sola columna: las preguntas son largas; dos columnas rompe etiquetas flotantes / densidad. */
+.survey-subsection__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Pregunta encima del control: sin solapamiento con el valor ni el borde del outline. */
+.survey-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.survey-stack__q {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--app-text-primary);
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.survey-stack__field {
+  width: 100%;
+}
+
+/* Sin `mat-label`: el outline no reserva muesca; ajustar altura mínima del control. */
+:host ::ng-deep .survey-stack__field.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background: #fff;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0.2rem;
+  }
+
+  .mat-mdc-form-field-error-wrapper .mat-mdc-form-field-error {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+}

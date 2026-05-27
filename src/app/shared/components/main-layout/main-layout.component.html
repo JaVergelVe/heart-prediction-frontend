@@ -1,0 +1,62 @@
+<mat-sidenav-container class="shell app-shell">
+  <mat-sidenav #drawer mode="over" class="sidenav shell-sidenav" aria-label="Menú lateral">
+    <div class="shell-sidenav__head">
+      <div class="shell-sidenav__brand">
+        <span class="shell-sidenav__mark" aria-hidden="true"></span>
+        <div class="shell-sidenav__brand-text">
+          <span class="shell-sidenav__product">Riesgo cardiovascular</span>
+          <span class="shell-sidenav__section">Menú</span>
+        </div>
+      </div>
+    </div>
+    <mat-divider class="shell-sidenav__divider"></mat-divider>
+    <mat-nav-list class="shell-sidenav__list" aria-label="Navegación principal">
+      @for (link of visibleNavLinks; track link.routerLink) {
+        @if (link.routerLinkActiveOptions) {
+          <a
+            mat-list-item
+            class="shell-nav-link"
+            [routerLink]="link.routerLink"
+            [routerLinkActiveOptions]="link.routerLinkActiveOptions"
+            routerLinkActive="shell-nav-link--active"
+            (click)="drawer.close()"
+          >
+            {{ link.label }}
+          </a>
+        } @else {
+          <a
+            mat-list-item
+            class="shell-nav-link"
+            [routerLink]="link.routerLink"
+            routerLinkActive="shell-nav-link--active"
+            (click)="drawer.close()"
+          >
+            {{ link.label }}
+          </a>
+        }
+      }
+      @if (auth.isAuthenticated()) {
+        <mat-divider class="shell-sidenav__divider shell-sidenav__divider--before-logout"></mat-divider>
+        <button
+          mat-list-item
+          type="button"
+          class="shell-nav-link shell-nav-link--logout"
+          aria-label="Cerrar sesión y volver a la pantalla de acceso"
+          (click)="logout(); drawer.close()"
+        >
+          Cerrar sesión
+        </button>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="app-shell-body">
+    <app-header (menuClick)="onMenuClick()"></app-header>
+
+    <main class="page-canvas">
+      <router-outlet></router-outlet>
+    </main>
+
+    <app-footer></app-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

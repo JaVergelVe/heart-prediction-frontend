@@ -1,0 +1,281 @@
+<div [formGroup]="group" class="survey-fields">
+  <section class="survey-subsection" aria-label="Estado de salud y bienestar">
+    <h3 class="survey-subsection__title">Estado de salud y bienestar</h3>
+    <p class="survey-subsection__hint">Percepción de salud, días con malestar y seguimiento médico reciente.</p>
+    <div class="survey-subsection__grid">
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('general_health')">Estado de salud general</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('general_health')"
+            formControlName="general_health"
+            [panelClass]="'prediction-select-panel'"
+          >
+            <mat-option [value]="''">Sin especificar</mat-option>
+            @for (opt of generalHealthOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [attr.for]="controlHtmlId('physical_health_days')">Días con mala salud física (último mes)</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            [id]="controlHtmlId('physical_health_days')"
+            formControlName="physical_health_days"
+            placeholder="ej: 5"
+          />
+          <mat-hint>Entre 0 y 30</mat-hint>
+          @if (group.get('physical_health_days')?.hasError('min') && group.get('physical_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
+          }
+          @if (group.get('physical_health_days')?.hasError('max') && group.get('physical_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [attr.for]="controlHtmlId('mental_health_days')">Días con mala salud mental (último mes)</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            [id]="controlHtmlId('mental_health_days')"
+            formControlName="mental_health_days"
+            placeholder="ej: 5"
+          />
+          <mat-hint>Entre 0 y 30</mat-hint>
+          @if (group.get('mental_health_days')?.hasError('min') && group.get('mental_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMin }}</mat-error>
+          }
+          @if (group.get('mental_health_days')?.hasError('max') && group.get('mental_health_days')?.touched) {
+            <mat-error>{{ validationMessages.healthDaysMax }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('last_checkup_time')">último chequeo médico</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('last_checkup_time')"
+            formControlName="last_checkup_time"
+            [panelClass]="'prediction-select-panel'"
+          >
+            <mat-option [value]="''">Sin especificar</mat-option>
+            @for (opt of lastCheckupOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
+
+  <section class="survey-subsection" aria-label="Hábitos y estilo de vida">
+    <h3 class="survey-subsection__title">Hábitos y estilo de vida</h3>
+    <p class="survey-subsection__hint">Actividad, sueño y hábitos relacionados con tabaco, alcohol y similares.</p>
+    <div class="survey-subsection__grid">
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('physical_activities')">Actividad física o ejercicio</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('physical_activities')"
+            formControlName="physical_activities"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [attr.for]="controlHtmlId('sleep_hours')">Horas de sueño en promedio (24 h)</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            step="0.1"
+            [id]="controlHtmlId('sleep_hours')"
+            formControlName="sleep_hours"
+            placeholder="ej: 7"
+          />
+          <mat-hint>Entre 1 y 24</mat-hint>
+          @if (group.get('sleep_hours')?.hasError('min') && group.get('sleep_hours')?.touched) {
+            <mat-error>{{ validationMessages.sleepHoursMin }}</mat-error>
+          }
+          @if (group.get('sleep_hours')?.hasError('max') && group.get('sleep_hours')?.touched) {
+            <mat-error>{{ validationMessages.sleepHoursMax }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('smoker_status')">Estado de tabaquismo</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('smoker_status')"
+            formControlName="smoker_status"
+            [panelClass]="'prediction-select-panel'"
+          >
+            <mat-option [value]="''">Sin especificar</mat-option>
+            @for (opt of smokerStatusOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('ecigarette_usage')">Uso de cigarrillos electrónicos</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('ecigarette_usage')"
+            formControlName="ecigarette_usage"
+            [panelClass]="'prediction-select-panel'"
+          >
+            <mat-option [value]="''">Sin especificar</mat-option>
+            @for (opt of ecigaretteOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('alcohol_drinkers')">Consume alcohol</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('alcohol_drinkers')"
+            formControlName="alcohol_drinkers"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
+
+  <section class="survey-subsection" aria-label="Prevención y cribados">
+    <h3 class="survey-subsection__title">Prevención y cribados</h3>
+    <p class="survey-subsection__hint">Vacunas, cribados y exposiciones recientes relevantes para el modelo.</p>
+    <div class="survey-subsection__grid">
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('chest_scan')">Alguna vez le hicieron TAC o radiografía de tórax</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('chest_scan')"
+            formControlName="chest_scan"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('hiv_testing')">Se ha hecho prueba de VIH</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('hiv_testing')"
+            formControlName="hiv_testing"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('flu_vax_last_12')">Vacuna de gripe en los últimos 12 meses</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('flu_vax_last_12')"
+            formControlName="flu_vax_last_12"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('pneumo_vax_ever')">Alguna vez vacuna neumocócica</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('pneumo_vax_ever')"
+            formControlName="pneumo_vax_ever"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('tetanus_last_10_tdap')">Vacuna antitetánica / Tdap en los últimos 10 años</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('tetanus_last_10_tdap')"
+            formControlName="tetanus_last_10_tdap"
+            [panelClass]="'prediction-select-panel'"
+          >
+            <mat-option [value]="''">Sin especificar</mat-option>
+            @for (opt of tetanusOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('high_risk_last_year')">Alto riesgo de enfermedad grave el último año</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('high_risk_last_year')"
+            formControlName="high_risk_last_year"
+            [panelClass]="'prediction-select-panel'"
+          >
+            @for (opt of triStateOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="survey-stack">
+        <label class="survey-stack__q" [id]="fieldQuestionId('covid_pos')">Resultado COVID-19 conocido</label>
+        <mat-form-field appearance="outline" class="survey-stack__field full-width" subscriptSizing="dynamic">
+          <mat-select
+            [attr.aria-labelledby]="fieldQuestionId('covid_pos')"
+            formControlName="covid_pos"
+            [panelClass]="'prediction-select-panel'"
+          >
+            <mat-option [value]="''">Sin especificar</mat-option>
+            @for (opt of covidOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
+</div>
