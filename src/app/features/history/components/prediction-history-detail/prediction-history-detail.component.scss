@@ -1,20 +1,45 @@
 .result-card {
   max-width: 860px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
-.result-card .mat-mdc-card-title {
+.result-card-header {
+  display: block;
+  padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-md);
+}
+
+.result-card-header .mat-mdc-card-header-text {
+  margin: 0;
+}
+
+.result-card-header mat-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.result-card-header .mat-mdc-card-title,
+.result-card-header .mat-mdc-card-subtitle {
+  margin: 0;
+}
+
+.result-card-header .mat-mdc-card-title {
   font-size: 1.35rem;
   letter-spacing: -0.02em;
   text-align: center;
-  margin-bottom: 0.25rem;
 }
 
-.result-card .mat-mdc-card-subtitle {
+.result-card-header .mat-mdc-card-subtitle {
   text-align: center;
   max-width: 40rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
+  line-height: 1.55;
+}
+
+.result-card-body {
+  padding: 0 var(--app-space-lg) var(--app-space-lg) !important;
 }
 
 .section-heading {

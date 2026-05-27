@@ -1,11 +1,14 @@
 <mat-card class="result-card">
-  <mat-card-title>Detalle de predicción</mat-card-title>
+  <mat-card-header class="result-card-header">
+    <mat-card-title-group>
+      <mat-card-title>Detalle de predicción</mat-card-title>
+      @if (result) {
+        <mat-card-subtitle>Información guardada de esta predicción en tu cuenta.</mat-card-subtitle>
+      }
+    </mat-card-title-group>
+  </mat-card-header>
 
-  @if (result) {
-    <mat-card-subtitle>Información guardada de esta predicción en tu cuenta.</mat-card-subtitle>
-  }
-
-  <mat-card-content>
+  <mat-card-content class="result-card-body">
     @if (loadError) {
       <p class="server-error" role="alert">{{ loadError }}</p>
       <div class="error-actions">
@@ -32,7 +35,7 @@
           </div>
           <div class="risk-block">
             <span class="risk-label">Nivel de riesgo</span>
-            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ result.risk_level }}</span>
+            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ riskDisplayLabel() }}</span>
           </div>
         </div>
       </section>

@@ -3,6 +3,24 @@ import {
   PredictionRiskPillKind
 } from '../constants/prediction-result-risk.constant';
 
+const RISK_DISPLAY_LABELS: Record<PredictionRiskPillKind, string | null> = {
+  low: 'Bajo',
+  medium: 'Medio',
+  high: 'Alto',
+  unknown: null
+};
+
+/** Etiqueta en español para mostrar al usuario (el API suele enviar Low/Medium/High). */
+export function predictionRiskDisplayLabel(riskLevel: string | null | undefined): string {
+  const kind = predictionRiskPillKind(riskLevel);
+  const mapped = RISK_DISPLAY_LABELS[kind];
+  if (mapped) {
+    return mapped;
+  }
+  const raw = (riskLevel ?? '').trim();
+  return raw || '—';
+}
+
 /** Clasifica el texto de nivel de riesgo del API para aplicar estilos (pastillas). */
 export function predictionRiskPillKind(riskLevel: string | null | undefined): PredictionRiskPillKind {
   const s = (riskLevel ?? '').trim().toLowerCase();

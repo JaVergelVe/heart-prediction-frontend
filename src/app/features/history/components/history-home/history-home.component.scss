@@ -1,10 +1,62 @@
 .history-card {
   max-width: 960px;
   margin: 0 auto;
+  overflow: hidden;
+}
+
+.history-card-header {
+  display: block;
+  padding: var(--app-space-lg) var(--app-space-lg) var(--app-space-md);
+}
+
+.history-card-header .mat-mdc-card-header-text {
+  margin: 0;
+}
+
+.history-card-header mat-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.history-card-header .mat-mdc-card-title,
+.history-card-header .mat-mdc-card-subtitle {
+  margin: 0;
+}
+
+.history-card-header .mat-mdc-card-subtitle {
+  line-height: 1.55;
+}
+
+.history-card-body {
+  padding: 0 var(--app-space-lg) var(--app-space-lg) !important;
+}
+
+.history-card-body .app-table-scroll {
+  margin-top: var(--app-space-xs);
 }
 
 .history-table {
   width: 100%;
+}
+
+.history-table .mat-mdc-header-row,
+.history-table .mat-mdc-row {
+  min-height: 3.5rem;
+}
+
+.history-table .mat-mdc-header-cell,
+.history-table .mat-mdc-cell {
+  padding: 1rem 1.25rem !important;
+  line-height: 1.6;
+  font-size: 0.9375rem;
+  vertical-align: middle;
+}
+
+.history-table .mat-mdc-header-cell {
+  padding-top: 1.125rem !important;
+  padding-bottom: 0.875rem !important;
 }
 
 .col-actions {
