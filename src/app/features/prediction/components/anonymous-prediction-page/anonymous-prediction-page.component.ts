@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -37,7 +38,7 @@ export class AnonymousPredictionPageComponent {
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly sexOptions = PREDICTION_SEX_OPTIONS;
   readonly removedTeethOptions = PREDICTION_REMOVED_TEETH_OPTIONS;
-  readonly diabetesOptions = PREDICTION_HAD_DIABETES_OPTIONS;
+  readonly diabetesOptionsAll = PREDICTION_HAD_DIABETES_OPTIONS;
 
   get maxBirthDate(): Date {
     return new Date();
@@ -50,6 +51,23 @@ export class AnonymousPredictionPageComponent {
 
   submitting = false;
   serverError: string | null = null;
+
+  constructor() {
+    this.profileForm
+      .get('sex')!
+      .valueChanges.pipe(takeUntilDestroyed())
+      .subscribe((sex) => {
+        this.enforceDiabetesOptionBySex(sex ?? '');
+      });
+  }
+
+  get diabetesOptions(): readonly (typeof PREDICTION_HAD_DIABETES_OPTIONS)[number][] {
+    const sex = this.profileForm.get('sex')?.value;
+    if (sex === 'Male') {
+      return this.diabetesOptionsAll.filter((opt) => opt.value !== 'Yes, but only during pregnancy (female)');
+    }
+    return this.diabetesOptionsAll;
+  }
 
   submit(): void {
     this.serverError = null;
@@ -102,5 +120,16 @@ export class AnonymousPredictionPageComponent {
           this.serverError = formatAuthHttpError(err);
         }
       });
+  }
+
+  private enforceDiabetesOptionBySex(sex: RegisterProfileIn['sex'] | ''): void {
+    if (sex !== 'Male') {
+      return;
+    }
+    const diabetesControl = this.medicalForm.get('had_diabetes');
+    if (diabetesControl?.value === 'Yes, but only during pregnancy (female)') {
+      diabetesControl.setValue('No');
+      diabetesControl.markAsDirty();
+    }
   }
 }

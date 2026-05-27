@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +19,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 import { RevealOnScrollDirective } from './directives/reveal-on-scroll.directive';
 import { ShapExplanationUserCardComponent } from './components/shap-explanation-user-card/shap-explanation-user-card.component';
 import { ShapFactorUserCardComponent } from './components/shap-factor-user-card/shap-factor-user-card.component';
+import { MedicalConditionsFieldsComponent } from './components/medical-conditions-fields/medical-conditions-fields.component';
 
 @NgModule({
   declarations: [
@@ -27,10 +29,12 @@ import { ShapFactorUserCardComponent } from './components/shap-factor-user-card/
     LoadingSpinnerComponent,
     RevealOnScrollDirective,
     ShapFactorUserCardComponent,
-    ShapExplanationUserCardComponent
+    ShapExplanationUserCardComponent,
+    MedicalConditionsFieldsComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule,
     MatToolbarModule,
     MatButtonModule,
@@ -52,6 +56,8 @@ import { ShapFactorUserCardComponent } from './components/shap-factor-user-card/
     RevealOnScrollDirective,
     ShapFactorUserCardComponent,
     ShapExplanationUserCardComponent,
+    MedicalConditionsFieldsComponent,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,

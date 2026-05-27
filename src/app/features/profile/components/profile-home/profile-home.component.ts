@@ -5,13 +5,8 @@ import {
   PREDICTION_REMOVED_TEETH_OPTIONS,
   PREDICTION_SEX_OPTIONS
 } from '../../../../core/constants/data/prediction-survey-options.constant';
-import {
-  PROFILE_CLINICAL_PILLS,
-  PROFILE_DIABETES_PILLS,
-  PROFILE_DIABETES_PREGNANCY_PILL,
-  PROFILE_FUNCTIONAL_PILLS,
-  PROFILE_PAGE_UI
-} from '../../../../core/constants/ui/profile-ui.constant';
+import { PREDICTION_HAD_DIABETES_OPTIONS } from '../../../../core/constants/data/prediction-survey-options.constant';
+import { PROFILE_PAGE_UI } from '../../../../core/constants/ui/profile-ui.constant';
 import { PROFILE_MESSAGES } from '../../../../core/constants/messages/profile-messages.constant';
 import { VALIDATION_MESSAGES } from '../../../../core/constants/messages/validation-messages.constant';
 import { VALIDATION_LIMITS } from '../../../../core/constants/validation-limits.constant';
@@ -36,10 +31,7 @@ export class ProfileHomeComponent implements OnInit {
   readonly validationMessages = VALIDATION_MESSAGES;
   readonly limits = VALIDATION_LIMITS;
   readonly removedTeethOptions = PREDICTION_REMOVED_TEETH_OPTIONS;
-  readonly clinicalPills = PROFILE_CLINICAL_PILLS;
-  readonly functionalPills = PROFILE_FUNCTIONAL_PILLS;
-  readonly diabetesPills = PROFILE_DIABETES_PILLS;
-  readonly diabetesPregnancyPill = PROFILE_DIABETES_PREGNANCY_PILL;
+  readonly diabetesOptionsAll = PREDICTION_HAD_DIABETES_OPTIONS;
 
   readonly profileForm: FormGroup = this.formBuilder.createProfileUpdateGroup();
   readonly medicalForm: FormGroup = this.formBuilder.createMedicalGroup();
@@ -47,6 +39,14 @@ export class ProfileHomeComponent implements OnInit {
   emailDisplay: string | null = null;
   sexReadOnlyLabel = '';
   birthDateIso: string | null = null;
+  private userSex: RegisterProfileIn['sex'] | null = null;
+
+  get diabetesOptions(): readonly (typeof PREDICTION_HAD_DIABETES_OPTIONS)[number][] {
+    if (this.userSex === 'Male') {
+      return this.diabetesOptionsAll.filter((opt) => opt.value !== 'Yes, but only during pregnancy (female)');
+    }
+    return this.diabetesOptionsAll;
+  }
 
   private profileBaseline: {
     height_meters: number | null;
@@ -161,6 +161,7 @@ export class ProfileHomeComponent implements OnInit {
 
   private applyUserToForms(me: CurrentUserMe): void {
     this.emailDisplay = me.email ?? null;
+    this.userSex = me.profile.sex;
     this.sexReadOnlyLabel = this.labelForSex(me.profile.sex);
     const bd = me.profile.birth_date;
     this.birthDateIso = bd && String(bd).trim() !== '' ? this.toDateInputValue(String(bd)) : null;

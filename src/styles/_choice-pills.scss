@@ -20,6 +20,102 @@ $choice-pill-text-on: #fff;
   margin-bottom: 0.25rem;
 }
 
+// Bloque estructurado: clínicas → diabetes → funcionales (registro, perfil, predicción).
+.medical-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.medical-fields__intro {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-text-muted);
+}
+
+.medical-fields__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+  }
+
+  &:first-child {
+    padding-top: 0.15rem;
+  }
+}
+
+.medical-fields__section--diabetes {
+  gap: 0.5rem;
+}
+
+.medical-fields__heading {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--app-text-faint);
+}
+
+.medical-fields__subhint {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--app-text-muted);
+}
+
+.medical-fields__error {
+  margin: 0.15rem 0 0;
+}
+
+.choice-pill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.choice-pill-grid--diabetes {
+  grid-template-columns: 1fr;
+
+  @media (min-width: 520px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.choice-pill-grid .choice-pill {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+}
+
+.choice-pill-grid .choice-pill__label {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.choice-pill-grid--diabetes .choice-pill__label {
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .choice-pill {
   display: inline-flex;
   align-items: center;
@@ -82,18 +178,17 @@ $choice-pill-text-on: #fff;
   outline-offset: 2px;
 }
 
-// Grupo diabetes u opciones con etiqueta previa.
+// Legado: preferir `.medical-fields` + `.choice-pill-grid`.
 .choice-pill-group {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: $choice-pill-gap;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
   width: 100%;
   margin-top: 0.15rem;
 }
 
 .choice-pill-group__label {
-  flex: 0 0 auto;
   font-size: $choice-pill-font-size;
   font-weight: 600;
   line-height: $choice-pill-line-height;
@@ -101,7 +196,11 @@ $choice-pill-text-on: #fff;
 }
 
 .choice-pill-group__options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $choice-pill-gap;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+
+  @media (min-width: 520px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

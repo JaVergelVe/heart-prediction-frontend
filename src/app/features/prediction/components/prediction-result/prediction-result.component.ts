@@ -9,7 +9,10 @@ import {
   PredictionFlowKind
 } from '../../../../core/constants/ui/prediction-ui.constant';
 import { SHAP_DISPLAY_UI } from '../../../../core/constants/shap-display.constant';
+import { HISTORY_MESSAGES } from '../../../../core/constants/messages/history-messages.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
+import { PredictionPdfExportService } from '../../../../core/services/prediction-pdf-export.service';
+import { triggerBrowserBlobDownload } from '../../../../core/utils/browser-file-download.util';
 import { filterShapFactorsForDisplay, maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 import { predictionRiskPillKind, predictionRiskDisplayLabel } from '../../../../core/utils/prediction-risk-display.util';
 
@@ -20,6 +23,7 @@ import { predictionRiskPillKind, predictionRiskDisplayLabel } from '../../../../
 })
 export class PredictionResultComponent implements OnInit {
   private readonly location = inject(Location);
+  private readonly pdfExport = inject(PredictionPdfExportService);
 
   @ViewChild('whatIfAnchor') private whatIfAnchor?: ElementRef<HTMLElement>;
 
@@ -31,6 +35,8 @@ export class PredictionResultComponent implements OnInit {
   result: PredictionResultData | null = null;
   flowKind: PredictionFlowKind | null = null;
   whatIfOpen = false;
+  pdfDownloading = false;
+  pdfError: string | null = null;
 
   ngOnInit(): void {
     const st = this.location.getState() as Record<string, unknown>;
@@ -106,6 +112,28 @@ export class PredictionResultComponent implements OnInit {
       this.result != null &&
       String(this.result.prediction_id ?? '').trim() !== ''
     );
+  }
+
+  get canDownloadPdf(): boolean {
+    return this.result != null && String(this.result.prediction_id ?? '').trim() !== '';
+  }
+
+  downloadPdf(): void {
+    const data = this.result;
+    if (!data?.prediction_id || this.pdfDownloading) {
+      return;
+    }
+    this.pdfError = null;
+    this.pdfDownloading = true;
+    try {
+      const blob = this.pdfExport.buildPdfBlob(data);
+      const filename = this.pdfExport.buildFilename(data.prediction_id);
+      triggerBrowserBlobDownload(blob, filename);
+    } catch {
+      this.pdfError = HISTORY_MESSAGES.pdfDownloadEmpty;
+    } finally {
+      this.pdfDownloading = false;
+    }
   }
 
   openWhatIfSimulator(): void {
