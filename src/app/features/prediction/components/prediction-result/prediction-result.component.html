@@ -18,7 +18,7 @@
           </div>
           <div class="risk-block">
             <span class="risk-label">{{ ui.labels.riskLevel }}</span>
-            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ result.risk_level }}</span>
+            <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind()">{{ riskDisplayLabel() }}</span>
           </div>
         </div>
       </section>

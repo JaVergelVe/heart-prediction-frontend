@@ -6,11 +6,11 @@ import {
   HISTORY_LIST_DISPLAYED_COLUMNS
 } from '../../../../core/constants/ui/history-ui.constant';
 import {
-  PREDICTION_RISK_LEVEL_KEYWORDS,
   PredictionRiskPillKind
 } from '../../../../core/constants/prediction-result-risk.constant';
 import { PredictionResultData } from '../../../../core/models/prediction-response.model';
 import { PredictionService } from '../../../../core/services/prediction.service';
+import { predictionRiskDisplayLabel, predictionRiskPillKind } from '../../../../core/utils/prediction-risk-display.util';
 import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 
 @Component({
@@ -52,21 +52,12 @@ export class HistoryHomeComponent implements OnInit {
     });
   }
 
+  riskDisplayLabel(riskLevel: string | undefined): string {
+    return predictionRiskDisplayLabel(riskLevel);
+  }
+
   riskPillKind(riskLevel: string | undefined): PredictionRiskPillKind {
-    const s = (riskLevel ?? '').trim().toLowerCase();
-    const low = PREDICTION_RISK_LEVEL_KEYWORDS.low as readonly string[];
-    const medium = PREDICTION_RISK_LEVEL_KEYWORDS.medium as readonly string[];
-    const high = PREDICTION_RISK_LEVEL_KEYWORDS.high as readonly string[];
-    if (low.includes(s)) {
-      return 'low';
-    }
-    if (medium.includes(s)) {
-      return 'medium';
-    }
-    if (high.includes(s)) {
-      return 'high';
-    }
-    return 'unknown';
+    return predictionRiskPillKind(riskLevel);
   }
 
   private sortByTimestampDesc(items: PredictionResultData[]): PredictionResultData[] {

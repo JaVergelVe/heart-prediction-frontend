@@ -294,7 +294,23 @@ export function buildContextualShapNarrative(
 
   if (baseKey === 'agecategory') {
     const ageLabel = ageGroupDetailLabel(suffix);
-    const detail = ageLabel ? `Corresponde al grupo de ${ageLabel.replace(/^De /, '').toLowerCase()}.` : null;
+    const groupPhrase = ageLabel ? ageLabel.replace(/^De /, '').toLowerCase() : 'ese grupo de edad';
+    const isInactiveBucket = numericValue === 0 || (numericValue == null && isTruthy === false);
+    if (isInactiveBucket) {
+      if (kind === 'decrease') {
+        return {
+          primary: `No pertenecer al grupo de ${groupPhrase} contribuyó a reducir el riesgo estimado.`,
+          detail: null
+        };
+      }
+      if (kind === 'increase') {
+        return {
+          primary: `No pertenecer al grupo de ${groupPhrase} se asoció con un mayor riesgo estimado.`,
+          detail: null
+        };
+      }
+    }
+    const detail = ageLabel ? `Corresponde al grupo de ${groupPhrase}.` : null;
     if (kind === 'decrease') {
       return {
         primary: 'Tu grupo de edad se asoció con un menor riesgo cardiovascular estimado.',
@@ -381,8 +397,12 @@ export function buildContextualShapNarrative(
   if (compoundLabel && (kind === 'increase' || kind === 'decrease')) {
     const categoryTitle = SHAP_COMPOUND_CATEGORY_PREFIX[baseKey] ?? SHAP_FEATURE_TITLE_MAP[baseKey];
     if (categoryTitle) {
-      const primary =
-        kind === 'increase'
+      const isInactiveBucket = numericValue === 0 || (numericValue == null && isTruthy === false);
+      const primary = isInactiveBucket
+        ? kind === 'increase'
+          ? `No pertenecer a ${categoryTitle.toLowerCase()} (${compoundLabel}) se asoció con un mayor riesgo estimado.`
+          : `No pertenecer a ${categoryTitle.toLowerCase()} (${compoundLabel}) contribuyó a reducir el riesgo estimado.`
+        : kind === 'increase'
           ? `${categoryTitle} (${compoundLabel}) se asoció con un mayor riesgo estimado.`
           : `${categoryTitle} (${compoundLabel}) se asoció con una reducción del riesgo estimado.`;
       return { primary, detail: null };
@@ -501,6 +521,23 @@ export function shapPrimaryExplanation(kind: ShapImpactKind): string {
 export function interpretationLooksTechnical(text: string): boolean {
   const t = text.toLowerCase();
   return SHAP_DISPLAY_UI.technicalInterpretationHints.some((h) => t.includes(h));
+}
+
+/**
+ * Columnas one-hot inactivas (valor 0) de categorías compuestas no aportan una respuesta del usuario;
+ * ocultarlas evita duplicar el mismo atributo (p. ej. dos grupos de edad).
+ */
+export function isInactiveOneHotShapFactor(factor: ShapTopFactor): boolean {
+  const value = factor.feature_value;
+  if (value == null || Number.isNaN(Number(value)) || Number(value) !== 0) {
+    return false;
+  }
+  const identity = parseShapFeatureIdentity(factor.feature_name, factor.feature_value);
+  return identity.suffix != null && SHAP_COMPOUND_CATEGORY_PREFIX[identity.baseKey] != null;
+}
+
+export function filterShapFactorsForDisplay(factors: readonly ShapTopFactor[]): ShapTopFactor[] {
+  return factors.filter((f) => !isInactiveOneHotShapFactor(f));
 }
 
 export function maxAbsShapContribution(factors: readonly ShapTopFactor[]): number {

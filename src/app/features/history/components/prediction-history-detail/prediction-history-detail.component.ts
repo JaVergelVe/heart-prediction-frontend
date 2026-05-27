@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, Subscription, distinctUntilChanged, finalize, map, switchMap } from 'rxjs';
+import { EMPTY, Subscription, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { HISTORY_ROUTE_PARAM_KEYS } from '../../../../core/constants/history-route-params.constant';
 import { HISTORY_MESSAGES } from '../../../../core/constants/messages/history-messages.constant';
 import { PredictionRiskPillKind } from '../../../../core/constants/prediction-result-risk.constant';
 import { SHAP_DISPLAY_UI } from '../../../../core/constants/shap-display.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
-import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
+import { filterShapFactorsForDisplay, maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
 import { PredictionService } from '../../../../core/services/prediction.service';
+import { PredictionPdfExportService } from '../../../../core/services/prediction-pdf-export.service';
 import { triggerBrowserBlobDownload } from '../../../../core/utils/browser-file-download.util';
-import { predictionRiskPillKind } from '../../../../core/utils/prediction-risk-display.util';
-import { formatAuthHttpError } from '../../../auth/utils/http-error.util';
+import { predictionRiskPillKind, predictionRiskDisplayLabel } from '../../../../core/utils/prediction-risk-display.util';
 import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorized-status.util';
 
 @Component({
@@ -21,6 +21,7 @@ import { isUnauthorizedHttpError } from '../../../../core/utils/http-unauthorize
 export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly predictionApi = inject(PredictionService);
+  private readonly pdfExport = inject(PredictionPdfExportService);
 
   private sub: Subscription | null = null;
 
@@ -115,6 +116,10 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
     return predictionRiskPillKind(this.result?.risk_level);
   }
 
+  riskDisplayLabel(): string {
+    return predictionRiskDisplayLabel(this.result?.risk_level);
+  }
+
   shapExplanation(): ShapExplanation | null {
     const e = this.result?.shap_explanation;
     if (!e || typeof e !== 'object') {
@@ -128,7 +133,7 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
 
   shapFactors(): ShapTopFactor[] {
     const f = this.result?.shap_top_factors;
-    return Array.isArray(f) ? f : [];
+    return filterShapFactorsForDisplay(Array.isArray(f) ? f : []);
   }
 
   get shapFactorsMaxAbs(): number {
@@ -136,31 +141,20 @@ export class PredictionHistoryDetailComponent implements OnInit, OnDestroy {
   }
 
   downloadPdf(): void {
-    const id = this.result?.prediction_id;
-    if (!id || this.loading || this.pdfDownloading) {
+    const data = this.result;
+    if (!data?.prediction_id || this.loading || this.pdfDownloading) {
       return;
     }
     this.pdfError = null;
     this.pdfDownloading = true;
-    this.predictionApi
-      .downloadAuthenticatedPredictionPdf(id)
-      .pipe(finalize(() => (this.pdfDownloading = false)))
-      .subscribe({
-        next: ({ blob, filename }) => {
-          triggerBrowserBlobDownload(blob, filename);
-        },
-        error: (err: unknown) => {
-          if (isUnauthorizedHttpError(err)) {
-            return;
-          }
-          if (err instanceof Error && err.message === 'PDF_EMPTY') {
-            this.pdfError = this.messages.pdfDownloadEmpty;
-          } else if (err instanceof Error && err.message === 'PDF_BAD_TYPE') {
-            this.pdfError = this.messages.pdfDownloadNotPdf;
-          } else {
-            this.pdfError = formatAuthHttpError(err);
-          }
-        }
-      });
+    try {
+      const blob = this.pdfExport.buildPdfBlob(data);
+      const filename = this.pdfExport.buildFilename(data.prediction_id);
+      triggerBrowserBlobDownload(blob, filename);
+    } catch {
+      this.pdfError = this.messages.pdfDownloadEmpty;
+    } finally {
+      this.pdfDownloading = false;
+    }
   }
 }

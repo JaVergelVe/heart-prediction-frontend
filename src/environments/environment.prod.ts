@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://44.223.150.61:8000',
+  apiUrl: 'http://34.234.50.6:8000',
   apiTimeout: 30000,
   enableDebugLogs: false
 };

@@ -9,6 +9,7 @@ import {
   PredictionSimulationViewModel
 } from '../models/prediction-simulation.model';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../models/prediction-response.model';
+import { filterShapFactorsForDisplay } from './shap-display.util';
 function surveyTriStateToBool(v: PredictionTristateFormValue): boolean | null {
   if (v === PREDICTION_TRISTATE_FORM.unset) {
     return null;
@@ -164,7 +165,7 @@ function pickShapExplanation(sim: PredictionResultData): ShapExplanation | null 
 
 function pickShapFactors(sim: PredictionResultData): readonly ShapTopFactor[] {
   const f = sim.shap_top_factors;
-  return Array.isArray(f) ? f : [];
+  return filterShapFactorsForDisplay(Array.isArray(f) ? f : []);
 }
 
 export function mergeSimulationViewModel(args: {

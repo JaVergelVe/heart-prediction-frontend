@@ -1,9 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import {
-  PREDICTION_RISK_LEVEL_KEYWORDS,
-  PredictionRiskPillKind
-} from '../../../../core/constants/prediction-result-risk.constant';
+import { PredictionRiskPillKind } from '../../../../core/constants/prediction-result-risk.constant';
 import { PREDICTION_ROUTER_STATE_KEYS } from '../../../../core/constants/prediction-router-state.constant';
 import { APP_ROUTE_URLS } from '../../../../core/constants/route-urls.constant';
 import {
@@ -13,7 +10,8 @@ import {
 } from '../../../../core/constants/ui/prediction-ui.constant';
 import { SHAP_DISPLAY_UI } from '../../../../core/constants/shap-display.constant';
 import { PredictionResultData, ShapExplanation, ShapTopFactor } from '../../../../core/models/prediction-response.model';
-import { maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
+import { filterShapFactorsForDisplay, maxAbsShapContribution } from '../../../../core/utils/shap-display.util';
+import { predictionRiskPillKind, predictionRiskDisplayLabel } from '../../../../core/utils/prediction-risk-display.util';
 
 @Component({
   selector: 'app-prediction-result',
@@ -71,20 +69,11 @@ export class PredictionResultComponent implements OnInit {
   }
 
   riskPillKind(): PredictionRiskPillKind {
-    const s = (this.result?.risk_level ?? '').trim().toLowerCase();
-    const low = PREDICTION_RISK_LEVEL_KEYWORDS.low as readonly string[];
-    const medium = PREDICTION_RISK_LEVEL_KEYWORDS.medium as readonly string[];
-    const high = PREDICTION_RISK_LEVEL_KEYWORDS.high as readonly string[];
-    if (low.includes(s)) {
-      return 'low';
-    }
-    if (medium.includes(s)) {
-      return 'medium';
-    }
-    if (high.includes(s)) {
-      return 'high';
-    }
-    return 'unknown';
+    return predictionRiskPillKind(this.result?.risk_level);
+  }
+
+  riskDisplayLabel(): string {
+    return predictionRiskDisplayLabel(this.result?.risk_level);
   }
 
   shapExplanation(): ShapExplanation | null {
@@ -100,7 +89,7 @@ export class PredictionResultComponent implements OnInit {
 
   shapFactors(): ShapTopFactor[] {
     const f = this.result?.shap_top_factors;
-    return Array.isArray(f) ? f : [];
+    return filterShapFactorsForDisplay(Array.isArray(f) ? f : []);
   }
 
   get shapFactorsMaxAbs(): number {

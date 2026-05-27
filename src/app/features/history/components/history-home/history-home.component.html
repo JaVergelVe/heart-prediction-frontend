@@ -1,8 +1,12 @@
 <mat-card class="history-card">
-  <mat-card-title>Historial de predicciones</mat-card-title>
-  <mat-card-subtitle>Predicciones guardadas en tu cuenta. Pulsa «Ver detalle» para ver el análisis completo.</mat-card-subtitle>
+  <mat-card-header class="history-card-header">
+    <mat-card-title-group>
+      <mat-card-title>Historial de predicciones</mat-card-title>
+      <mat-card-subtitle>Predicciones guardadas en tu cuenta. Pulsa «Ver detalle» para ver el análisis completo.</mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
 
-  <mat-card-content>
+  <mat-card-content class="history-card-body">
     @if (loadError) {
       <p class="server-error" role="alert">{{ loadError }}</p>
       <button type="button" mat-stroked-button color="primary" (click)="loadHistory()">Reintentar</button>
@@ -28,7 +32,7 @@
             <ng-container [matColumnDef]="cols.risk">
               <th mat-header-cell *matHeaderCellDef>Nivel de riesgo</th>
               <td mat-cell *matCellDef="let row">
-                <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(row.risk_level)">{{ row.risk_level }}</span>
+                <span [class]="'app-risk-chip app-risk-chip--' + riskPillKind(row.risk_level)">{{ riskDisplayLabel(row.risk_level) }}</span>
               </td>
             </ng-container>
 

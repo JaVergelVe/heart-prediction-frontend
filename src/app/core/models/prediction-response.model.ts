@@ -1,4 +1,4 @@
-import type { EcigaretteUsage, GeneralHealth, SmokerStatus } from './prediction-api.model';
+import type { CovidPos, EcigaretteUsage, GeneralHealth, LastCheckupTime, SmokerStatus, TetanusLast10Tdap } from './prediction-api.model';
 
 /** Explicación SHAP principal (si el API la incluye). */
 export interface ShapExplanation {
@@ -28,11 +28,19 @@ export interface PredictionResultData {
   general_health?: GeneralHealth | null;
   physical_health_days?: number | null;
   mental_health_days?: number | null;
+  last_checkup_time?: LastCheckupTime | null;
   physical_activities?: boolean | null;
   sleep_hours?: number | null;
   smoker_status?: SmokerStatus | null;
   ecigarette_usage?: EcigaretteUsage | null;
   alcohol_drinkers?: boolean | null;
+  chest_scan?: boolean | null;
+  hiv_testing?: boolean | null;
+  flu_vax_last_12?: boolean | null;
+  pneumo_vax_ever?: boolean | null;
+  tetanus_last_10_tdap?: TetanusLast10Tdap | null;
+  high_risk_last_year?: boolean | null;
+  covid_pos?: CovidPos | null;
   bmi?: number;
   prediction_probability: number;
   risk_level: string;
