@@ -206,5 +206,9 @@ export const PREDICTION_RESULT_UI = {
   whatIfOpenedHint: 'Ajusta variables abajo para explorar un escenario alternativo sin guardar una nueva predicción.',
   loginPrompt: '¿Quieres guardar historial en tu cuenta?',
   loginLink: 'Iniciar sesión',
-  loginRoute: APP_ROUTE_URLS.authLogin
+  loginRoute: APP_ROUTE_URLS.authLogin,
+  pdfDownload: 'Descargar informe PDF',
+  pdfDownloadPending: 'Generando PDF…',
+  pdfDownloadAriaLabel: 'Descargar informe de predicción en formato PDF',
+  pdfDownloadLoadingAriaLabel: 'Descargando informe PDF'
 } as const;

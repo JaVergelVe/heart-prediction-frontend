@@ -89,6 +89,33 @@
         </section>
       }
 
+      @if (canDownloadPdf) {
+        <mat-divider class="section-divider" />
+        <div class="pdf-toolbar pdf-toolbar--card">
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="downloadPdf()"
+            [disabled]="pdfDownloading"
+            [attr.aria-label]="ui.pdfDownloadAriaLabel"
+          >
+            {{ pdfDownloading ? ui.pdfDownloadPending : ui.pdfDownload }}
+          </button>
+          @if (pdfDownloading) {
+            <mat-progress-spinner
+              class="pdf-spinner"
+              mode="indeterminate"
+              diameter="28"
+              [attr.aria-label]="ui.pdfDownloadLoadingAriaLabel"
+            />
+          }
+        </div>
+        @if (pdfError) {
+          <p class="server-error pdf-error" role="alert">{{ pdfError }}</p>
+        }
+      }
+
       <mat-divider class="section-divider" />
 
       <div class="actions">

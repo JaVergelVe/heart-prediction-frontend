@@ -123,65 +123,7 @@
         <h2 id="profile-section-medical" class="section-title profile-section-card__title">{{ pageUi.sectionMedical }}</h2>
         <p class="section-hint">{{ pageUi.medicalHint }}</p>
 
-        <h3 class="profile-group-label">{{ pageUi.groupClinical }}</h3>
-        <div class="choice-pill-row" role="group" [attr.aria-label]="pageUi.groupClinical">
-          @for (pill of clinicalPills; track pill.control) {
-            <label class="choice-pill">
-              <input
-                type="checkbox"
-                class="choice-pill__input"
-                [formControlName]="pill.control"
-              />
-              <span class="choice-pill__label">{{ pill.label }}</span>
-            </label>
-          }
-
-          <div class="choice-pill-group" role="radiogroup" [attr.aria-label]="pageUi.diabetesLabel">
-            <span class="choice-pill-group__label">{{ pageUi.diabetesLabel }}</span>
-            <div class="choice-pill-group__options">
-              @for (opt of diabetesPills; track opt.value) {
-                <label class="choice-pill">
-                  <input
-                    type="radio"
-                    class="choice-pill__input"
-                    formControlName="had_diabetes"
-                    [value]="opt.value"
-                  />
-                  <span class="choice-pill__label">{{ opt.label }}</span>
-                </label>
-              }
-              @if (medicalForm.get('had_diabetes')?.value === diabetesPregnancyPill.value) {
-                <label class="choice-pill">
-                  <input
-                    type="radio"
-                    class="choice-pill__input"
-                    formControlName="had_diabetes"
-                    [value]="diabetesPregnancyPill.value"
-                  />
-                  <span class="choice-pill__label">{{ diabetesPregnancyPill.label }}</span>
-                </label>
-              }
-            </div>
-          </div>
-        </div>
-
-        @if (medicalForm.get('had_diabetes')?.hasError('required') && medicalForm.get('had_diabetes')?.touched) {
-          <p class="field-error" role="alert">{{ validationMessages.selectRequired }}</p>
-        }
-
-        <h3 class="profile-group-label">{{ pageUi.groupFunctional }}</h3>
-        <div class="choice-pill-row" role="group" [attr.aria-label]="pageUi.groupFunctional">
-          @for (pill of functionalPills; track pill.control) {
-            <label class="choice-pill">
-              <input
-                type="checkbox"
-                class="choice-pill__input"
-                [formControlName]="pill.control"
-              />
-              <span class="choice-pill__label">{{ pill.label }}</span>
-            </label>
-          }
-        </div>
+        <app-medical-conditions-fields [group]="medicalForm" [diabetesOptions]="diabetesOptions" />
 
         <div class="actions">
           <button mat-flat-button color="primary" type="submit" [disabled]="medicalSaving">
